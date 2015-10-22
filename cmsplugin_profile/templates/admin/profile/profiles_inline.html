@@ -1,0 +1,57 @@
+{% load i18n admin_static %}
+{% spaceless %}
+<div class="inline-group" id="{{ inline_admin_formset.formset.prefix }}-group">
+{{ inline_admin_formset.formset.management_form }}
+{{ inline_admin_formset.formset.non_form_errors }}
+	<ul id='{{ inline_admin_formset.formset.prefix }}-group-grid'>
+
+{% for inline_admin_form in inline_admin_formset %}
+{% with instance=inline_admin_form.form.instance %}
+<li class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.normal.url %}style="background-image: url('{{ instance.thumbnail_image.normal.url }}');"{% endif %}>
+    <div>
+	    {% if inline_admin_form.form.non_field_errors %}{{ inline_admin_form.form.non_field_errors }}{% endif %}
+    {% for fieldset in inline_admin_form %}
+        {% include "admin/includes/fieldset.html" %}
+	    {% endfor %}
+	    {% for index, link in inline_admin_form.form.links %}
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.index }}{{ index }}-text" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ index }}-open_action">Link {{ index }} target:</label></div>
+<div class="col-sm-9 no-padding-left"><select id="{{ inline_admin_form.form.links_prefix }}{{ index }}-open_action" name="{{ inline_admin_form.form.links_prefix }}{{ index }}-open_action">
+	<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
+	<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
+</select></div>
+	    {% endfor %}
+	    {{ inline_admin_form.form.non_form_errors }}
+	    {% for empty_link_id in inline_admin_form.form.empty_links %}
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} text:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text" type="text"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-url">Link {{ empty_link_id }} URL:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-url" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-url" type="text"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-open_action">Link {{ empty_link_id }} target:</label></div>
+<div class="col-sm-9 no-padding-left"><select id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-open_action" name="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-open_action">
+	<option value="blank">blank</option>
+	<option value="parent">parent</option>
+</select></div>
+{% endfor %}
+	    {% if instance.thumbnail_image.normal.url %}<img src='{{instance.thumbnail_image.normal.url}}' />{% endif %}
+    {% if inline_admin_form.needs_explicit_pk_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
+    {{ inline_admin_form.fk_field.field }}
+    <div>
+
+</li>
+{% endwith %}
+{% endfor %}
+<a class="add-row " href="javascript:void(0)">
+<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
+<span class="add-text" unselectable="on">Add new profile</span>
+</a>
+</ul>
+</div>
+{% endspaceless %}
