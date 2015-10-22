@@ -1,1 +1,18 @@
 {% extends "admin/cms/page/plugin_change_form.html" %}
+
+{% block fieldsets %}
+Multiselect will be hidden.
+{{ block.super }}
+Selected Profiles:<br>
+{% for selected_profile in adminform.form.selected_profiles %}
+Id: {{ selected_profile.id }}
+<img src="{{ selected_profile.thumbnail_image.url }}"><br>
+{% endfor %}
+Available profiles:<br>
+{% for profile in adminform.form.all_profiles %}
+Id: {{ profile.id }}
+<img src="{{ profile.thumbnail_image.url }}"><br>
+{% endfor %}
+
+
+{% endblock %}

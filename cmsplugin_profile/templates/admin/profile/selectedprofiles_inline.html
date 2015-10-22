@@ -4,29 +4,14 @@
 {{ inline_admin_formset.formset.management_form }}
 {{ inline_admin_formset.formset.non_form_errors }}
 <ul id='{{ inline_admin_formset.formset.prefix }}-group-grid'>
-Selected profiles:
-{% for inline_admin_form in inline_admin_formset %}
-{% with instance=inline_admin_form.form.instance %}
-<li class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.normal.url %}style="background-image: url('{{ instance.thumbnail_image.normal.url }}');"{% endif %}>
-    {# warn: don't move these. the formset.js will not work otherwise #}
-        <a class="edit-row" href="javascript:void(0)">
-            <span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span>
-        </a>
-    {# endwarn #}
-    <div>
-    {% if inline_admin_form.form.non_field_errors %}{{ inline_admin_form.form.non_field_errors }}{% endif %}
-    {% for fieldset in inline_admin_form %}
-        {% include "admin/includes/fieldset.html" %}
-    {% endfor %}
-    {% if instance.thumbnail_image.normal.url %}<img src='{{instance.thumbnail_image.normal.url}}' />{% endif %}
-    {% if inline_admin_form.needs_explicit_pk_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
-    {{ inline_admin_form.fk_field.field }}
-    <div>
-
-</li>
-{% endwith %}
+	Selected profiles:<br>
+{% for available_profile in inline_admin_formset.formset.available_profiles %}
+	{{ available_profile }}
 {% endfor %}
-Not selected profiles:
+	Not selected profiles:<br>
+{% for available_profile in inline_admin_formset.formset.available_profiles %}
+	{{ available_profile }}
+{% endfor %}
 </ul>
 </div>
 {% endspaceless %}
