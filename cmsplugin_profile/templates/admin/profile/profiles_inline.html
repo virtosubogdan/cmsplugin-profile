@@ -14,6 +14,7 @@
         {% include "admin/includes/fieldset.html" %}
 	    {% endfor %}
 	    {% for index, link in inline_admin_form.form.links %}
+<div id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}container" >
 <div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
 <div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.index }}{{ index }}-text" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
 
@@ -25,9 +26,16 @@
 	<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
 	<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
 </select></div>
-	    {% endfor %}
-	    {{ inline_admin_form.form.non_form_errors }}
+</div>
+{% endfor %}
+{% if inline_admin_form.form.empty_links %}
+<a class="add-row " href="javascript:void(0)">
+<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
+<span class="add-text" unselectable="on">Add new link (div is hidden)</span>
+</a>
+{% endif %}
 	    {% for empty_link_id in inline_admin_form.form.empty_links %}
+<div id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}container" style="display:none">
 <div class="col-sm-2 control-label text-left"><label for="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} text:</label></div>
 <div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text" maxlength="200" name="{{ inline_admin_form.form.links_prefix }}{{ empty_link_id}}-text" type="text"></div>
 
@@ -39,6 +47,7 @@
 	<option value="blank">blank</option>
 	<option value="parent">parent</option>
 </select></div>
+</div>
 {% endfor %}
 	    {% if instance.thumbnail_image.normal.url %}<img src='{{instance.thumbnail_image.normal.url}}' />{% endif %}
     {% if inline_admin_form.needs_explicit_pk_field %}{{ inline_admin_form.pk_field.field }}{% endif %}
@@ -50,8 +59,8 @@
 {% endfor %}
 <a class="add-row " href="javascript:void(0)">
 <span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
-<span class="add-text" unselectable="on">Add new profile</span>
+<span class="add-text" unselectable="on">Add new profile (html at cmsplugin_profile/new_profile/profile_nr)</span>
 </a>
 </ul>
-</div>
+    </div>
 {% endspaceless %}

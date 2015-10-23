@@ -4,7 +4,10 @@ from django.utils.translation import ugettext_lazy as _
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
-from .forms import ProfileForm, ProfileFormSet, SelectedProfileForm, SelectedProfileFormSet, ProfileGridPromoForm
+from .forms import (
+    ProfileForm, ProfileFormSet, SelectedProfileForm, SelectedProfileFormSet,
+    ProfileGridPromoForm
+)
 from .models import Profile, ProfileGrid, SelectedProfile, ProfilePromoGrid
 
 
@@ -13,6 +16,7 @@ class ProfileInline(admin.options.InlineModelAdmin):
     template = "admin/profile/profiles_inline.html"
     form = ProfileForm
     formset = ProfileFormSet
+    extra = 0
 
 
 class ProfileGridPlugin(CMSPluginBase):
@@ -33,7 +37,6 @@ class SelectedProfileInline(admin.options.InlineModelAdmin):
     template = "admin/profile/selectedprofiles_inline.html"
     form = SelectedProfileForm
     formset = SelectedProfileFormSet
-
 
 
 class ProfileGridPromoPlugin(CMSPluginBase):
