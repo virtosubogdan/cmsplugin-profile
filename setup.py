@@ -23,6 +23,7 @@ setup(
     include_package_data=True,
     platforms=['any'],
     install_requires=[
-        'django-cms>=2.3,<2.3.6',
+        "django-cms >= 2.3, <2.3.6",
+        "django-filer >= 0.9pbs, <0.9.1"
     ],
 )

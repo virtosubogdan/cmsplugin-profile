@@ -1,0 +1,7 @@
+include README.md
+recursive-include cmsplugin_profile/templates *.html
+recursive-include cmsplugin_profile/static *
+recursive-include cmsplugin_profile/locale *
+recursive-exclude cmsplugin_profile/static *.scss
+exclude cmsplugin_profile/static/admin/cmsplugin_profile/config.rb
+prune cmsplugin_profile/static/admin/cmsplugin_profile/.sass-cache
