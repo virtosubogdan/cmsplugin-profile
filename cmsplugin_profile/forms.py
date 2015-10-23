@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from cms_blogger.widgets import ToggleWidget
+
 from .models import Profile, ProfileLink, ProfileGrid, SelectedProfile, ProfilePromoGrid
 from .settings import MAX_PROFILE_LINKS
 
@@ -41,7 +43,7 @@ class ProfileForm(forms.ModelForm):
                 raise ValidationError("Link URL is mandatory!")
             if not open_action or open_action not in ("blank", "parent"):
                 raise ValidationError("Please select a target for the link!")
-            if not "links" in cleaned_data:
+            if "links" not in cleaned_data:
                 cleaned_data["links"] = []
             cleaned_data["links"].append((link_index, text, url, open_action))
         return cleaned_data
@@ -85,6 +87,17 @@ class SelectedProfileFormSet(forms.models.BaseInlineFormSet):
         else:
             self.available_profiles = []
             self.selected_profiles = []
+
+
+class ProfileGridForm(forms.ModelForm):
+    show_title_on_thumbnails = forms.BooleanField(
+        label="Show title on thumbnails",
+        widget=ToggleWidget
+    )
+
+    class Meta:
+        model = ProfileGrid
+        exclude = ()
 
 
 class ProfileGridPromoForm(forms.ModelForm):

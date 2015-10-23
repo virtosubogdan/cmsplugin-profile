@@ -1,7 +1,8 @@
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render_to_response
 from django.views.decorators.http import require_GET
 from django.core.exceptions import PermissionDenied
+from django.template import RequestContext
 
 from .forms import ProfileForm
 from .models import ProfileGrid
@@ -24,4 +25,8 @@ def new_profile(request, profile_nr):
         empty_permitted=True
     )
     del form.fields['profile_plugin']
-    return HttpResponse(form.as_p())
+    return render_to_response(
+        'admin/profile/profile_form.html',
+        {'form': form},
+        RequestContext(request)
+    )

@@ -1,0 +1,48 @@
+{% with instance=form.instance %}
+<li class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.normal.url %}style="background-image: url('{{ instance.thumbnail_image.normal.url }}');"{% endif %}>
+    <div>
+	    {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+    {{ form.as_p }}
+	    {% for index, link in form.links %}
+<div id="{{ form.links_prefix }}{{ empty_link_id}}container" >
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-open_action">Link {{ index }} target:</label></div>
+<div class="col-sm-9 no-padding-left"><select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
+	<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
+	<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
+</select></div>
+</div>
+{% endfor %}
+{% if form.empty_links %}
+<a class="add-row " href="javascript:void(0)">
+<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
+<span class="add-text" unselectable="on">Add new link (div is hidden)</span>
+</a>
+{% endif %}
+	    {% for empty_link_id in form.empty_links %}
+<div id="{{ form.links_prefix }}{{ empty_link_id}}container" style="display:none">
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} text:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-text" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-text" type="text"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-url">Link {{ empty_link_id }} URL:</label></div>
+<div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-url" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-url" type="text"></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-open_action">Link {{ empty_link_id }} target:</label></div>
+<div class="col-sm-9 no-padding-left"><select id="{{ form.links_prefix }}{{ empty_link_id}}-open_action" name="{{ form.links_prefix }}{{ empty_link_id}}-open_action">
+	<option value="blank">blank</option>
+	<option value="parent">parent</option>
+</select></div>
+</div>
+{% endfor %}
+	    {% if instance.thumbnail_image.normal.url %}<img src='{{instance.thumbnail_image.normal.url}}' />{% endif %}
+<!-- {% if inline_admin_form.needs_explicit_pk_field %}{{ inline_admin_form.pk_field.field }}{% endif %} -->
+    {{ fk_field.field }}
+    <div>
+
+</li>
+{% endwith %}
