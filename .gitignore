@@ -6,5 +6,6 @@ build
 pytest-results.xml
 .tox
 *.pyo
+.DS_Store
 *~
 *.cache
