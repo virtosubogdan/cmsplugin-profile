@@ -7,6 +7,7 @@ from filer.fields.image import FilerImageField
 
 class ProfileGrid(CMSPlugin):
     title = models.CharField(null=True, blank=True, max_length=200)
+    description = models.TextField(max_length=400, default="")
     show_title_on_thumbnails = models.BooleanField(default=False)
 
     class Meta:
@@ -16,19 +17,20 @@ class ProfileGrid(CMSPlugin):
 class Profile(models.Model):
     profile_plugin = models.ForeignKey(ProfileGrid, null=False, blank=False)
     title = models.CharField(null=True, blank=True, max_length=200)
-    description = models.CharField(null=True, blank=True, max_length=395)
-    call_to_action_text = models.CharField(null=True, blank=True, max_length=200)
+    description = models.TextField(null=True, blank=True, max_length=395)
+    call_to_action_text = models.CharField(null=True, blank=True, max_length=30)
     call_to_action_url = models.CharField(null=True, blank=True, max_length=200)
+    additional_links_label = models.CharField(null=True, blank=True, max_length=30, default="")
     thumbnail_image = FilerImageField(
         null=True, blank=True, on_delete=models.SET_NULL,
         default=None, help_text=_('Image must be 1:1 aspect ratio'),
         verbose_name=_("Thumbnail Image"))
-    image_credit = models.CharField(null=True, blank=True, max_length=200)
+    image_credit = models.CharField(null=True, blank=True, max_length=40)
 
 
 class ProfileLink(models.Model):
     profile = models.ForeignKey(Profile, null=False, blank=False)
-    text = models.CharField(null=True, blank=True, max_length=200)
+    text = models.CharField(null=True, blank=True, max_length=60)
     url = models.CharField(null=True, blank=True, max_length=200)
     target = models.CharField(null=True, blank=True, max_length=50)
 
@@ -48,4 +50,3 @@ class ProfilePromoGrid(CMSPlugin):
 class SelectedProfile(models.Model):
     profile = models.ForeignKey(Profile, null=False, blank=False)
     promo_grid = models.ForeignKey(ProfilePromoGrid, null=False, blank=False)
-

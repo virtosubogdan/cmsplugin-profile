@@ -25,6 +25,7 @@ class ProfileForm(forms.ModelForm):
             self.links = []
             self.empty_links = range(1, self.max_profile_links+1)
 
+        self.links_len = len(self.links) + 1
         self.links_prefix = self.add_prefix("links_set-")
 
     def clean(self):
@@ -53,6 +54,7 @@ class ProfileFormSet(forms.models.BaseInlineFormSet):
 
     def save(self, commit=True):
         result = super(ProfileFormSet, self).save(commit)
+
         for item in self.cleaned_data:
             try:
                 profile = item.get('id')
@@ -92,7 +94,8 @@ class SelectedProfileFormSet(forms.models.BaseInlineFormSet):
 class ProfileGridForm(forms.ModelForm):
     show_title_on_thumbnails = forms.BooleanField(
         label="Show title on thumbnails",
-        widget=ToggleWidget
+        widget=ToggleWidget,
+        required=False
     )
 
     class Meta:

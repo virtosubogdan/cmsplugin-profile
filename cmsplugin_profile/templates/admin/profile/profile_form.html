@@ -19,9 +19,10 @@
 </div>
 {% endfor %}
 {% if form.empty_links %}
-<a class="add-row " href="javascript:void(0)">
+<a class="add-row add-profile-link" href="javascript:void(0)"
+	data-prefix="{{ form.links_prefix }}" data-current="{{ form.links_len }}">
 <span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
-<span class="add-text" unselectable="on">Add new link (div is hidden)</span>
+<span class="add-text" unselectable="on">Add new link</span>
 </a>
 {% endif %}
 	    {% for empty_link_id in form.empty_links %}
