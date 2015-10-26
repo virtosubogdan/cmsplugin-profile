@@ -15,4 +15,14 @@ Id: {{ profile.id }}
 {% endfor %}
 
 
+<script type="text/javascript">
+(function($) {
+	$(document).ready(function() {
+		$("#id_profile_plugin").change(function(e) {
+			$('#profilepromogrid_form').submit()
+		})
+	})
+})(jQuery || django.jQuery);
+</script>
+
 {% endblock %}

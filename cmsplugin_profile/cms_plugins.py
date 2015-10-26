@@ -6,7 +6,7 @@ from cms.plugin_pool import plugin_pool
 
 from .forms import (
     ProfileForm, ProfileFormSet, SelectedProfileForm, SelectedProfileFormSet,
-    ProfileGridPromoForm
+    ProfileGridPromoForm, ProfileGridForm
 )
 from .models import Profile, ProfileGrid, SelectedProfile, ProfilePromoGrid
 
@@ -24,7 +24,9 @@ class ProfileGridPlugin(CMSPluginBase):
     model = ProfileGrid
     name = "Profile Grid"
     render_template = 'cmsplugin_profile/profilegrid_plugin.html'
+    change_form_template = "admin/profile/profilegrid_change_form.html"
     admin_preview = False
+    form = ProfileGridForm
 
     def render(self, context, instance, placeholder):
         return context
