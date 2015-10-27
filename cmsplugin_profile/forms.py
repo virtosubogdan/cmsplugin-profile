@@ -36,6 +36,9 @@ class ProfileForm(forms.ModelForm):
             text = self.data.get("{}text".format(prefix))
             url = self.data.get("{}url".format(prefix))
             open_action = self.data.get("{}open_action".format(prefix))
+            deleted = self.data.get("{}delete".format(prefix))
+            if deleted:
+                continue
             if not text and not url:
                 continue
             if not text:
