@@ -16,12 +16,16 @@
 	<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
 	<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
 </select></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-delete">Delete link {{ index }} :</label></div>
+<div class="col-sm-9 no-padding-left"><input id="{{ form.links_prefix }}{{ index }}-delete" name="{{ form.links_prefix }}{{ index }}-delete" type="checkbox"></div>
 </div>
 {% endfor %}
 {% if form.empty_links %}
-<a class="add-row " href="javascript:void(0)">
+<a class="add-row add-profile-link" href="javascript:void(0)"
+	data-prefix="{{ form.links_prefix }}" data-current="{{ form.links_len }}">
 <span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
-<span class="add-text" unselectable="on">Add new link (div is hidden)</span>
+<span class="add-text" unselectable="on">Add new link</span>
 </a>
 {% endif %}
 	    {% for empty_link_id in form.empty_links %}
@@ -32,11 +36,15 @@
 <div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-url">Link {{ empty_link_id }} URL:</label></div>
 <div class="col-sm-9 no-padding-left"><input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-url" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-url" type="text"></div>
 
-<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-open_action">Link {{ empty_link_id }} target:</label></div>
-<div class="col-sm-9 no-padding-left"><select id="{{ form.links_prefix }}{{ empty_link_id}}-open_action" name="{{ form.links_prefix }}{{ empty_link_id}}-open_action">
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-open_action">Link {{ empty_link_id }} target:</label></div>
+<div class="col-sm-9 no-padding-left"><select id="{{ form.links_prefix }}{{ empty_link_id }}-open_action" name="{{ form.links_prefix }}{{ empty_link_id}}-open_action">
 	<option value="blank">blank</option>
 	<option value="parent">parent</option>
 </select></div>
+
+<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete link {{ index }} :</label></div>
+<div class="col-sm-9 no-padding-left"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
+
 </div>
 {% endfor %}
 	    {% if instance.thumbnail_image.normal.url %}<img src='{{instance.thumbnail_image.normal.url}}' />{% endif %}

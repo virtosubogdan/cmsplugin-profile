@@ -25,6 +25,7 @@ class ProfileForm(forms.ModelForm):
             self.links = []
             self.empty_links = range(1, self.max_profile_links+1)
 
+        self.links_len = len(self.links) + 1
         self.links_prefix = self.add_prefix("links_set-")
 
     def clean(self):
@@ -35,6 +36,9 @@ class ProfileForm(forms.ModelForm):
             text = self.data.get("{}text".format(prefix))
             url = self.data.get("{}url".format(prefix))
             open_action = self.data.get("{}open_action".format(prefix))
+            deleted = self.data.get("{}delete".format(prefix))
+            if deleted:
+                continue
             if not text and not url:
                 continue
             if not text:
@@ -46,24 +50,32 @@ class ProfileForm(forms.ModelForm):
             if "links" not in cleaned_data:
                 cleaned_data["links"] = []
             cleaned_data["links"].append((link_index, text, url, open_action))
+        if not self.instance.id:
+            cleaned_data['not_saved_profile'] = self.instance
         return cleaned_data
+
+
+def _add_links_to_profile(profile, links_data, commit=True):
+    # TODO: add link ordering and do not delete only what has to be deleted
+    if not commit:
+        # We cannot modify related objects for unsaved object
+        return
+    profile.profilelink_set.all().delete()
+    for _, text, url, target in links_data:
+        ProfileLink.objects.create(profile=profile, text=text, url=url, target=target)
 
 
 class ProfileFormSet(forms.models.BaseInlineFormSet):
 
     def save(self, commit=True):
         result = super(ProfileFormSet, self).save(commit)
-        for item in self.cleaned_data:
-            try:
-                profile = item.get('id')
-            except:
+
+        for profile_data in self.cleaned_data:
+            profile = profile_data.get('id', None) or profile_data.get("not_saved_profile", None)
+            if not profile or (profile not in self.queryset and profile not in result):
                 continue
-            if profile not in self.queryset:
-                continue
-            profile.profilelink_set.all().delete()
-            links = item.get("links", [])
-            for _, text, url, target in links:
-                ProfileLink.objects.create(profile=profile, text=text, url=url, target=target)
+            _add_links_to_profile(profile, profile_data.get("links", []), commit=commit)
+
         return result
 
 
@@ -92,7 +104,8 @@ class SelectedProfileFormSet(forms.models.BaseInlineFormSet):
 class ProfileGridForm(forms.ModelForm):
     show_title_on_thumbnails = forms.BooleanField(
         label="Show title on thumbnails",
-        widget=ToggleWidget
+        widget=ToggleWidget,
+        required=False
     )
 
     class Meta:

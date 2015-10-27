@@ -29,6 +29,8 @@ class ProfileGridPlugin(CMSPluginBase):
     form = ProfileGridForm
 
     def render(self, context, instance, placeholder):
+        context['profilegrid'] = instance
+        context['profiles'] = instance.profile_set.all()
         return context
 
 plugin_pool.register_plugin(ProfileGridPlugin)

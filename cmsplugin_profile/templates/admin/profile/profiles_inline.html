@@ -21,17 +21,29 @@
 (function($) {
 	$(document).ready(function() {
 		$("#add_new_profile").click(function(e) {
-			console.log("click");
 			children = $('#profile_set-group-grid li').children();
 			jQuery.ajax({
-				url: '/cmsplugin_profile/new_profile/'+children.length+'/',
+				url: '/cmsplugin_profile/new_profile/'+(children.length - 1)+'/',
 				success: function (response) {
 					$('#profile_set-group-grid').append(response);
+					total = $('#id_profile_set-TOTAL_FORMS')[0];
+					total.value = parseInt(total.value) + 1;
 				},
 				error: function (response) {
 				}
 			});
-		})
+		});
+		$(document).on('click', '.add-profile-link', function(e) {
+			link = e.currentTarget;
+			prefix = link.attributes["data-prefix"].value;
+			current = parseInt(link.attributes["data-current"].value);
+			next_link = $("#"+prefix+current+"container")[0];
+			if(next_link != undefined) {
+				next_link.style.display="block";
+				link.attributes["data-current"].value=current+1;
+			}
+		});
+
 	})
 })(jQuery || django.jQuery);
 </script>
