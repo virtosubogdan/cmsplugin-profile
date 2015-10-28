@@ -7,37 +7,36 @@
 * Copyright 2011 @louis_remi
 * Licensed under the MIT license.
 */
-var $event = $.event,
-$special,
-resizeTimeout;
+// var $event = $.event,
+// $special,
+// resizeTimeout;
 
-$special = $event.special.debouncedresize = {
-	setup: function() {
-		$( this ).on( "resize", $special.handler );
-	},
-	teardown: function() {
-		$( this ).off( "resize", $special.handler );
-	},
-	handler: function( event, execAsap ) {
-		// Save the context
-		var context = this,
-			args = arguments,
-			dispatch = function() {
-				// set correct event type
-				event.type = "debouncedresize";
-				$event.dispatch.apply( context, args );
-			};
+// $special = $event.special.debouncedresize = {
+// 	setup: function() {
+// 		$( this ).on( "resize", $special.handler );		
+// 	},
+// 	teardown: function() {
+// 		$( this ).off( "resize", $special.handler );
+// 	},
+// 	handler: function( event, execAsap ) {
+// 		// Save the context
+// 		var context = this,
+// 			args = arguments,
+// 			dispatch = function() {
+// 				// set correct event type
+// 				event.type = "debouncedresize";
+// 				$event.dispatch.apply( context, args );
+// 			};
 
-		if ( resizeTimeout ) {
-			clearTimeout( resizeTimeout );
-		}
-
-		execAsap ?
-			dispatch() :
-			resizeTimeout = setTimeout( dispatch, $special.threshold );
-	},
-	threshold: 250
-};
+// 		if ( resizeTimeout ) {
+// 			clearTimeout( resizeTimeout );
+// 		}		
+// 		execAsap ?
+// 			dispatch() :
+// 			resizeTimeout = setTimeout( dispatch, $special.threshold );
+// 	},
+// 	threshold: 250
+// };
 
 // ======================= imagesLoaded Plugin ===============================
 // https://github.com/desandro/imagesloaded
@@ -254,19 +253,21 @@ var Grid = (function() {
 		
 		// on window resize get the window´s size again
 		// reset some values..
-		$window.on( 'debouncedresize', function() {
-			
-			scrollExtra = 0;
-			previewPos = -1;
-			// save item´s offset
-			saveItemInfo();
-			getWinSize();
-			var preview = $.data( this, 'preview' );
-			if( typeof preview != 'undefined' ) {
-				hidePreview();
-			}
 
-		} );
+			$(window).bind('resize', function(e) {
+
+				scrollExtra = 0;
+				previewPos = -1;
+				// save item´s offset
+				saveItemInfo();
+				getWinSize();
+				var preview = $.data( this, 'preview' );
+				
+				if( typeof preview != 'undefined' ) {
+					hidePreview();
+				}
+
+			} );
 
 	}
 
@@ -289,7 +290,6 @@ var Grid = (function() {
 	}
 
 	function showPreview( $item ) {
-
 		var preview = $.data( this, 'preview' ),
 			// item´s offset top
 			position = $item.data( 'offsetTop' );
@@ -507,13 +507,13 @@ var Grid = (function() {
 			var position = this.$item.data( 'offsetTop' ),
 				previewOffsetT = this.$previewEl.offset().top - scrollExtra,
 				scrollVal = this.height + this.$item.data( 'height' ) + marginExpanded <= winsize.height ? position : this.height < winsize.height ? previewOffsetT - ( winsize.height - this.height ) : previewOffsetT;
-			
 			$body.animate( { scrollTop : scrollVal }, settings.speed );
 
 		},
 		setTransition  : function() {
 			this.$previewEl.css( 'transition', 'height ' + settings.speed + 'ms ' + settings.easing );
 			this.$item.css( 'transition', 'height ' + settings.speed + 'ms ' + settings.easing );
+
 		},
 		getEl : function() {
 			return this.$previewEl;
