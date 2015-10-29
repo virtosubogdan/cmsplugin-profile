@@ -24,8 +24,19 @@ class Profile(models.Model):
     thumbnail_image = FilerImageField(
         null=True, blank=True, on_delete=models.SET_NULL,
         default=None, help_text=_('Image must be 1:1 aspect ratio'),
-        verbose_name=_("Thumbnail Image"))
+        verbose_name=_("Thumbnail Image"),
+        related_name="profile_thumbnail"
+    )
+    detail_image = FilerImageField(
+        null=True, blank=True, on_delete=models.SET_NULL,
+        default=None, help_text=_('Image must be 1:1 aspect ratio'),
+        verbose_name=_("Detail Image"),
+        related_name="profile_detail"
+    )
     image_credit = models.CharField(null=True, blank=True, max_length=40)
+
+    class Meta:
+        order_with_respect_to = 'profile_plugin'
 
 
 class ProfileLink(models.Model):

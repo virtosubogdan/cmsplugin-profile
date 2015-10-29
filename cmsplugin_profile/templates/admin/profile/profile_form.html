@@ -2,15 +2,30 @@
 <div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
   <div>
   	<h4 class="header smaller lighter blue block">Profile Entry</h4>
-	  {% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
-    {{ form.as_p }}
+	{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+
+	{% for field in form %}
+	{% if field == form.ORDER %}
+	<div style="display:none" class="order_field">
+		{{ form.ORDER }}
+	</div>
+	{% else %}
+	<p>
+		{{ field.errors }}
+		{{ field.label_tag }} {{ field }}
+		{% if field.help_text %}
+		<p class="help">{{ field.help_text|safe }}</p>
+		{% endif %}
+	</p>
+	{% endif %}
+	{% endfor %}
 
 	  {% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
 				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
-				
+
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
 				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}"></div>
 
@@ -43,7 +58,7 @@
 						</select>
 					</div>
 				</div>
-			
+
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
 				<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
 			</div>
