@@ -3,31 +3,36 @@
 <div class="inline-group" id="{{ inline_admin_formset.formset.prefix }}-group">
 {{ inline_admin_formset.formset.management_form }}
 {{ inline_admin_formset.formset.non_form_errors }}
-	<ul id='{{ inline_admin_formset.formset.prefix }}-group-grid'>
+	<div id='{{ inline_admin_formset.formset.prefix }}-group-grid' class="grid-list">
 
 		{% for inline_admin_form in inline_admin_formset %}
 		{% with form=inline_admin_form.form %}
 		{% include "admin/profile/profile_form.html" %}
 		{% endwith %}
 		{% endfor %}
-<a class="add-row " id="add_new_profile" href="javascript:void(0)">
-<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
-<span class="add-text" unselectable="on">Add new profile</span>
-</a>
-</ul>
+		<div class="add-new-profile-btn">
+			<a class="add-row" id="add_new_profile" href="javascript:void(0)">
+				<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
+				<span class="add-text" unselectable="on">Add new profile</span>
+			</a>
+		</div>
+		<div class="new-profile-form"></div>
+	</div>
 </div>
 
 <script type="text/javascript">
 (function($) {
 	$(document).ready(function() {
 		$("#add_new_profile").click(function(e) {
-			children = $('#profile_set-group-grid li').children();
+			var self = this;
+			children = $('#profile_set-group-grid > div:not(.add-new-profile-btn, .new-profile-form, .empty-form)').children();
 			jQuery.ajax({
-				url: '/cmsplugin_profile/new_profile/'+(children.length - 1)+'/',
+				url: '/cmsplugin_profile/new_profile/'+(children.length)+'/',
 				success: function (response) {
-					$('#profile_set-group-grid').append(response);
+					$('#profile_set-group-grid .new-profile-form').addClass('visible').append(response);
 					total = $('#id_profile_set-TOTAL_FORMS')[0];
 					total.value = parseInt(total.value) + 1;
+					$('<div class="overlay"></div>').insertBefore(self.closest('#profile_set-group-grid'));
 				},
 				error: function (response) {
 				}

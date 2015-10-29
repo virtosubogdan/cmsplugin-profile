@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
+from django.forms.widgets import Media as WidgetsMedia
+from django.contrib.admin.templatetags.admin_static import static
+
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
@@ -32,6 +35,21 @@ class ProfileGridPlugin(CMSPluginBase):
         context['profilegrid'] = instance
         context['profiles'] = instance.profile_set.all()
         return context
+
+    @property
+    def media(self):
+
+        media_obj = super(ProfileGridPlugin, self).media
+        
+        media_obj.add_css({
+            'all': (
+                static('admin/css/profile_admin.css'), )
+        })
+        media_obj.add_js((
+            static('admin/js/profile_admin.js'), )
+        )
+       
+        return media_obj
 
 plugin_pool.register_plugin(ProfileGridPlugin)
 
