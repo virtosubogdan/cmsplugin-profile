@@ -46,6 +46,7 @@ class ProfileGridPlugin(CMSPluginBase):
                 static('admin/css/profile_admin.css'), )
         })
         media_obj.add_js((
+            static('admin/js/lib/jquery-ui.min.js'), 
             static('admin/js/profile_admin.js'), )
         )
        

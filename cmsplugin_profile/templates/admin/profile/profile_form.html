@@ -7,6 +7,7 @@
 
 	  {% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
+  			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
 				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
 				
@@ -27,8 +28,9 @@
 		{% endfor %}
 	  {% for empty_link_id in form.empty_links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links" style="display:none">
+				<h4 class="blue block no-margin-bottom lighter">Link {{ empty_link_id }}</h4><hr>
 				<div class="form-row">
-					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} text:</label></div>
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} Text:</label></div>
 					<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-text" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-text" type="text"></div>
 				</div>
 				<div class="form-row profile-add-link-url">
@@ -42,7 +44,7 @@
 					</div>
 				</div>
 			
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete link {{ index }} :</label></div>
+				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
 				<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
 			</div>
 		{% endfor %}
