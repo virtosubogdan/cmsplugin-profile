@@ -6,9 +6,7 @@
 	<div id='{{ inline_admin_formset.formset.prefix }}-group-grid' class="grid-list">
 
 		{% for inline_admin_form in inline_admin_formset %}
-		{% with form=inline_admin_form.form %}
-		{% include "admin/profile/profile_form.html" %}
-		{% endwith %}
+		{% include "admin/profile/profile_form.html" with form=inline_admin_form.form %}
 		{% endfor %}
 		<div class="add-new-profile-btn">
 			<a class="add-row" id="add_new_profile" href="javascript:void(0)">

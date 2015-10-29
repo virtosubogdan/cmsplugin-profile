@@ -67,6 +67,10 @@ def _add_links_to_profile(profile, links_data, commit=True):
 
 class ProfileFormSet(forms.models.BaseInlineFormSet):
 
+    def __init__(self, *args, **kwargs):
+        self.can_order = True
+        super(ProfileFormSet, self).__init__(*args, **kwargs)
+
     def save(self, commit=True):
         result = super(ProfileFormSet, self).save(commit)
 
@@ -75,6 +79,10 @@ class ProfileFormSet(forms.models.BaseInlineFormSet):
             if not profile or (profile not in self.queryset and profile not in result):
                 continue
             _add_links_to_profile(profile, profile_data.get("links", []), commit=commit)
+
+        ordered_pks = [f.instance.pk for f in self.ordered_forms]
+        if self.instance.get_profile_order() != ordered_pks:
+            self.instance.set_profile_order(ordered_pks)
 
         return result
 
