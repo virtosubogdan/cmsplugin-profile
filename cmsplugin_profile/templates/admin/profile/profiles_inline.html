@@ -71,6 +71,20 @@
 				"call_to_action_url": $(prefix + "call_to_action_url")[0].value || "",
 				"additional_links_label": $(prefix + "additional_links_label")[0].value || "",
 				"image_credit": $(prefix + "image_credit")[0].value || "",
+				"thumbnail_image": $(prefix + "thumbnail_image")[0].value || "",
+				"detail_image": $(prefix + "detail_image")[0].value || "",
+			}
+			link_index = 1;
+			link_prefix = "#" + profile_prefix + "-links_set-";
+			while(link_text=$(link_prefix + link_index + "-text")[0]) {
+				link_url=$(link_prefix + link_index + "-url")[0];
+				link_target=$(link_prefix + link_index + "-open_action")[0];
+				link_delete=$(link_prefix + link_index + "-delete")[0];
+				data["link-" + link_index + "-text"] = link_text.value;
+				data["link-" + link_index + "-url"] = link_url.value;
+				data["link-" + link_index + "-target"] = link_target.value;
+				data["link-" + link_index + "-delete"] = link_delete.value;
+				link_index ++;
 			}
 			jQuery.ajax({
 				type: "POST",

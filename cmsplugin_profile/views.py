@@ -6,8 +6,11 @@ from django.views.decorators.http import require_GET, require_POST
 from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 
+from filer.models import Image
+
 from .forms import ProfileForm
-from .models import ProfileGrid, Profile
+from .models import ProfileGrid, Profile, ProfileLink
+from .settings import MAX_PROFILE_LINKS
 
 
 @require_GET
@@ -57,6 +60,18 @@ def new_profile(request, profile_nr):
 class ValidationException(Exception):
     pass
 
+def _clean_links(data):
+    links = []
+    for index in range(1, MAX_PROFILE_LINKS):
+        text = data.get("link-{}-text".format(index), None)
+        url = data.get("link-{}-url".format(index), None)
+        target = data.get("link-{}-target".format(index), None)
+        delete = data.get("link-{}-delete".format(index), None)
+        if delete:
+            pass
+        if text and url:
+            links.append(ProfileLink(text=text, url=url, target=target))
+    return links
 
 def _clean_profile_data(data):
     if "id" not in data or not data["id"]:
@@ -80,7 +95,21 @@ def _clean_profile_data(data):
         "call_to_action_url": _get_value_or_exception("call_to_action_url", True),
         "additional_links_label": _get_value_or_exception("additional_links_label", True),
         "image_credit": _get_value_or_exception("image_credit", True),
+        "links": _clean_links(data),
     }
+
+    try:
+        img_id = int(data["thumbnail_image"])
+        cleaned_data["thumbnail_image"] = Image.objects.get(id=img_id)
+    except Exception as ex:
+        print ex
+        cleaned_data["thumbnail_image"] = None
+
+    try:
+        img_id = int(data["detail_image"])
+        cleaned_data["detail_image"] = Image.objects.get(id=img_id)
+    except:
+        cleaned_data["detail_image"] = None
 
     return profile_id, cleaned_data
 
@@ -107,7 +136,14 @@ def save_profile(request, profilegrid_id):
     profile.call_to_action_url = cleaned_data['call_to_action_url']
     profile.additional_links_label = cleaned_data['additional_links_label']
     profile.image_credit = cleaned_data['image_credit']
+    profile.thumbnail_image = cleaned_data['thumbnail_image']
+    profile.detail_image = cleaned_data['detail_image']
     profile.save()
+
+    profile.profilelink_set.all().delete()
+    for link in cleaned_data['links']:
+        link.profile = profile
+        link.save()
 
     return JsonResponse({
         "status": "ok",
