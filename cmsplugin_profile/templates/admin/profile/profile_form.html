@@ -9,7 +9,9 @@
 	<div style="display:none" class="order_field">
 		{{ form.ORDER }}
 	</div>
-	{% elif field != form.profile_plugin %}
+	{% elif field == form.profile_plugin %}
+	{{ field }}
+	{% else %}
 	<div class="form-row">
 		{{ field.errors }}
 		<div class="col-sm-2 control-label text-left">{{ field.label_tag }}</div>
