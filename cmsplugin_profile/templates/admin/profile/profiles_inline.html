@@ -24,10 +24,10 @@
 	$(document).ready(function() {
 		$("#add_new_profile").click(function(e) {
 			var self = this;
-			children = $('#profile_set-group-grid > div:not(.add-new-profile-btn, .new-profile-form, .empty-form)').children();
+			new_form_index = $('.inline-related').length -1;
 			profile_grid_id = $("#id_profile_set-__prefix__-profile_plugin").attr('value');
-			url = '/cmsplugin_profile/new_profile/'+(children.length)+'/';
-			if(profile_grid_id !== undefined)
+			url = '/cmsplugin_profile/new_profile/' + new_form_index + '/';
+			if (profile_grid_id !== undefined)
 				url += "?profilegrid_id=" + profile_grid_id;
 			jQuery.ajax({
 				url: url,
@@ -95,8 +95,18 @@
 					if(response["status"] !== "ok"){
 						return;
 					}
-					id_input = '<input id="id_' + profile_prefix + '-id" name="' + profile_prefix + '-id" type="hidden" value="' + response["id"] + '">';
-					$(id_input).insertBefore($(prefix + "title"));
+					if (id_input === undefined) {
+						id_input = '<input id="id_' + profile_prefix + '-id" name="' + profile_prefix + '-id" type="hidden" value="' + response["id"] + '">';
+						$(id_input).insertBefore($(prefix + "title"));
+						profile_new = $(".new-profile-form");
+						$(".new-profile-form .inline-related").attr("id", profile_prefix);
+						$(".new-profile-form .inline-related").attr("class", "ui-widget inline-related ui-sortable-handle");
+						profile_html = profile_new.html();
+						profile_new.html("");
+						$(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
+					}
+					$('.new-profile-form').removeClass('visible');
+					$('.overlay').removeClass('visible');
 				},
 			});
 		});
