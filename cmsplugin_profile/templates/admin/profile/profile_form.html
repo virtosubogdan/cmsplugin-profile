@@ -10,13 +10,14 @@
 		{{ form.ORDER }}
 	</div>
 	{% elif field != form.profile_plugin %}
-	<p>
+	<div class="form-row">
 		{{ field.errors }}
-		{{ field.label_tag }} {{ field }}
+		<div class="col-sm-2 control-label text-left">{{ field.label_tag }}</div>
+		<div class="col-sm-9 no-padding">{{ field }}</div>
 		{% if field.help_text %}
-		<p class="help">{{ field.help_text|safe }}</p>
+			<p class="helptext">{{ field.help_text|safe }}</p>
 		{% endif %}
-	</p>
+	</div>
 	{% endif %}
 	{% endfor %}
 	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
@@ -25,18 +26,19 @@
 	  {% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
-				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
-				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}"></div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-open_action">Link {{ index }} target:</label></div>
-				<div class="col-sm-9 no-padding">
-					<select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
-						<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
-						<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
-					</select>
+  			<div class="form-row">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
+					<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
+				</div>
+				<div class="form-row profile-add-link-url">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
+					<div class="col-sm-9 no-padding">
+						<input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}">
+						<select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
+							<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
+							<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
+						</select>
+					</div>
 				</div>
 
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-delete">Delete link {{ index }} :</label></div>
@@ -60,9 +62,10 @@
 						</select>
 					</div>
 				</div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
-				<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
+				<div class="form-row">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
+					<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
+				</div>
 			</div>
 		{% endfor %}
 		{% if form.empty_links %}
