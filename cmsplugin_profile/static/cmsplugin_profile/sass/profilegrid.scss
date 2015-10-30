@@ -124,10 +124,10 @@ $grid: ".og-grid";
 			}
 		}
 
-		.og-fullimg,
+		.og-fullimg-wrapper,
 		.og-details,
 		.og-bottom-details {
-			width: 50%;
+			width: 48%;
 			float: left;
 			height: 100%;
 			overflow: hidden;
@@ -138,13 +138,15 @@ $grid: ".og-grid";
 			height: auto;
 		}
 
-		.og-fullimg {
+		.og-fullimg-wrapper {
 			text-align: center;
+			height: auto;
+			margin-right: 3%;
 		
 		  img {
 				display: inline-block;
 				max-height: 100%;
-				max-width: 90%;
+				max-width: 100%;
 			}
 		}
 
@@ -247,7 +249,7 @@ $grid: ".og-grid";
 			.og-bottom-details {
 				width: 100%;
 			}
-			.og-fullimg {
+			.og-fullimg-wrapper {
 				height: auto;
 				display: block;
 			}
@@ -257,8 +259,9 @@ $grid: ".og-grid";
 			}
 		}
 		@media (max-width: 767px) {
-			.og-fullimg, .og-details, .og-bottom-details, .og-bottom-details a {
+			.og-fullimg-wrapper, .og-details, .og-bottom-details, .og-bottom-details a {
 				width: 100%;
+				margin-right: 0
 			}
 			.og-details {
 				margin-top: 20px;
@@ -407,12 +410,12 @@ $grid: ".og-grid";
 						margin-right: 0 !important;
 					}
 				}
-				.og-fullimg {
+				.og-fullimg-wrapper {
 					width: 45%;
 					height: auto;
 				}
 				.og-details {
-					width: 55%;
+					width: 52%;
 				}
 				.og-bottom-details {
 					width: 100%;
@@ -513,7 +516,7 @@ $grid: ".og-grid";
 				.og-bottom-details {
 					width: 100%;
 				}
-				.og-fullimg {
+				.og-fullimg-wrapper {
 					height: auto;
 				}
 				.og-bottom-details a {
