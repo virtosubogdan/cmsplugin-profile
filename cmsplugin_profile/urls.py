@@ -6,4 +6,6 @@ urlpatterns = patterns(
         'view_profiles', name='view_profiles'),
     url(r'^cmsplugin_profile/new_profile/(?P<profile_nr>\d+)/$',
         'new_profile', name='new_profile'),
+    url(r'^cmsplugin_profile/save_profile/(?P<profilegrid_id>\d+)/$',
+        'save_profile', name='save_profile'),
 )

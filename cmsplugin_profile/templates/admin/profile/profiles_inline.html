@@ -24,8 +24,12 @@
 		$("#add_new_profile").click(function(e) {
 			var self = this;
 			children = $('#profile_set-group-grid > div:not(.add-new-profile-btn, .new-profile-form, .empty-form)').children();
+			profile_grid_id = $("#id_profile_set-__prefix__-profile_plugin").attr('value');
+			url = '/cmsplugin_profile/new_profile/'+(children.length)+'/';
+			if(profile_grid_id !== undefined)
+				url += "?profilegrid_id=" + profile_grid_id;
 			jQuery.ajax({
-				url: '/cmsplugin_profile/new_profile/'+(children.length)+'/',
+				url: url,
 				success: function (response) {
 					$('#profile_set-group-grid .new-profile-form').addClass('visible').append(response);
 					total = $('#id_profile_set-TOTAL_FORMS')[0];
@@ -45,6 +49,41 @@
 				next_link.style.display="block";
 				link.attributes["data-current"].value=current+1;
 			}
+		});
+		$(document).on('click', '.save-profile', function(e) {
+			profile_grid_id = $("#id_profile_set-__prefix__-profile_plugin").attr('value');
+			if (profile_grid_id===undefined)
+				return;
+			save_btn = e.currentTarget;
+			profile_prefix = save_btn.attributes["data-profile-id"].value;
+			prefix = "#id_" + profile_prefix + "-";
+			id_input = $(prefix + "id")[0];
+			if (id_input !== undefined) {
+				id = id_input.value
+			} else {
+				id = ""
+			}
+			data = {
+				"id": id,
+				"title": $(prefix + "title")[0].value || "",
+				"description": $(prefix + "description")[0].value || "",
+				"call_to_action_text": $(prefix + "call_to_action_text")[0].value || "",
+				"call_to_action_url": $(prefix + "call_to_action_url")[0].value || "",
+				"additional_links_label": $(prefix + "additional_links_label")[0].value || "",
+				"image_credit": $(prefix + "image_credit")[0].value || "",
+			}
+			jQuery.ajax({
+				type: "POST",
+				url: '/cmsplugin_profile/save_profile/' + profile_grid_id + "/",
+				data: data,
+				success: function (response) {
+					if(response["status"] !== "ok"){
+						return;
+					}
+					id_input = '<input id="id_' + profile_prefix + '-id" name="' + profile_prefix + '-id" type="hidden" value="' + response["id"] + '">';
+					$(id_input).insertBefore($(prefix + "title"));
+				},
+			});
 		});
 
 	})

@@ -2,12 +2,12 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms import HiddenInput
 from django.shortcuts import get_object_or_404, render_to_response
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 
 from .forms import ProfileForm
-from .models import ProfileGrid
+from .models import ProfileGrid, Profile
 
 
 @require_GET
@@ -52,3 +52,65 @@ def new_profile(request, profile_nr):
         {'form': form},
         RequestContext(request)
     )
+
+
+class ValidationException(Exception):
+    pass
+
+
+def _clean_profile_data(data):
+    if "id" not in data or not data["id"]:
+        profile_id = None
+    else:
+        try:
+            profile_id = int(data["id"])
+        except ValueError:
+            raise ValidationException("Invalid value id:{} for profile id!".format(data["id"]))
+
+    def _get_value_or_exception(val_name, allow_none=False):
+        value = data.get(val_name, None)
+        if not allow_none and not value:
+            raise ValidationException("Missing {} attribute".format(val_name))
+        return value
+
+    cleaned_data = {
+        "title": _get_value_or_exception("title"),
+        "description": _get_value_or_exception("description"),
+        "call_to_action_text": _get_value_or_exception("call_to_action_text", True),
+        "call_to_action_url": _get_value_or_exception("call_to_action_url", True),
+        "additional_links_label": _get_value_or_exception("additional_links_label", True),
+        "image_credit": _get_value_or_exception("image_credit", True),
+    }
+
+    return profile_id, cleaned_data
+
+
+@require_POST
+def save_profile(request, profilegrid_id):
+    profile_grid = get_object_or_404(ProfileGrid, id=profilegrid_id)
+    try:
+        profile_id, cleaned_data = _clean_profile_data(request.POST)
+    except ValidationException as exc:
+        return JsonResponse({
+            "status": "failed",
+            "error": exc.message,
+        })
+
+    if profile_id:
+        profile = get_object_or_404(Profile, id=profile_id, profile_plugin=profile_grid)
+    else:
+        profile = Profile(profile_plugin=profile_grid)
+
+    profile.title = cleaned_data['title']
+    profile.description = cleaned_data['description']
+    profile.call_to_action_text = cleaned_data['call_to_action_text']
+    profile.call_to_action_url = cleaned_data['call_to_action_url']
+    profile.additional_links_label = cleaned_data['additional_links_label']
+    profile.image_credit = cleaned_data['image_credit']
+    profile.save()
+
+    return JsonResponse({
+        "status": "ok",
+        "error": "",
+        "id": profile.id,
+    })
