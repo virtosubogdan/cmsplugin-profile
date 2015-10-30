@@ -7,34 +7,44 @@
   color: #31708f !important;
   margin: 0 0 16px;
   font-weight: 300 !important;
-  cursor: pointer;
   text-transform: capitalize;
 }
 
-/* line 12, ../sass/profile_admin.scss */
+/* line 11, ../sass/profile_admin.scss */
 .inline-group .header.block {
   margin-bottom: 20px !important;
 }
 
-/* line 15, ../sass/profile_admin.scss */
+/* line 14, ../sass/profile_admin.scss */
 .overlay {
-  display: block;
+  opacity: 0;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  display: none;
   z-index: 9;
   background: rgba(0, 0, 0, 0.5);
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+/* line 30, ../sass/profile_admin.scss */
+.overlay.visible {
+  opacity: 1;
+  display: block;
 }
 
-/* line 26, ../sass/profile_admin.scss */
+/* line 37, ../sass/profile_admin.scss */
 #profile_set-group-grid {
   list-style: none;
   margin: 0;
   overflow: hidden;
 }
-/* line 31, ../sass/profile_admin.scss */
+/* line 42, ../sass/profile_admin.scss */
 #profile_set-group-grid > div {
   width: 150px;
   height: 150px;
@@ -43,98 +53,131 @@
   float: left;
   margin: 20px 20px 10px;
 }
-/* line 39, ../sass/profile_admin.scss */
+/* line 50, ../sass/profile_admin.scss */
 #profile_set-group-grid > div#profile_set-empty + div, #profile_set-group-grid > div:first-child {
   margin-left: 0;
 }
-/* line 42, ../sass/profile_admin.scss */
+/* line 53, ../sass/profile_admin.scss */
 #profile_set-group-grid > div.add-new-profile-btn {
   background: url(../images/icon.png) center no-repeat;
   font-size: 0;
 }
-/* line 46, ../sass/profile_admin.scss */
+/* line 57, ../sass/profile_admin.scss */
 #profile_set-group-grid > div.add-new-profile-btn a {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 53, ../sass/profile_admin.scss */
-#profile_set-group-grid > div.complete > div {
-  height: 0;
-  opacity: 0;
+/* line 64, ../sass/profile_admin.scss */
+#profile_set-group-grid > div.complete:hover .profile-item-actions a {
+  opacity: 1;
+  filter: alpha(opacity=1);
 }
-/* line 59, ../sass/profile_admin.scss */
+/* line 71, ../sass/profile_admin.scss */
+#profile_set-group-grid .profile-item-actions a {
+  filter: alpha(opacity=0);
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  width: 30px;
+  height: 30px;
+  line-height: 28px;
+  display: inline-block;
+  float: left;
+  margin: 0;
+  vertical-align: middle;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  text-align: center;
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -o-transition: all 0.3s ease-in-out;
+  -ms-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+/* line 92, ../sass/profile_admin.scss */
+#profile_set-group-grid .profile-item-actions a.delete-profile-item {
+  float: right;
+}
+/* line 96, ../sass/profile_admin.scss */
+#profile_set-group-grid .profile-item-actions + .visible {
+  margin: 20px 20px 10px;
+}
+/* line 100, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row {
   margin-bottom: 20px;
   overflow: hidden;
 }
-/* line 63, ../sass/profile_admin.scss */
+/* line 104, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row input[type="text"], #profile_set-group-grid .form-row textarea {
   width: 55%;
 }
-/* line 66, ../sass/profile_admin.scss */
+/* line 107, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row br {
   display: none;
 }
-/* line 69, ../sass/profile_admin.scss */
+/* line 110, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row .helptext {
   font-size: 12px;
   font-style: italic;
   margin-bottom: 10px;
   color: #737373;
 }
-/* line 76, ../sass/profile_admin.scss */
+/* line 117, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row.profile-add-link-url input[type="text"] {
   width: 44%;
   margin-right: 1%;
   float: left;
 }
-/* line 81, ../sass/profile_admin.scss */
+/* line 122, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row.profile-add-link-url select {
   width: 10%;
   height: 34px;
 }
 
-/* line 88, ../sass/profile_admin.scss */
-#profile_set-group-grid .new-profile-form {
-  height: 0;
-  width: 0;
+/* line 130, ../sass/profile_admin.scss */
+#profile_set-group-grid .new-profile-form, #profile_set-group-grid .complete > div:not(.profile-item-actions) {
   border: none;
-  top: -9999px;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-}
-/* line 99, ../sass/profile_admin.scss */
-#profile_set-group-grid .new-profile-form.visible {
-  width: auto;
-  height: auto;
-  position: absolute;
-  z-index: 10;
-  top: 0;
   left: 0;
   right: 0;
+  width: auto;
+  height: auto;
+  top: -9999px;
+  position: absolute;
+  -webkit-transition: all 0.5s ease-in;
+  -moz-transition: all 0.5s ease-in;
+  -o-transition: all 0.5s ease-in;
+  -ms-transition: all 0.5s ease-in;
+  transition: all 0.5s ease-in;
+}
+/* line 144, ../sass/profile_admin.scss */
+#profile_set-group-grid .new-profile-form.visible, #profile_set-group-grid .complete > div:not(.profile-item-actions).visible {
+  z-index: 10;
+  top: 0;
   border: 1px solid #b7bbc0;
   background: white;
   padding-bottom: 30px;
+  -webkit-transition: all 0.7s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.7s ease-out;
+  transition: all 0.7s ease-out;
 }
 
-/* line 112, ../sass/profile_admin.scss */
+/* line 158, ../sass/profile_admin.scss */
 .add-profile-link {
   margin: auto;
 }
 
-/* line 115, ../sass/profile_admin.scss */
+/* line 161, ../sass/profile_admin.scss */
 .profile-add-links {
   overflow: hidden;
 }
-/* line 118, ../sass/profile_admin.scss */
+/* line 164, ../sass/profile_admin.scss */
 .profile-add-links h4 {
   padding-left: 15px;
 }
-/* line 121, ../sass/profile_admin.scss */
+/* line 167, ../sass/profile_admin.scss */
 .profile-add-links hr {
   margin-top: 10px;
 }
