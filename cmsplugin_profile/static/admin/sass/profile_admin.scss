@@ -6,21 +6,32 @@
   color: #31708f !important;
   margin: 0 0 16px;
   font-weight: 300 !important;
-  cursor: pointer;
   text-transform: capitalize;
 }
 .inline-group .header.block {
 	margin-bottom: 20px !important;
 }
 .overlay {
-	display: block;
+	opacity: 0;
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
+	display: none;
 	z-index: 9;
 	background: rgba(0,0,0,0.5);
+	-webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+
+  &.visible {
+  	opacity: 1;
+  	// height: 100%;
+  	display: block;	
+  }
 }
 
 #profile_set-group-grid {
@@ -50,11 +61,41 @@
 			}
 		}
 		&.complete {
-			& > div {
-				height: 0;
-				opacity: 0;
+			&:hover .profile-item-actions a {
+				opacity: 1;
+	  		filter: alpha(opacity=1);
 			}
 		}
+	}
+	.profile-item-actions {
+		a {
+	  	filter: alpha(opacity=0);
+		  opacity: 0;
+		  background-color: rgba(0, 0, 0, 0.4);
+		  width: 30px;
+		  height: 30px;
+		  line-height: 28px;
+		  display: inline-block;
+		  float: left;
+		  margin: 0;
+		  vertical-align: middle;
+		  color: #fff;
+		  font-size: 20px;
+		  cursor: pointer;
+		  text-align: center;
+		  -webkit-transition: all 0.3s ease-in-out;
+		  -moz-transition: all 0.3s ease-in-out;
+		  -o-transition: all 0.3s ease-in-out;
+		  -ms-transition: all 0.3s ease-in-out;
+		  transition: all 0.3s ease-in-out;
+
+		  &.delete-profile-item {
+		  	float: right;
+		  }
+	  }
+	  & + .visible {
+	  	margin: 20px 20px 10px
+	  }
 	}
 	.form-row {
 		margin-bottom: 20px;
@@ -85,28 +126,33 @@
 		}
 	}
 }
-#profile_set-group-grid .new-profile-form {
-	height: 0;
-	width: 0;
-	border: none;
-	top: -9999px;
-	-webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
+#profile_set-group-grid {
+	.new-profile-form, .complete > div:not(.profile-item-actions) {
+		border: none;
+		left: 0;
+		right: 0;
+		width: auto;
+		height: auto;
+		top: -9999px;
+		position: absolute;
+		-webkit-transition: all 0.5s ease-in;
+	  -moz-transition: all 0.5s ease-in;
+	  -o-transition: all 0.5s ease-in;
+	  -ms-transition: all 0.5s ease-in;
+	  transition: all 0.5s ease-in;
 
-	&.visible {
-	 	width: auto;
-	  height: auto;
-	  position: absolute;
-	  z-index: 10;
-	  top: 0;
-	  left: 0;
-	  right: 0;
-		border: 1px solid #b7bbc0;
-	  background: white;
-	  padding-bottom: 30px;
+		&.visible {
+		  z-index: 10;
+		  top: 0;
+			border: 1px solid #b7bbc0;
+		  background: white;
+		  padding-bottom: 30px;
+		  -webkit-transition: all 0.7s ease-out;
+		  -moz-transition: all 0.5s ease-out;
+		  -o-transition: all 0.5s ease-out;
+		  -ms-transition: all 0.7s ease-out;
+		  transition: all 0.7s ease-out;
+		}
 	}
 }
 .add-profile-link {
