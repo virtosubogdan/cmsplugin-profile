@@ -9,7 +9,7 @@
 	<div style="display:none" class="order_field">
 		{{ form.ORDER }}
 	</div>
-	{% else %}
+	{% elif field != form.profile_plugin %}
 	<div class="form-row">
 		{{ field.errors }}
 		<div class="col-sm-2 control-label text-left">{{ field.label_tag }}</div>
@@ -20,6 +20,8 @@
 	</div>
 	{% endif %}
 	{% endfor %}
+	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
+	<a class="close-profile" href="javascript:void(0)">Close</a>
 
 	  {% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
