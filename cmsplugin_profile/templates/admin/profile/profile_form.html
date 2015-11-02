@@ -8,24 +8,25 @@
   	<h4 class="header smaller lighter blue block">Profile Entry</h4>
 	{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
 
-	{% for field in form %}
-	{% if field == form.ORDER %}
+	{{ form.id }}
+	{% include "admin/profile/profile_form_field.html" with field=form.title %}
+	{% include "admin/profile/profile_form_field.html" with field=form.description %}
+	{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_text %}
+	{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_url %}
+	{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
+	<div class="profile-image-panel">
+		{% include "admin/profile/profile_form_field.html" with field=form.thumbnail_image %}
+	</div>
+	<div class="profile-image-panel">
+		{% include "admin/profile/profile_form_field.html" with field=form.detail_image %}
+		{% include "admin/profile/profile_form_field.html" with field=form.image_credit %}
+	</div>
+
+	{{ form.profile_plugin }}
 	<div style="display:none" class="order_field">
 		{{ form.ORDER }}
 	</div>
-	{% elif field == form.profile_plugin %}
-	{{ field }}
-	{% else %}
-	<div class="form-row">
-		{{ field.errors }}
-		<div class="col-sm-2 control-label text-left">{{ field.label_tag }}</div>
-		<div class="col-sm-9 no-padding">{{ field }}</div>
-		{% if field.help_text %}
-			<p class="helptext">{{ field.help_text|safe }}</p>
-		{% endif %}
-	</div>
-	{% endif %}
-	{% endfor %}
+
 	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
 	{% if instance.id %}
 	<a class="revert-profile-changes" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
