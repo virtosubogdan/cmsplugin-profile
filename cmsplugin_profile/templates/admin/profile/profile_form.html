@@ -16,6 +16,9 @@
 	{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
 	<div class="profile-image-panel">
 		{% include "admin/profile/profile_form_field.html" with field=form.thumbnail_image %}
+		{% if instance %}
+			<img src="{{ instance.thumbnail_image.url }}" width='200'>
+		{% endif %}
 	</div>
 	<div class="profile-image-panel">
 		{% include "admin/profile/profile_form_field.html" with field=form.detail_image %}
@@ -26,13 +29,13 @@
 	<div style="display:none" class="order_field">
 		{{ form.ORDER }}
 	</div>
-
-	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
-	{% if instance.id %}
-	<a class="revert-profile-changes" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
-	{% endif %}
-	<a class="close-profile" href="javascript:void(0)">Close</a>
-
+	<div class="plugin-submit-row form-actions text-right no-margin-bottom no-background">
+		{% if instance.id %}
+			<a class="revert-profile-changes default btn btn-default" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
+		{% endif %}
+		<a class="close-profile default btn btn-default" href="javascript:void(0)">Close</a>
+		<a class="save-profile default btn btn-primary" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
+	</div>
 	  {% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>

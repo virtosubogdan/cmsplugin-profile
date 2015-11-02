@@ -168,3 +168,21 @@
 		margin-top: 10px;
 	}
 }
+.profile-image-panel {
+  padding: 19px;
+  margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+  margin-left: 15px;
+  width: 57%;
+
+  .control-label {
+  	width: auto;
+  	padding-left: 0;
+  }
+}
+.grid-list .plugin-submit-row {
+	padding-right: 20px;
+}
