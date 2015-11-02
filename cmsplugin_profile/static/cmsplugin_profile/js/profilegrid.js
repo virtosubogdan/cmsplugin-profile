@@ -312,8 +312,9 @@ var Grid = (function() {
 			this.$bottomDetails = $( '<div class="og-bottom-details"></div>' ).append( this.$additionalLinksLabel, this.$addLinkA );
 			this.$loading = $( '<div class="og-loading"></div>' );
 			this.$fullimage = $( '<div class="og-fullimg"></div>' ).append( this.$loading );
+			this.$fullimageWrapper = $( '<div class="og-fullimg-wrapper"></div>' ).append(this.$fullimage);
 			this.$closePreview = $( '<span class="og-close"></span>' );
-			this.$previewInner = $( '<div class="og-expander-inner"></div>' ).append( this.$closePreview, this.$fullimage, this.$details, this.$bottomDetails );
+			this.$previewInner = $( '<div class="og-expander-inner"></div>' ).append( this.$closePreview, this.$fullimageWrapper, this.$details, this.$bottomDetails );
 			this.$previewEl = $( '<div class="og-expander"></div>' ).append( this.$previewInner );
 			// append preview element to the item
 			this.$item.append( this.getEl() );
@@ -426,13 +427,19 @@ var Grid = (function() {
 
 		},
 		calcHeight : function() {
+			console.log($('.og-bottom-details').outerHeight(true));
+      if (window.matchMedia('(max-width: 767px)').matches) {
+				var heightPreview = $('.og-fullimg').height() + $('.og-details').outerHeight(true) + $('.og-bottom-details').outerHeight(true) + 100,
+				itemHeight = heightPreview + this.$item.data( 'height' ) + marginExpanded;
+      }
+      else {
+				var heightPreview = winsize.height - this.$item.data( 'height' ) - marginExpanded,
+					itemHeight = winsize.height;
 
-			var heightPreview = winsize.height - this.$item.data( 'height' ) - marginExpanded,
-				itemHeight = winsize.height;
-
-			if( heightPreview < settings.minHeight ) {
-				heightPreview = settings.minHeight;
-				itemHeight = settings.minHeight + this.$item.data( 'height' ) + marginExpanded;
+				if( heightPreview < settings.minHeight ) {
+					heightPreview = settings.minHeight;
+					itemHeight = settings.minHeight + this.$item.data( 'height' ) + marginExpanded;
+				}
 			}
 
 			this.height = heightPreview;
