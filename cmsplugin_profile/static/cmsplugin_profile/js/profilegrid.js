@@ -1,3 +1,45 @@
+
+/*
+* debouncedresize: special jQuery event that happens once after a window resize
+*
+* latest version and complete README available on Github:
+* https://github.com/louisremi/jquery-smartresize/blob/master/jquery.debouncedresize.js
+*
+* Copyright 2011 @louis_remi
+* Licensed under the MIT license.
+*/
+var $event = $.event,
+$special,
+resizeTimeout;
+
+$special = $event.special.debouncedresize = {
+	setup: function() {
+		$( this ).on( "resize", $special.handler );
+	},
+	teardown: function() {
+		$( this ).off( "resize", $special.handler );
+	},
+	handler: function( event, execAsap ) {
+		// Save the context
+		var context = this,
+			args = arguments,
+			dispatch = function() {
+				// set correct event type
+				event.type = "debouncedresize";
+				$event.dispatch.apply( context, args );
+			};
+
+		if ( resizeTimeout ) {
+			clearTimeout( resizeTimeout );
+		}
+
+		execAsap ?
+			dispatch() :
+			resizeTimeout = setTimeout( dispatch, $special.threshold );
+	},
+	threshold: 250
+};
+
 // ======================= imagesLoaded Plugin ===============================
 // https://github.com/desandro/imagesloaded
 
@@ -214,12 +256,14 @@ var Grid = (function() {
 		// on window resize get the window´s size again
 		// reset some values..
 
-			$(window).unbind('resize').bind('resize', function(e) {
+			// $(window).unbind('resize').bind('resize', function(e) {
+			$window.on( 'debouncedresize', function() {
 
 				scrollExtra = 0;
 				previewPos = -1;
 				// save item´s offset
-				saveItemInfo();
+				saveItemInfo(true);
+				//Preview
 				getWinSize();
 				var preview = $.data( this, 'preview' );
 				
@@ -371,7 +415,6 @@ var Grid = (function() {
 			}
 
 			// preload large image and add it to the preview
-			// for smaller screens we don´t display the large image (the media query will hide the fullimage wrapper)
 			if( self.$fullimage.is( ':visible' ) ) {
 				this.$loading.show();
 				$( '<img/>' ).load( function() {
@@ -415,7 +458,7 @@ var Grid = (function() {
 				this.$previewEl.css( 'height', 0 );
 				// the current expanded item (might be different from this.$item)
 				var $expandedItem = $items.eq( this.expandedIdx );
-				$expandedItem.css( 'height', $expandedItem.data( 'height' ) ).on( transEndEventName, onEndFn );
+				$expandedItem.css( 'height', '' ).on( transEndEventName, onEndFn );
 
 				if( !support ) {
 					onEndFn.call();
@@ -427,9 +470,8 @@ var Grid = (function() {
 
 		},
 		calcHeight : function() {
-			console.log($('.og-bottom-details').outerHeight(true));
       if (window.matchMedia('(max-width: 767px)').matches) {
-				var heightPreview = $('.og-fullimg').height() + $('.og-details').outerHeight(true) + $('.og-bottom-details').outerHeight(true) + 100,
+				var heightPreview = $('.og-fullimg').height() + $('.og-details').outerHeight(true) + $('.og-bottom-details').outerHeight(true) + 60,
 				itemHeight = heightPreview + this.$item.data( 'height' ) + marginExpanded;
       }
       else {
