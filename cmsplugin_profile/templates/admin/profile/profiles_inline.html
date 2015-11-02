@@ -52,6 +52,7 @@
 			}
 		});
 		$(document).on('click', '.save-profile', function(e) {
+			save_link = $(this);
 			profile_grid_id = $("#id_profile_set-__prefix__-profile_plugin").attr('value');
 			if (profile_grid_id===undefined)
 				return;
@@ -105,7 +106,7 @@
 						profile_new.html("");
 						$(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
 					}
-					$('.new-profile-form').removeClass('visible');
+					save_link.closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
 					$('.overlay').removeClass('visible');
 				},
 			});

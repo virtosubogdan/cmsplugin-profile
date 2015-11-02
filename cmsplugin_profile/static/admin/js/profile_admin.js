@@ -35,7 +35,7 @@
 	    $(document).on('click', '.grid-list .revert-profile-changes', function(e){
 		e.preventDefault();
 
-		$(this).closest('.visible').removeClass('visible');
+		$(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
 		$(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
 		$.each(previous_inputs, function(key, value) {
