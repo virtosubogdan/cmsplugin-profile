@@ -1,7 +1,7 @@
 {% with instance=form.instance %}
 <div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
   <div class="profile-item-actions">
-  	<a class="edit-profile-item" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
+  	<a class="edit-profile-item" data-profile-id="{{form.prefix}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
   	<a class="delete-profile-item" href="#"><span class="inline-edit ace-icon fa fa-times" unselectable="on"></span></a>
   </div>
   <div>
@@ -27,6 +27,9 @@
 	{% endif %}
 	{% endfor %}
 	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
+	{% if instance.id %}
+	<a class="revert-profile-changes" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
+	{% endif %}
 	<a class="close-profile" href="javascript:void(0)">Close</a>
 
 	  {% for index, link in form.links %}
