@@ -24,6 +24,7 @@ setup(
     platforms=['any'],
     install_requires=[
         "django-cms >= 2.3, <2.3.6",
-        "django-filer >= 0.9pbs, <0.9.1"
+        "django-filer >= 0.9pbs, <0.9.1",
+        "django-cms-blogger >= 0.7.0.pbs, <0.8.0",
     ],
 )

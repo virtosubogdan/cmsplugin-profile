@@ -123,33 +123,54 @@ def _clean_profile_data(data):
 @require_POST
 def save_profile(request, profilegrid_id):
     profile_grid = get_object_or_404(ProfileGrid, id=profilegrid_id)
+    data = dict(request.POST.dict())
+
     try:
-        profile_id, cleaned_data = _clean_profile_data(request.POST)
-    except ValidationException as exc:
+        profile_id = data.get("id", "")
+        profile = get_object_or_404(Profile, id=profile_id) if profile_id else None
+    except ValueError:
         return JsonResponse({
             "status": "failed",
-            "error": exc.message,
+            "error": "Invalid value for profile_id",
         })
 
-    if profile_id:
-        profile = get_object_or_404(Profile, id=profile_id, profile_plugin=profile_grid)
-    else:
-        profile = Profile(profile_plugin=profile_grid)
+    data['profile_plugin'] = profilegrid_id
+    form = ProfileForm(prefix="", data=data, instance=profile)
+    if form.errors:
+        response = JsonResponse({
+            "status": "failed",
+            "error": form.errors,
+        })
+        return response
+    profile = form.save()
 
-    profile.title = cleaned_data['title']
-    profile.description = cleaned_data['description']
-    profile.call_to_action_text = cleaned_data['call_to_action_text']
-    profile.call_to_action_url = cleaned_data['call_to_action_url']
-    profile.additional_links_label = cleaned_data['additional_links_label']
-    profile.image_credit = cleaned_data['image_credit']
-    profile.thumbnail_image = cleaned_data['thumbnail_image']
-    profile.detail_image = cleaned_data['detail_image']
-    profile.save()
+    # try:
+    #     profile_id, cleaned_data = _clean_profile_data(request.POST)
+    # except ValidationException as exc:
+        # return JsonResponse({
+        #     "status": "failed",
+        #     "error": exc.message,
+        # })
 
-    profile.profilelink_set.all().delete()
-    for link in cleaned_data['links']:
-        link.profile = profile
-        link.save()
+    # if profile_id:
+    #     profile = get_object_or_404(Profile, id=profile_id, profile_plugin=profile_grid)
+    # else:
+    #     profile = Profile(profile_plugin=profile_grid)
+
+    # profile.title = cleaned_data['title']
+    # profile.description = cleaned_data['description']
+    # profile.call_to_action_text = cleaned_data['call_to_action_text']
+    # profile.call_to_action_url = cleaned_data['call_to_action_url']
+    # profile.additional_links_label = cleaned_data['additional_links_label']
+    # profile.image_credit = cleaned_data['image_credit']
+    # profile.thumbnail_image = cleaned_data['thumbnail_image']
+    # profile.detail_image = cleaned_data['detail_image']
+    # profile.save()
+
+    # profile.profilelink_set.all().delete()
+    # for link in cleaned_data['links']:
+    #     link.profile = profile
+    #     link.save()
 
     return JsonResponse({
         "status": "ok",
