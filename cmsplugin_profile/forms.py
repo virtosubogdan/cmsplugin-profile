@@ -17,6 +17,14 @@ class ProfileForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
 
+        img_widgets = [self.fields['thumbnail_image'].widget, self.fields['detail_image'].widget]
+        for img_widget in img_widgets:
+            if hasattr(img_widget, 'widget'):
+                img_widget = img_widget.widget
+            img_widget.custom_preview_width = 100
+            img_widget.search_label = "Search"
+            img_widget.remove_label = "Remove"
+
         if self.instance:
             self.links = [(index+1, link)
                           for index, link in enumerate(self.instance.profilelink_set.all())]
