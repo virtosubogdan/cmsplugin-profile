@@ -19,6 +19,7 @@ class ProfileForm(forms.ModelForm):
 
         img_widgets = [self.fields['thumbnail_image'].widget, self.fields['detail_image'].widget]
         for img_widget in img_widgets:
+            img_widget.can_delete_related = False
             if hasattr(img_widget, 'widget'):
                 img_widget = img_widget.widget
             img_widget.custom_preview_width = 200
