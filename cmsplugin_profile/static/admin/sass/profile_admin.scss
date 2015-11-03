@@ -45,11 +45,8 @@
 		border-radius: 2px;
 		border: 1px solid #b7bbc0;
 		float: left;
-		margin: 20px 20px 10px;
+		margin: 20px 10px 0;
 		
-		&#profile_set-empty + div, &:first-child {
-			margin-left: 0;
-		}
 		&.add-new-profile-btn {
 			background: url(../images/icon.png) center no-repeat;
 			font-size: 0;
@@ -93,8 +90,8 @@
 		  	float: right;
 		  }
 	  }
-	  & + .visible {
-	  	margin: 20px 20px 10px
+	  & + div {
+	  	margin: 20px 10px 0;
 	  }
 	}
 	.form-row {
@@ -133,6 +130,7 @@
 		right: 0;
 		width: auto;
 		height: auto;
+		padding-bottom: 30px;
 		top: -9999px;
 		position: absolute;
 		-webkit-transition: all 0.5s ease-in;
@@ -146,7 +144,6 @@
 		  top: 0;
 			border: 1px solid #b7bbc0;
 		  background: white;
-		  padding-bottom: 30px;
 		  -webkit-transition: all 0.7s ease-out;
 		  -moz-transition: all 0.5s ease-out;
 		  -o-transition: all 0.5s ease-out;
