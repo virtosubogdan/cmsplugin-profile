@@ -39,7 +39,30 @@
 			});
 			resizeIframe($('.visible'));
     });
-    
+
+	    $(document).on('click', '.profile-item-actions .delete-profile-item', function(e){
+		e.preventDefault();
+		profile_id = $(this)[0].attributes["data-profile-id"].value;
+		profile_id_prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
+		profile_div = $('#' + profile_id_prefix);
+		previous_inputs = {};
+
+		jQuery.ajax({
+		    type: "POST",
+		    url: '/cmsplugin_profile/delete_profile/' + profile_id + "/",
+		    success: function (response) {
+			if (response['status'] === 'ok') {
+			    profile_div.remove();
+			} else {
+			    alert("Could not delete profile!");
+			}
+		    },
+		    error: function (response) {
+			alert("Could not delete profile!");
+		    }
+		});
+	    });
+
     $(document).on('click', '.grid-list .close-profile', function(e){
 			e.preventDefault();
 
