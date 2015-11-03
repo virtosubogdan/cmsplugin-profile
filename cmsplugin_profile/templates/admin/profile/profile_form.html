@@ -6,37 +6,16 @@
   </div>
   <div>
   	<h4 class="header smaller lighter blue block">Profile Entry</h4>
-	{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
+		{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
 
-	{{ form.id }}
-	{% include "admin/profile/profile_form_field.html" with field=form.title %}
-	{% include "admin/profile/profile_form_field.html" with field=form.description %}
-	{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_text %}
-	{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_url %}
-	{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
-	<div class="profile-image-panel">
-		{% include "admin/profile/profile_form_field.html" with field=form.thumbnail_image %}
-		{% if instance %}
-			<img src="{{ instance.thumbnail_image.url }}" width='200'>
-		{% endif %}
-	</div>
-	<div class="profile-image-panel">
-		{% include "admin/profile/profile_form_field.html" with field=form.detail_image %}
-		{% include "admin/profile/profile_form_field.html" with field=form.image_credit %}
-	</div>
+		{{ form.id }}
+		{% include "admin/profile/profile_form_field.html" with field=form.title %}
+		{% include "admin/profile/profile_form_field.html" with field=form.description %}
+		{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_text %}
+		{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_url %}
+		{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
 
-	{{ form.profile_plugin }}
-	<div style="display:none" class="order_field">
-		{{ form.ORDER }}
-	</div>
-	<div class="plugin-submit-row form-actions text-right no-margin-bottom no-background">
-		{% if instance.id %}
-			<a class="revert-profile-changes default btn btn-default" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
-		{% endif %}
-		<a class="close-profile default btn btn-default" href="javascript:void(0)">Close</a>
-		<a class="save-profile default btn btn-primary" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
-	</div>
-	  {% for index, link in form.links %}
+		{% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
   			<div class="form-row">
@@ -82,7 +61,7 @@
 			</div>
 		{% endfor %}
 		{% if form.empty_links %}
-			<p class="col-sm-9 col-sm-offset-2 no-padding">
+			<p class="col-sm-9 col-sm-offset-2 no-padding form-row">
 				<a class="add-row add-profile-link btn btn-primary" href="javascript:void(0)"
 					data-prefix="{{ form.links_prefix }}" data-current="{{ form.links_len }}">
 					<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
@@ -90,6 +69,27 @@
 				</a>
 			</p>
 		{% endif %}
+
+		<div class="profile-image-panel form-row">
+			{% include "admin/profile/profile_form_imagefield.html" with field=form.thumbnail_image %}
+		</div>
+		<div class="profile-image-panel form-row">
+			{% include "admin/profile/profile_form_imagefield.html" with field=form.detail_image %}
+			{% include "admin/profile/profile_form_field.html" with field=form.image_credit %}
+		</div>
+
+		{{ form.profile_plugin }}
+		<div style="display:none" class="order_field">
+			{{ form.ORDER }}
+		</div>
+		<div class="plugin-submit-row form-actions text-right no-margin-bottom no-background">
+			{% if instance.id %}
+				<a class="revert-profile-changes default btn btn-default" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
+			{% endif %}
+			<a class="close-profile default btn btn-default" href="javascript:void(0)">Close</a>
+			<a class="save-profile default btn btn-primary" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
+		</div>
+		
     {{ fk_field.field }}
 	</div>
 </div>

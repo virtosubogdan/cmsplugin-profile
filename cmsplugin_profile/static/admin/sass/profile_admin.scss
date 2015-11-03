@@ -169,7 +169,7 @@
 	}
 }
 .profile-image-panel {
-  padding: 19px;
+  padding: 19px 0;
   margin-bottom: 20px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
@@ -181,6 +181,41 @@
   .control-label {
   	width: auto;
   	padding-left: 0;
+  }
+  .form-row {
+  	margin-bottom: 0 !important;
+  	padding: 0 19px;
+
+  	& + .form-row {
+  		padding-top: 15px;
+  		border-top: 1px solid #e3e3e3;
+  		margin-top: 20px;
+  	}
+  }
+  .related-widget-wrapper {
+  	display: block;
+
+  	& > a:first-child, & > .no-image-preview {
+  		float: right;
+  		margin-top: -54px;
+  	}
+  }
+  .no-padding > .no-image-preview {
+  	float: right;
+  	margin-top: -54px;
+  }
+  img.quiet:after {
+  	content:"test";
+  }
+  .no-image-preview {
+  	border: 1px solid #ddd;
+  	background: white;
+  	width: 200px;
+  	height: 200px;
+
+  	img {
+  		visibility: hidden;
+  	}
   }
 }
 .grid-list .plugin-submit-row {

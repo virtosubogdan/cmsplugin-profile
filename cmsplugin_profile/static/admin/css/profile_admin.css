@@ -184,7 +184,7 @@
 
 /* line 171, ../sass/profile_admin.scss */
 .profile-image-panel {
-  padding: 19px;
+  padding: 19px 0;
   margin-bottom: 20px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
@@ -198,8 +198,48 @@
   width: auto;
   padding-left: 0;
 }
+/* line 185, ../sass/profile_admin.scss */
+.profile-image-panel .form-row {
+  margin-bottom: 0 !important;
+  padding: 0 19px;
+}
+/* line 189, ../sass/profile_admin.scss */
+.profile-image-panel .form-row + .form-row {
+  padding-top: 15px;
+  border-top: 1px solid #e3e3e3;
+  margin-top: 20px;
+}
+/* line 195, ../sass/profile_admin.scss */
+.profile-image-panel .related-widget-wrapper {
+  display: block;
+}
+/* line 198, ../sass/profile_admin.scss */
+.profile-image-panel .related-widget-wrapper > a:first-child, .profile-image-panel .related-widget-wrapper > .no-image-preview {
+  float: right;
+  margin-top: -54px;
+}
+/* line 203, ../sass/profile_admin.scss */
+.profile-image-panel .no-padding > .no-image-preview {
+  float: right;
+  margin-top: -54px;
+}
+/* line 207, ../sass/profile_admin.scss */
+.profile-image-panel img.quiet:after {
+  content: "test";
+}
+/* line 210, ../sass/profile_admin.scss */
+.profile-image-panel .no-image-preview {
+  border: 1px solid #ddd;
+  background: white;
+  width: 200px;
+  height: 200px;
+}
+/* line 216, ../sass/profile_admin.scss */
+.profile-image-panel .no-image-preview img {
+  visibility: hidden;
+}
 
-/* line 186, ../sass/profile_admin.scss */
+/* line 221, ../sass/profile_admin.scss */
 .grid-list .plugin-submit-row {
   padding-right: 20px;
 }

@@ -1,0 +1,11 @@
+<div class="form-row">
+	{{ field.errors }}
+	<div class="control-label text-left">
+		{{ field.label_tag }}
+		{% if field.help_text %}
+			<div class="help-block no-margin-top">{{ field.help_text|safe }}</div>
+		{% endif %}
+	</div>
+	<div class="no-padding">{{ field }}</div>
+
+</div>

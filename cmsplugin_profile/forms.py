@@ -21,8 +21,8 @@ class ProfileForm(forms.ModelForm):
         for img_widget in img_widgets:
             if hasattr(img_widget, 'widget'):
                 img_widget = img_widget.widget
-            img_widget.custom_preview_width = 100
-            img_widget.search_label = "Search"
+            img_widget.custom_preview_width = 200
+            img_widget.search_label = "Upload from Filer"
             img_widget.remove_label = "Remove"
 
         if self.instance:
