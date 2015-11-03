@@ -51,29 +51,25 @@
   border-radius: 2px;
   border: 1px solid #b7bbc0;
   float: left;
-  margin: 20px 20px 10px;
+  margin: 20px 10px 0;
 }
 /* line 50, ../sass/profile_admin.scss */
-#profile_set-group-grid > div#profile_set-empty + div, #profile_set-group-grid > div:first-child {
-  margin-left: 0;
-}
-/* line 53, ../sass/profile_admin.scss */
 #profile_set-group-grid > div.add-new-profile-btn {
   background: url(../images/icon.png) center no-repeat;
   font-size: 0;
 }
-/* line 57, ../sass/profile_admin.scss */
+/* line 54, ../sass/profile_admin.scss */
 #profile_set-group-grid > div.add-new-profile-btn a {
   display: block;
   width: 100%;
   height: 100%;
 }
-/* line 64, ../sass/profile_admin.scss */
+/* line 61, ../sass/profile_admin.scss */
 #profile_set-group-grid > div.complete:hover .profile-item-actions a {
   opacity: 1;
   filter: alpha(opacity=1);
 }
-/* line 71, ../sass/profile_admin.scss */
+/* line 68, ../sass/profile_admin.scss */
 #profile_set-group-grid .profile-item-actions a {
   filter: alpha(opacity=0);
   opacity: 0;
@@ -95,53 +91,54 @@
   -ms-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 }
-/* line 92, ../sass/profile_admin.scss */
+/* line 89, ../sass/profile_admin.scss */
 #profile_set-group-grid .profile-item-actions a.delete-profile-item {
   float: right;
 }
-/* line 96, ../sass/profile_admin.scss */
-#profile_set-group-grid .profile-item-actions + .visible {
-  margin: 20px 20px 10px;
+/* line 93, ../sass/profile_admin.scss */
+#profile_set-group-grid .profile-item-actions + div {
+  margin: 20px 10px 0;
 }
-/* line 100, ../sass/profile_admin.scss */
+/* line 97, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row {
   margin-bottom: 20px;
   overflow: hidden;
 }
-/* line 104, ../sass/profile_admin.scss */
+/* line 101, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row input[type="text"], #profile_set-group-grid .form-row textarea {
   width: 55%;
 }
-/* line 107, ../sass/profile_admin.scss */
+/* line 104, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row br {
   display: none;
 }
-/* line 110, ../sass/profile_admin.scss */
+/* line 107, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row .helptext {
   font-size: 12px;
   font-style: italic;
   margin-bottom: 10px;
   color: #737373;
 }
-/* line 117, ../sass/profile_admin.scss */
+/* line 114, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row.profile-add-link-url input[type="text"] {
   width: 44%;
   margin-right: 1%;
   float: left;
 }
-/* line 122, ../sass/profile_admin.scss */
+/* line 119, ../sass/profile_admin.scss */
 #profile_set-group-grid .form-row.profile-add-link-url select {
   width: 10%;
   height: 34px;
 }
 
-/* line 130, ../sass/profile_admin.scss */
+/* line 127, ../sass/profile_admin.scss */
 #profile_set-group-grid .new-profile-form, #profile_set-group-grid .complete > div:not(.profile-item-actions) {
   border: none;
   left: 0;
   right: 0;
   width: auto;
   height: auto;
+  padding-bottom: 30px;
   top: -9999px;
   position: absolute;
   -webkit-transition: all 0.5s ease-in;
@@ -150,13 +147,12 @@
   -ms-transition: all 0.5s ease-in;
   transition: all 0.5s ease-in;
 }
-/* line 144, ../sass/profile_admin.scss */
+/* line 142, ../sass/profile_admin.scss */
 #profile_set-group-grid .new-profile-form.visible, #profile_set-group-grid .complete > div:not(.profile-item-actions).visible {
   z-index: 10;
   top: 0;
   border: 1px solid #b7bbc0;
   background: white;
-  padding-bottom: 30px;
   -webkit-transition: all 0.7s ease-out;
   -moz-transition: all 0.5s ease-out;
   -o-transition: all 0.5s ease-out;
@@ -164,25 +160,25 @@
   transition: all 0.7s ease-out;
 }
 
-/* line 158, ../sass/profile_admin.scss */
+/* line 155, ../sass/profile_admin.scss */
 .add-profile-link {
   margin: auto;
 }
 
-/* line 161, ../sass/profile_admin.scss */
+/* line 158, ../sass/profile_admin.scss */
 .profile-add-links {
   overflow: hidden;
 }
-/* line 164, ../sass/profile_admin.scss */
+/* line 161, ../sass/profile_admin.scss */
 .profile-add-links h4 {
   padding-left: 15px;
 }
-/* line 167, ../sass/profile_admin.scss */
+/* line 164, ../sass/profile_admin.scss */
 .profile-add-links hr {
   margin-top: 10px;
 }
 
-/* line 171, ../sass/profile_admin.scss */
+/* line 168, ../sass/profile_admin.scss */
 .profile-image-panel {
   padding: 19px 0;
   margin-bottom: 20px;
@@ -193,53 +189,53 @@
   margin-left: 15px;
   width: 57%;
 }
-/* line 181, ../sass/profile_admin.scss */
+/* line 178, ../sass/profile_admin.scss */
 .profile-image-panel .control-label {
   width: auto;
   padding-left: 0;
 }
-/* line 185, ../sass/profile_admin.scss */
+/* line 182, ../sass/profile_admin.scss */
 .profile-image-panel .form-row {
   margin-bottom: 0 !important;
   padding: 0 19px;
 }
-/* line 189, ../sass/profile_admin.scss */
+/* line 186, ../sass/profile_admin.scss */
 .profile-image-panel .form-row + .form-row {
   padding-top: 15px;
   border-top: 1px solid #e3e3e3;
   margin-top: 20px;
 }
-/* line 195, ../sass/profile_admin.scss */
+/* line 192, ../sass/profile_admin.scss */
 .profile-image-panel .related-widget-wrapper {
   display: block;
 }
-/* line 198, ../sass/profile_admin.scss */
+/* line 195, ../sass/profile_admin.scss */
 .profile-image-panel .related-widget-wrapper > a:first-child, .profile-image-panel .related-widget-wrapper > .no-image-preview {
   float: right;
   margin-top: -54px;
 }
-/* line 203, ../sass/profile_admin.scss */
+/* line 200, ../sass/profile_admin.scss */
 .profile-image-panel .no-padding > .no-image-preview {
   float: right;
   margin-top: -54px;
 }
-/* line 207, ../sass/profile_admin.scss */
+/* line 204, ../sass/profile_admin.scss */
 .profile-image-panel img.quiet:after {
   content: "test";
 }
-/* line 210, ../sass/profile_admin.scss */
+/* line 207, ../sass/profile_admin.scss */
 .profile-image-panel .no-image-preview {
   border: 1px solid #ddd;
   background: white;
   width: 200px;
   height: 200px;
 }
-/* line 216, ../sass/profile_admin.scss */
+/* line 213, ../sass/profile_admin.scss */
 .profile-image-panel .no-image-preview img {
   visibility: hidden;
 }
 
-/* line 221, ../sass/profile_admin.scss */
+/* line 218, ../sass/profile_admin.scss */
 .grid-list .plugin-submit-row {
   padding-right: 20px;
 }
