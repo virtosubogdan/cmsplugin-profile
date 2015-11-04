@@ -1,5 +1,21 @@
 (function($) {
     $(document).ready(function() {
+	initial_title = $("#id_title")[0].value;
+	initial_description = $("#id_description")[0].value;
+	initial_show_title = $("#id_show_title_on_thumbnails")[0].checked;
+	profile_changed = false;
+
+	function update_show_unsaved_warning() {
+	    current_title = $("#id_title")[0].value;
+	    current_description = $("#id_description")[0].value;
+	    current_show_title = $("#id_show_title_on_thumbnails")[0].checked;
+
+	    has_unsaved_changes = profile_changed || current_title != initial_title ||
+		current_description != initial_description ||
+		current_show_title != initial_show_title;
+
+	    $("#warning_unsaved")[0].style.display = has_unsaved_changes ? "block" : "none";
+	}
 
 	function resizeIframe(toResizeTo) {
 	    var insideIframe = (window.location != window.parent.location) ? true : false;
@@ -24,6 +40,18 @@
 	}
 
 	previous_inputs = {};
+
+	$(document).on("change", "#id_title", function(e) {
+	    update_show_unsaved_warning();
+	});
+
+	$(document).on("change", "#id_description", function(e) {
+	    update_show_unsaved_warning();
+	});
+
+	$(document).on("change", "#id_show_title_on_thumbnails", function(e) {
+	    update_show_unsaved_warning();
+	});
 
 	$( ".grid-list" ).sortable({
 	    items: "> .inline-related",
@@ -79,7 +107,8 @@
 	    last_inputs = $.extend({}, previous_inputs);
 	    store_input_data(prefix);
 	    if (last_inputs != previous_inputs) {
-		$("#warning_unsaved")[0].style.display = "block";
+		profile_changed = true;
+		update_show_unsaved_warning();
 	    }
 
 	    profile_preview = $("#" + prefix)[0];
