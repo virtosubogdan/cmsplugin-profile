@@ -25,6 +25,11 @@
 		function removeErrorClass(field) {
 			field.find('input[type="text"], textarea').removeClass('error');
 		}
+		function removeAllErrorClasses() {
+			$('.has-error, .error').each(function () {
+				$(this).removeClass('has-error').removeClass('error');
+			});
+		}
 		function validateProfile(form) {
 			var mandatoryFields = form.find('.mandatory');
 			var valid = true;
@@ -45,7 +50,7 @@
 					$(elem).removeClass('has-error');						
 					$(elem).parent('.profile-image-panel').removeClass('has-error');						
 					console.log($(elem).parent());
-					
+
 				} 
 			});
 			return valid;
@@ -121,12 +126,14 @@
 
 		    profile = $(this).closest('.ui-widget.inline-related');
 		    if(profile.attr('id') === "-") {
-			profile.remove();
+					profile.remove();
 		    } else {
-			$.each(previous_inputs, function(key, value) {
-			    $('input[name="' + key + '"]')[0].value = value;
-			});
+					$.each(previous_inputs, function(key, value) {
+					    $('input[name="' + key + '"]')[0].value = value;
+					});
 		    }
+		    removeAllErrorClasses();
+
 		    resizeIframe();
 		});
 
