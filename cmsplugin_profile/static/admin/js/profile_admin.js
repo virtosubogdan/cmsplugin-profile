@@ -116,6 +116,10 @@
 	    if(next_link != undefined) {
 		next_link.style.display="block";
 		link.attributes["data-current"].value=current+1;
+		is_last_link = $("#"+prefix+(current+1)+"container")[0] === undefined;
+		if (is_last_link) {
+		    $(this).closest('p')[0].style.display="none";
+		}
 	    }
 	    resizeIframe($(this).closest('.visible'));
 	});
