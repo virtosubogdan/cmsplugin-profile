@@ -2,7 +2,10 @@
 <div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
   <div class="profile-item-actions">
   	<a class="edit-profile-item" data-profile-id="{{form.prefix}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
-  	<a class="delete-profile-item" href="#"><span class="inline-edit ace-icon fa fa-times" unselectable="on"></span></a>
+  	<a class="delete-profile-item" data-profile-id="{{instance.id}}"
+		data-profile-id-prefix="{{form.prefix}}" href="#">
+		<span class="inline-edit ace-icon fa fa-times" unselectable="on"></span>
+	</a>
   </div>
   <div>
   	<h4 class="header smaller lighter blue block">Profile Entry</h4>
@@ -15,6 +18,7 @@
 		{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_url %}
 		{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
 
+	<div style="display:none">{{ form.DELETE }}</div>
 		{% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
@@ -83,11 +87,11 @@
 			{{ form.ORDER }}
 		</div>
 		<div class="plugin-submit-row form-actions text-right no-margin-bottom no-background">
-			{% if instance.id %}
-				<a class="revert-profile-changes default btn btn-default" href="javascript:void(0)" data-profile-id="{{form.prefix}}">Revert changes</a>
-			{% endif %}
-			<a class="close-profile default btn btn-default" href="javascript:void(0)">Close</a>
-			<a class="save-profile default btn btn-primary" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
+			<a class="close-profile default btn btn-default" href="javascript:void(0)"
+				data-profile-id-prefix="{{form.prefix}}">Close</a>
+			<a class="done-profile default btn btn-primary"
+				data-profile-id-prefix="{{form.prefix}}"
+				href="javascript:void(0)">Done</a>
 		</div>
 		
     {{ fk_field.field }}

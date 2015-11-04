@@ -59,8 +59,13 @@ def new_profile(request, profile_nr):
 
 @require_POST
 def delete_profile(request, profile_id):
-    deleted = Profile.objects.get(id=profile_id)
-    return JsonResponse({"deleted": deleted})
+    try:
+        Profile.objects.get(id=profile_id).delete()
+        status = "ok"
+    except Exception:
+        status = "failed"
+
+    return JsonResponse({"status": status})
 
 
 class ValidationException(Exception):
