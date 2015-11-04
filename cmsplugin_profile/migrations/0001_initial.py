@@ -19,17 +19,20 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=200, null=True, blank=True)),
-                ('description', models.CharField(max_length=395, null=True, blank=True)),
-                ('call_to_action_text', models.CharField(max_length=200, null=True, blank=True)),
+                ('description', models.TextField(max_length=395)),
+                ('call_to_action_text', models.CharField(max_length=30, null=True, blank=True)),
                 ('call_to_action_url', models.CharField(max_length=200, null=True, blank=True)),
-                ('image_credit', models.CharField(max_length=200, null=True, blank=True)),
+                ('additional_links_label', models.CharField(default=b'', max_length=30, null=True, blank=True)),
+                ('image_credit', models.CharField(max_length=40, null=True, blank=True)),
+                ('detail_image', filer.fields.image.FilerImageField(related_name='profile_detail', on_delete=django.db.models.deletion.PROTECT, default=None, verbose_name='Detail Image', to='filer.Image', help_text='Image must be 1:1 aspect ratio')),
             ],
         ),
         migrations.CreateModel(
             name='ProfileGrid',
             fields=[
                 ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
-                ('title', models.CharField(max_length=200, null=True, blank=True)),
+                ('title', models.CharField(max_length=200)),
+                ('description', models.TextField(default=b'', max_length=400, null=True, blank=True)),
                 ('show_title_on_thumbnails', models.BooleanField(default=False)),
             ],
             options={
@@ -41,8 +44,9 @@ class Migration(migrations.Migration):
             name='ProfileLink',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('text', models.CharField(max_length=200, null=True, blank=True)),
+                ('text', models.CharField(max_length=60, null=True, blank=True)),
                 ('url', models.CharField(max_length=200, null=True, blank=True)),
+                ('target', models.CharField(max_length=50, null=True, blank=True)),
                 ('profile', models.ForeignKey(to='cmsplugin_profile.Profile')),
             ],
         ),
@@ -80,6 +84,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='thumbnail_image',
-            field=filer.fields.image.FilerImageField(on_delete=django.db.models.deletion.SET_NULL, default=None, to='filer.Image', blank=True, help_text='Image must be 1:1 aspect ratio', null=True, verbose_name='Thumbnail Image'),
+            field=filer.fields.image.FilerImageField(related_name='profile_thumbnail', on_delete=django.db.models.deletion.PROTECT, default=None, verbose_name='Thumbnail Image', to='filer.Image', help_text='Image must be 1:1 aspect ratio'),
+        ),
+        migrations.AlterOrderWithRespectTo(
+            name='profile',
+            order_with_respect_to='profile_plugin',
         ),
     ]
