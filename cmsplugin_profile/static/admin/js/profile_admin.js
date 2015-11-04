@@ -82,6 +82,10 @@
 		$("#warning_unsaved")[0].style.display = "block";
 	    }
 
+	    profile_preview = $("#" + prefix)[0];
+	    new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
+	    profile_preview.style.backgroundImage="url(" + new_image_url + ")";
+
 	    resizeIframe();
 	});
 
