@@ -1,7 +1,11 @@
 <div class="form-row">
 	{{ field.errors }}
 	<div class="col-sm-2 control-label text-left">{{ field.label_tag }}</div>
-	<div class="col-sm-9 no-padding">{{ field }}</div>
+	<div class="col-sm-9 no-padding">
+		{{ field }}
+		<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+	</div>
+
 	{% if field.help_text %}
 	<p class="helptext">{{ field.help_text|safe }}</p>
 	{% endif %}
