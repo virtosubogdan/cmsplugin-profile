@@ -38,6 +38,9 @@ class Profile(models.Model):
     class Meta:
         order_with_respect_to = 'profile_plugin'
 
+    @property
+    def links(self):
+        return self.profilelink_set.all()
 
 class ProfileLink(models.Model):
     profile = models.ForeignKey(Profile, null=False, blank=False)
