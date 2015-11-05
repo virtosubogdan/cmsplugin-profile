@@ -1,4 +1,4 @@
-{% load sekizai_tags %}
+{% load sekizai_tags filertags %}
 {% addtoblock "css" %}
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_profile/css/profilegrid.css" />
 {% endaddtoblock %}
@@ -20,12 +20,24 @@
 	<div class="row-fluid">
     <div class="span12">
 			<ul id="og-grid" class="og-grid">
+    	{% for profile in profiles %}
 				<li>
-					<a href="#" data-largesrc="{{ STATIC_URL }}cmsplugin_profile/images/1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot." data-calltoactiontext="Learn more about it" data-additionallinkslabel="More links" data-addlinktext-a="See more" data-addlinkurl-a="http://www.google.com">
-						<img src="{{ STATIC_URL }}cmsplugin_profile/images/thumbs/barbara.png" alt="img01"/>
-						<h2>Meet Azuki bean</h2>
+					<a href="{{profile.call_to_action_url}}" 
+						 data-largesrc="{{profile.detail_image|filerfile}}" 
+						 data-largeimg-credit="{{profile.image_credit}}" 
+						 data-title="{{profile.title}}" 
+						 data-description="{{profile.description}}" 
+						 data-callToActionText="{{profile.call_to_action_text}}" 
+						 data-additionallinkslabel="{{profile.additional_links_label}}" 
+						 data-addlinktext-a="See more" data-addlinkurl-a="http://www.google.com" 
+						 data-addlinktext-b="See more" data-addlinkurl-b="http://www.google.com" 
+						 data-addlinktext-c="See more" data-addlinkurl-c="http://www.google.com" 
+						 data-addlinktext-d="See more" data-addlinkurl-d="http://www.google.com">
+						<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
+						{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
 					</a>
 				</li>
+				{% endfor %}
 			</ul>
 		</div>
 	</div>

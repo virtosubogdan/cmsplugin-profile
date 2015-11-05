@@ -352,8 +352,12 @@ var Grid = (function() {
 			this.$href = $( '<a href="#">Visit website</a>' );
 			this.$additionalLinksLabel = $( '<span></span>' );
 			this.$addLinkA = $( '<a href="#">Link A</a>' );
+			this.$addLinkB = $( '<a href="#">Link B</a>' );
+			this.$addLinkC = $( '<a href="#">Link C</a>' );
+			this.$addLinkD = $( '<a href="#">Link D</a>' );
 			this.$details = $( '<div class="og-details"></div>' ).append( this.$title, this.$description, this.$href );
-			this.$bottomDetails = $( '<div class="og-bottom-details"></div>' ).append( this.$additionalLinksLabel, this.$addLinkA );
+			this.$bottomDetails = $( '<div class="og-bottom-details"></div>' ).append( this.$additionalLinksLabel, this.$addLinkA, this.$addLinkB, this.$addLinkC, this.$addLinkD );
+			this.$fullimageCredit = $('<span></span>');
 			this.$loading = $( '<div class="og-loading"></div>' );
 			this.$fullimage = $( '<div class="og-fullimg"></div>' ).append( this.$loading );
 			this.$fullimageWrapper = $( '<div class="og-fullimg-wrapper"></div>' ).append(this.$fullimage);
@@ -390,22 +394,35 @@ var Grid = (function() {
 				eldata = {
 					href : $itemEl.attr( 'href' ),
 					largesrc : $itemEl.data( 'largesrc' ),
+					largeimageCredit: $itemEl.data('largeimg-credit'),
 					title : $itemEl.data( 'title' ),
 					description : $itemEl.data( 'description' ),
 					callToActionText : $itemEl.data( 'calltoactiontext' ),
 					additionalLinksLabel : $itemEl.data( 'additionallinkslabel' ),
 					addLinkTextA : $itemEl.data( 'addlinktext-a' ),
-					addLinkUrlA : $itemEl.data( 'addlinkurl-a' )
+					addLinkUrlA : $itemEl.data( 'addlinkurl-a' ),
+					addLinkTextB : $itemEl.data( 'addlinktext-b' ),
+					addLinkUrlB : $itemEl.data( 'addlinkurl-b' ),
+					addLinkTextC : $itemEl.data( 'addlinktext-c' ),
+					addLinkUrlC : $itemEl.data( 'addlinkurl-c' ),
+					addLinkTextD : $itemEl.data( 'addlinktext-d' ),
+					addLinkUrlD : $itemEl.data( 'addlinkurl-d' )
 				};
 
 			this.$title.html( eldata.title );
 			this.$description.html( eldata.description );
 			this.$href.attr( 'href', eldata.href );
 			this.$href.text(eldata.callToActionText);
+			this.$fullimageCredit.text(eldata.largeimageCredit);
 			this.$additionalLinksLabel.html( eldata.additionalLinksLabel );
 			this.$addLinkA.text( eldata.addLinkTextA );
 			this.$addLinkA.attr( 'href', eldata.addLinkUrlA );
-
+			this.$addLinkB.text( eldata.addLinkTextB );
+			this.$addLinkB.attr( 'href', eldata.addLinkUrlB );
+			this.$addLinkC.text( eldata.addLinkTextC );
+			this.$addLinkC.attr( 'href', eldata.addLinkUrlC );
+			this.$addLinkD.text( eldata.addLinkTextD );
+			this.$addLinkD.attr( 'href', eldata.addLinkUrlD );
 
 			var self = this;
 			
@@ -423,7 +440,7 @@ var Grid = (function() {
 						self.$loading.hide();
 						self.$fullimage.find( 'img' ).remove();
 						self.$largeImg = $img.fadeIn( 350 );
-						self.$fullimage.append( self.$largeImg );
+						self.$fullimage.append( self.$largeImg, self.$fullimageCredit );
 					}
 				} ).attr( 'src', eldata.largesrc );	
 			}

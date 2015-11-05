@@ -163,6 +163,13 @@ $grid: ".og-grid";
 				max-height: 100%;
 				max-width: 100%;
 			}
+			span {
+				font-size: 11px;
+				float: left;
+				color: #666;
+				line-height: 16px;
+				text-align: left;
+			}
 		}
 
 		.og-details {
@@ -231,7 +238,7 @@ $grid: ".og-grid";
 			}
 		  a {
 				color: #309BC5;
-				display: inline-block;
+				display: block;
 				margin-bottom: 10px;
 				padding-right: 20px;
 				position: relative;
