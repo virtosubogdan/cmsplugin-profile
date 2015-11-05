@@ -29,10 +29,9 @@
 						 data-description="{{profile.description}}" 
 						 data-callToActionText="{{profile.call_to_action_text}}" 
 						 data-additionallinkslabel="{{profile.additional_links_label}}" 
-						 data-addlinktext-a="See more" data-addlinkurl-a="http://www.google.com" 
-						 data-addlinktext-b="See more" data-addlinkurl-b="http://www.google.com" 
-						 data-addlinktext-c="See more" data-addlinkurl-c="http://www.google.com" 
-						 data-addlinktext-d="See more" data-addlinkurl-d="http://www.google.com">
+						 {% for link in profile.links %}
+						 data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" 
+						 {% endfor %}>
 						<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
 						{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
 					</a>

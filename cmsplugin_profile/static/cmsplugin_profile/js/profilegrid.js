@@ -399,14 +399,14 @@ var Grid = (function() {
 					description : $itemEl.data( 'description' ),
 					callToActionText : $itemEl.data( 'calltoactiontext' ),
 					additionalLinksLabel : $itemEl.data( 'additionallinkslabel' ),
-					addLinkTextA : $itemEl.data( 'addlinktext-a' ),
-					addLinkUrlA : $itemEl.data( 'addlinkurl-a' ),
-					addLinkTextB : $itemEl.data( 'addlinktext-b' ),
-					addLinkUrlB : $itemEl.data( 'addlinkurl-b' ),
-					addLinkTextC : $itemEl.data( 'addlinktext-c' ),
-					addLinkUrlC : $itemEl.data( 'addlinkurl-c' ),
-					addLinkTextD : $itemEl.data( 'addlinktext-d' ),
-					addLinkUrlD : $itemEl.data( 'addlinkurl-d' )
+					addLinkTextA : $itemEl.data( 'addlinktext1' ),
+					addLinkUrlA : $itemEl.data( 'addlinkurl1' ),
+					addLinkTextB : $itemEl.data( 'addlinktext2' ),
+					addLinkUrlB : $itemEl.data( 'addlinkurl2' ),
+					addLinkTextC : $itemEl.data( 'addlinktext3' ),
+					addLinkUrlC : $itemEl.data( 'addlinkurl3' ),
+					addLinkTextD : $itemEl.data( 'addlinktext4' ),
+					addLinkUrlD : $itemEl.data( 'addlinkurl4' )
 				};
 
 			this.$title.html( eldata.title );
