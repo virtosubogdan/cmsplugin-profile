@@ -163,12 +163,20 @@ $grid: ".og-grid";
 				max-height: 100%;
 				max-width: 100%;
 			}
-			span {
+			.og-img-credit {
 				font-size: 11px;
 				float: left;
-				color: #666;
+				color: #d1d2d4;
 				line-height: 16px;
 				text-align: left;
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				z-index: 100;
+				width: 100%;
+				padding: 10px;
+				background: rgba(0, 0, 0, .5);
+  			border-top: 1px solid #464646;
 			}
 		}
 

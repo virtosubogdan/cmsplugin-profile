@@ -357,7 +357,7 @@ var Grid = (function() {
 			this.$addLinkD = $( '<a href=""></a>' );
 			this.$details = $( '<div class="og-details"></div>' ).append( this.$title, this.$description, this.$href );
 			this.$bottomDetails = $( '<div class="og-bottom-details"></div>' ).append( this.$additionalLinksLabel, this.$addLinkA, this.$addLinkB, this.$addLinkC, this.$addLinkD );
-			this.$fullimageCredit = $('<span></span>');
+			this.$fullimageCredit = $('<span class="og-img-credit"></span>');
 			this.$loading = $( '<div class="og-loading"></div>' );
 			this.$fullimage = $( '<div class="og-fullimg"></div>' ).append( this.$loading );
 			this.$fullimageWrapper = $( '<div class="og-fullimg-wrapper"></div>' ).append(this.$fullimage);
@@ -419,7 +419,12 @@ var Grid = (function() {
 			else {
 				this.$href.remove();
 			}
-			this.$fullimageCredit.text(eldata.largeimageCredit);
+			if (eldata.largeimageCredit) {
+				this.$fullimageCredit.show().text(eldata.largeimageCredit);				
+			}
+			else {
+				this.$fullimageCredit.hide();	
+			}
 			this.$additionalLinksLabel.html( eldata.additionalLinksLabel );
 
 			var emptyLinks = 0;

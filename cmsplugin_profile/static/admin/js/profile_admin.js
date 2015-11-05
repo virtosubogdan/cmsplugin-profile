@@ -164,7 +164,7 @@
 		});
 
 		$(document).on('click', '.grid-list .close-profile', function(e){
-		    e.preventDefault();
+		    // e.preventDefault();
 
 		    $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
 		    $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
@@ -181,7 +181,7 @@
 		});
 
 		$(document).on('click', '.grid-list .done-profile', function(e){
-		    e.preventDefault();
+		    // e.preventDefault();
 		    checkValidLinks();
 
 		    if (validateProfile($(this).closest('.visible'))) {
