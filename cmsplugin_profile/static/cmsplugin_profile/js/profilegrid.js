@@ -349,12 +349,12 @@ var Grid = (function() {
 	
 			this.$title = $( '<h3></h3>' );
 			this.$description = $( '<p></p>' );
-			this.$href = $( '<a href="#">Visit website</a>' );
+			this.$href = $( '<a href=""></a>' );
 			this.$additionalLinksLabel = $( '<span></span>' );
-			this.$addLinkA = $( '<a href="#">Link A</a>' );
-			this.$addLinkB = $( '<a href="#">Link B</a>' );
-			this.$addLinkC = $( '<a href="#">Link C</a>' );
-			this.$addLinkD = $( '<a href="#">Link D</a>' );
+			this.$addLinkA = $( '<a href="#"></a>' );
+			this.$addLinkB = $( '<a href=""></a>' );
+			this.$addLinkC = $( '<a href=""></a>' );
+			this.$addLinkD = $( '<a href=""></a>' );
 			this.$details = $( '<div class="og-details"></div>' ).append( this.$title, this.$description, this.$href );
 			this.$bottomDetails = $( '<div class="og-bottom-details"></div>' ).append( this.$additionalLinksLabel, this.$addLinkA, this.$addLinkB, this.$addLinkC, this.$addLinkD );
 			this.$fullimageCredit = $('<span></span>');
@@ -411,18 +411,56 @@ var Grid = (function() {
 
 			this.$title.html( eldata.title );
 			this.$description.html( eldata.description );
-			this.$href.attr( 'href', eldata.href );
-			this.$href.text(eldata.callToActionText);
+			
+			if(this.$href.text().length) {
+				this.$href.attr( 'href', eldata.href );
+				this.$href.text(eldata.callToActionText);
+			}
+			else {
+				this.$href.remove();
+			}
 			this.$fullimageCredit.text(eldata.largeimageCredit);
 			this.$additionalLinksLabel.html( eldata.additionalLinksLabel );
-			this.$addLinkA.text( eldata.addLinkTextA );
-			this.$addLinkA.attr( 'href', eldata.addLinkUrlA );
-			this.$addLinkB.text( eldata.addLinkTextB );
-			this.$addLinkB.attr( 'href', eldata.addLinkUrlB );
-			this.$addLinkC.text( eldata.addLinkTextC );
-			this.$addLinkC.attr( 'href', eldata.addLinkUrlC );
-			this.$addLinkD.text( eldata.addLinkTextD );
-			this.$addLinkD.attr( 'href', eldata.addLinkUrlD );
+
+			var emptyLinks = 0;
+			if(eldata.addLinkTextA) {
+				this.$addLinkA.text( eldata.addLinkTextA );
+				this.$addLinkA.attr( 'href', eldata.addLinkUrlA );
+			}
+			else {
+				this.$addLinkA.remove();
+				emptyLinks++;
+			}
+
+			if(eldata.addLinkTextB) {
+				this.$addLinkB.text( eldata.addLinkTextB );
+				this.$addLinkB.attr( 'href', eldata.addLinkUrlB );
+			}
+			else {
+				this.$addLinkB.remove();
+				emptyLinks++;
+			}
+
+			if(eldata.addLinkTextC) {
+				this.$addLinkC.text( eldata.addLinkTextC );
+				this.$addLinkC.attr( 'href', eldata.addLinkUrlC );
+			}
+			else {
+				this.$addLinkC.remove();
+				emptyLinks++;
+			}
+			
+			if(eldata.addLinkTextD) {
+				this.$addLinkD.text( eldata.addLinkTextD );
+				this.$addLinkD.attr( 'href', eldata.addLinkUrlD );
+			}
+			else { 
+				this.$addLinkD.remove();
+				emptyLinks++;
+			}
+			if (emptyLinks == 4 && !eldata.additionalLinksLabel) {
+				this.$bottomDetails.remove();
+			}
 
 			var self = this;
 			
