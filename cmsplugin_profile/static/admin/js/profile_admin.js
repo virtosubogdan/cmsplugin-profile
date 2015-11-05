@@ -82,11 +82,45 @@
 	    _jQuery(window.frameElement).css('height', (documentHeight + margin) + 'px');
  		};
 
-		function store_input_data(prefix) {
-		  $('input[name^="' + prefix + '"]').each(function(index, e) {
-				previous_inputs[$(this).attr("name")] = $(this)[0].value;
-		  });
-		}
+      function store_input_data(prefix) {
+	  $('input[name^="' + prefix + '"]').each(function(index, e) {
+	      input = $(this);
+	      if (input.attr("type") === "checkbox") {
+		  type = "checkbox";
+		  value = input[0].checked;
+	      } else {
+		  type = "value";
+		  value = input.attr("value");
+	      }
+	      previous_inputs[input.attr("id")] = [type, value];
+	  });
+
+	  $('textarea[name^="' + prefix + '"]').each(function(index, e) {
+	      previous_inputs[$(this).attr("id")] = ["value", $(this)[0].value];
+	  });
+
+	  // Save the whole html, must be saved over the normal input values for images
+	  $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
+	      element = $("#id_" + prefix + "-" + image_name);
+	      html = element.closest("div.profile-image-panel").html();
+	      previous_inputs[element.attr("id")] = ["image_html", html];
+	  });
+      }
+
+      function restore_input_data() {
+	  $.each(previous_inputs, function(key, data) {
+	      type = data[0];
+	      value = data[1];
+	      element = $("#"+key);
+	      if (type === "checkbox") {
+		  element[0].checked = value;
+	      } else if (type === "image_html") {
+		  element.closest("div.profile-image-panel").html(value);
+	      } else {
+		  element[0].value = value;
+	      }
+	  });
+      }
 
 		previous_inputs = {};
 
@@ -139,9 +173,7 @@
 		    if(profile.attr('id') === "-") {
 					profile.remove();
 		    } else {
-					$.each(previous_inputs, function(key, value) {
-					    $('input[name="' + key + '"]')[0].value = value;
-					});
+			restore_input_data();
 		    }
 		    removeAllErrorClasses();
 
