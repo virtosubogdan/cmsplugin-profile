@@ -1,4 +1,4 @@
-<div class="form-row mandatory">
+<div class="form-row{% if field.field.required %} mandatory{% endif %}">
 	{{ field.errors }}
 	<div class="control-label text-left">
 		{{ field.label_tag }}

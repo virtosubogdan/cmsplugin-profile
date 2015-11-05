@@ -129,9 +129,10 @@
 #profile_set-group-grid .form-row.profile-add-link-url select {
   width: 10%;
   height: 34px;
+  float: left;
 }
 
-/* line 127, ../sass/profile_admin.scss */
+/* line 128, ../sass/profile_admin.scss */
 #profile_set-group-grid .new-profile-form, #profile_set-group-grid .complete > div:not(.profile-item-actions) {
   border: none;
   left: 0;
@@ -147,7 +148,7 @@
   -ms-transition: all 0.5s ease-in;
   transition: all 0.5s ease-in;
 }
-/* line 142, ../sass/profile_admin.scss */
+/* line 143, ../sass/profile_admin.scss */
 #profile_set-group-grid .new-profile-form.visible, #profile_set-group-grid .complete > div:not(.profile-item-actions).visible {
   z-index: 10;
   top: 0;
@@ -160,28 +161,28 @@
   transition: all 0.7s ease-out;
 }
 
-/* line 155, ../sass/profile_admin.scss */
+/* line 156, ../sass/profile_admin.scss */
 .add-profile-link {
   margin: auto;
 }
 
-/* line 158, ../sass/profile_admin.scss */
+/* line 159, ../sass/profile_admin.scss */
 .profile-add-links {
   overflow: hidden;
 }
-/* line 161, ../sass/profile_admin.scss */
+/* line 162, ../sass/profile_admin.scss */
 .profile-add-links h4 {
   padding-left: 15px;
 }
-/* line 164, ../sass/profile_admin.scss */
+/* line 165, ../sass/profile_admin.scss */
 .profile-add-links hr {
   margin-top: 10px;
 }
 
-/* line 168, ../sass/profile_admin.scss */
+/* line 169, ../sass/profile_admin.scss */
 .profile-image-panel {
   padding: 19px 0;
-  margin-bottom: 20px;
+  margin: 20px 0;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -192,58 +193,58 @@
   clear: both;
   position: relative;
 }
-/* line 181, ../sass/profile_admin.scss */
+/* line 182, ../sass/profile_admin.scss */
 .profile-image-panel .control-label {
   width: auto;
   padding-left: 0;
 }
-/* line 185, ../sass/profile_admin.scss */
+/* line 186, ../sass/profile_admin.scss */
 .profile-image-panel .form-row {
   margin-bottom: 0 !important;
   padding: 0 19px;
 }
-/* line 189, ../sass/profile_admin.scss */
+/* line 190, ../sass/profile_admin.scss */
 .profile-image-panel .form-row + .form-row {
   padding-top: 15px;
   border-top: 1px solid #e3e3e3;
   margin-top: 20px;
 }
-/* line 195, ../sass/profile_admin.scss */
+/* line 196, ../sass/profile_admin.scss */
 .profile-image-panel .related-widget-wrapper {
   display: block;
 }
-/* line 198, ../sass/profile_admin.scss */
-.profile-image-panel .related-widget-wrapper > a:first-child, .profile-image-panel .related-widget-wrapper > .no-image-preview {
+/* line 199, ../sass/profile_admin.scss */
+.profile-image-panel .related-widget-wrapper > a:first-child, .profile-image-panel .related-widget-wrapper .no-image-preview {
   float: right;
   margin-top: -54px;
 }
-/* line 204, ../sass/profile_admin.scss */
-.profile-image-panel .no-padding > .no-image-preview {
+/* line 205, ../sass/profile_admin.scss */
+.profile-image-panel .no-padding .no-image-preview {
   float: right;
   margin-top: -54px;
 }
-/* line 208, ../sass/profile_admin.scss */
+/* line 209, ../sass/profile_admin.scss */
 .profile-image-panel img.quiet:after {
   content: "test";
 }
-/* line 211, ../sass/profile_admin.scss */
+/* line 212, ../sass/profile_admin.scss */
 .profile-image-panel .no-image-preview {
   border: 1px solid #ddd;
   background: white;
   width: 200px;
   height: 200px;
 }
-/* line 217, ../sass/profile_admin.scss */
+/* line 218, ../sass/profile_admin.scss */
 .profile-image-panel .no-image-preview img {
   visibility: hidden;
 }
 
-/* line 222, ../sass/profile_admin.scss */
+/* line 223, ../sass/profile_admin.scss */
 .grid-list .plugin-submit-row {
   padding-right: 20px;
 }
 
-/* line 228, ../sass/profile_admin.scss */
+/* line 229, ../sass/profile_admin.scss */
 .form-group.has-error .error, .form-row.has-error .error {
   border: solid 1px #a94442 !important;
   color: #a94442 !important;
@@ -253,7 +254,7 @@
   appearance: none;
   float: left;
 }
-/* line 237, ../sass/profile_admin.scss */
+/* line 238, ../sass/profile_admin.scss */
 .form-group.has-error .help-block.col-sm-reset, .form-row.has-error .help-block.col-sm-reset {
   color: #a94442 !important;
   float: left !important;
@@ -262,7 +263,7 @@
   display: block !important;
   visibility: visible !important;
 }
-/* line 245, ../sass/profile_admin.scss */
+/* line 246, ../sass/profile_admin.scss */
 .form-group.has-error .col-sm-9:before, .form-row.has-error .col-sm-9:before {
   content: "\f06a";
   display: inline-block;
@@ -276,20 +277,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-/* line 258, ../sass/profile_admin.scss */
+/* line 259, ../sass/profile_admin.scss */
 .form-group.has-error .col-sm-9, .form-row.has-error .col-sm-9 {
   position: relative;
 }
-/* line 261, ../sass/profile_admin.scss */
+/* line 262, ../sass/profile_admin.scss */
 .form-group.has-error .control-label, .form-row.has-error .control-label {
   color: #a94442;
 }
 
-/* line 265, ../sass/profile_admin.scss */
+/* line 266, ../sass/profile_admin.scss */
 .profile-image-panel.has-error {
   border: solid 1px #a94442 !important;
 }
-/* line 268, ../sass/profile_admin.scss */
+/* line 269, ../sass/profile_admin.scss */
 .profile-image-panel.has-error .help-block.col-sm-reset {
   position: absolute;
   right: -140px;

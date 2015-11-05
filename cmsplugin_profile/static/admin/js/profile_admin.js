@@ -30,6 +30,19 @@
 				$(this).removeClass('has-error').removeClass('error');
 			});
 		}
+		function checkValidLinks() {
+			$('.profile-add-links .form-row').removeClass('mandatory has-error');
+			$('.profile-add-links .form-row input[type="text"]').removeClass('error');
+
+			$('.profile-add-links').each(function(){
+				var self = $(this);
+				$(this).find('input[type="text"]').each(function(){
+					if ($(this).val().length) {
+						self.find('.form-row').addClass('mandatory');
+					}
+				});
+			});
+		}
 		function validateProfile(form) {
 			var mandatoryFields = form.find('.mandatory');
 			var valid = true;
@@ -49,8 +62,6 @@
 					removeErrorClass($(elem));
 					$(elem).removeClass('has-error');						
 					$(elem).parent('.profile-image-panel').removeClass('has-error');						
-					console.log($(elem).parent());
-
 				} 
 			});
 			return valid;
@@ -139,6 +150,8 @@
 
 		$(document).on('click', '.grid-list .done-profile', function(e){
 		    e.preventDefault();
+		    checkValidLinks();
+
 		    if (validateProfile($(this).closest('.visible'))) {
 			    $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
 			    $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
