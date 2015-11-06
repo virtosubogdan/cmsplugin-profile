@@ -30,7 +30,7 @@
 							data-callToActionText="{{profile.call_to_action_text}}" 
 							data-additionallinkslabel="{{profile.additional_links_label}}" 
 							{% for link in profile.links %}
-							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" 
+							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" data-addlinktarget{{forloop.counter}}="{{link.target}}"
 							{% endfor %}>
 							<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
 							{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}

@@ -357,10 +357,10 @@ var Grid = (function() {
             this.$description = $('<p></p>');
             this.$href = $('<a href=""></a>');
             this.$additionalLinksLabel = $('<span></span>');
-            this.$addLinkA = $('<a href="#"></a>');
-            this.$addLinkB = $('<a href=""></a>');
-            this.$addLinkC = $('<a href=""></a>');
-            this.$addLinkD = $('<a href=""></a>');
+            this.$addLinkA = $('<a href="#" target=""></a>');
+            this.$addLinkB = $('<a href="" target=""></a>');
+            this.$addLinkC = $('<a href="" target=""></a>');
+            this.$addLinkD = $('<a href="" target=""></a>');
             this.$details = $('<div class="og-details"></div>').append(this.$title, this.$description, this.$href);
             this.$bottomDetails = $('<div class="og-bottom-details"></div>').append(this.$additionalLinksLabel, this.$addLinkA, this.$addLinkB, this.$addLinkC, this.$addLinkD);
             this.$fullimageCredit = $('<span class="og-img-credit"></span>');
@@ -407,12 +407,16 @@ var Grid = (function() {
                     additionalLinksLabel: $itemEl.data('additionallinkslabel'),
                     addLinkTextA: $itemEl.data('addlinktext1'),
                     addLinkUrlA: $itemEl.data('addlinkurl1'),
+                    addLinkTargetA: $itemEl.data('addlinktarget1'),
                     addLinkTextB: $itemEl.data('addlinktext2'),
                     addLinkUrlB: $itemEl.data('addlinkurl2'),
+                    addLinkTargetB: $itemEl.data('addlinktarget2'),
                     addLinkTextC: $itemEl.data('addlinktext3'),
                     addLinkUrlC: $itemEl.data('addlinkurl3'),
+                    addLinkTargetC: $itemEl.data('addlinktarget3'),
                     addLinkTextD: $itemEl.data('addlinktext4'),
-                    addLinkUrlD: $itemEl.data('addlinkurl4')
+                    addLinkUrlD: $itemEl.data('addlinkurl4'),
+                    addLinkTargetD: $itemEl.data('addlinktarget4')
                 };
 
             this.$title.html(eldata.title);
@@ -435,6 +439,7 @@ var Grid = (function() {
             if (eldata.addLinkTextA) {
                 this.$addLinkA.text(eldata.addLinkTextA);
                 this.$addLinkA.attr('href', eldata.addLinkUrlA);
+                this.$addLinkA.attr('target', eldata.addLinkTargetA);
             } else {
                 this.$addLinkA.remove();
                 emptyLinks++;
@@ -443,6 +448,7 @@ var Grid = (function() {
             if (eldata.addLinkTextB) {
                 this.$addLinkB.text(eldata.addLinkTextB);
                 this.$addLinkB.attr('href', eldata.addLinkUrlB);
+                this.$addLinkA.attr('target', eldata.addLinkTargetB);
             } else {
                 this.$addLinkB.remove();
                 emptyLinks++;
@@ -451,6 +457,7 @@ var Grid = (function() {
             if (eldata.addLinkTextC) {
                 this.$addLinkC.text(eldata.addLinkTextC);
                 this.$addLinkC.attr('href', eldata.addLinkUrlC);
+                this.$addLinkA.attr('target', eldata.addLinkTargetC);
             } else {
                 this.$addLinkC.remove();
                 emptyLinks++;
@@ -459,6 +466,7 @@ var Grid = (function() {
             if (eldata.addLinkTextD) {
                 this.$addLinkD.text(eldata.addLinkTextD);
                 this.$addLinkD.attr('href', eldata.addLinkUrlD);
+                this.$addLinkA.attr('target', eldata.addLinkTargetD);
             } else {
                 this.$addLinkD.remove();
                 emptyLinks++;
