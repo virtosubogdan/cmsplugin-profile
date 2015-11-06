@@ -1,13 +1,13 @@
 {% with instance=form.instance %}
 <div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ form.prefix }}{% if forloop.last %}-empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
-  <div class="profile-item-actions">
-  	<a class="edit-profile-item" data-profile-id="{{form.prefix}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
-  	<a class="delete-profile-item" data-profile-id="{{instance.id}}"
+	<div class="profile-item-actions">
+		<a class="edit-profile-item" data-profile-id="{{form.prefix}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
+		<a class="delete-profile-item" data-profile-id="{{instance.id}}"
 		data-profile-id-prefix="{{form.prefix}}" href="#">
 		<span class="inline-edit ace-icon fa fa-times" unselectable="on"></span>
 	</a>
-  </div>
-  <div>
+	</div>
+	<div>
   	<h4 class="header smaller lighter blue block">Profile Entry</h4>
 		{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
 
