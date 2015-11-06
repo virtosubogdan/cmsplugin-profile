@@ -256,13 +256,13 @@ var Grid = (function() {
 		// on window resize get the window´s size again
 		// reset some values..
 
-			// $(window).unbind('resize').bind('resize', function(e) {
-			$window.on( 'debouncedresize', function() {
+			$(window).unbind('resize').bind('resize', function(e) {
+			//$window.on( 'debouncedresize', function() {
 
 				scrollExtra = 0;
 				previewPos = -1;
 				// save item´s offset
-				saveItemInfo(true);
+				saveItemInfo();
 				//Preview
 				getWinSize();
 				var preview = $.data( this, 'preview' );
@@ -531,7 +531,7 @@ var Grid = (function() {
 		},
 		calcHeight : function() {
       if (window.matchMedia('(max-width: 767px)').matches) {
-				var heightPreview = $('.og-fullimg').height() + $('.og-details').outerHeight(true) + $('.og-bottom-details').outerHeight(true) + 60,
+				var heightPreview = this.$fullimage.height() + this.$details.outerHeight(true) + this.$bottomDetails.outerHeight(true) + 60,
 				itemHeight = heightPreview + this.$item.data( 'height' ) + marginExpanded;
       }
       else {
