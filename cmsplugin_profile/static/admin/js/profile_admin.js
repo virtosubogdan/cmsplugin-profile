@@ -180,28 +180,36 @@
 		    resizeIframe();
 		});
 
-		$(document).on('click', '.grid-list .done-profile', function(e){
-		    e.preventDefault();
-		    checkValidLinks();
+      $(document).on('click', '.grid-list .done-profile', function(e){
+	  e.preventDefault();
+	  checkValidLinks();
 
-		    if (validateProfile($(this).closest('.visible'))) {
-			    $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
-			    $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
+	  if (validateProfile($(this).closest('.visible'))) {
+	      $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
+	      $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
-			    prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
-			    last_inputs = $.extend({}, previous_inputs);
-			    store_input_data(prefix);
-			    if (last_inputs != previous_inputs) {
-						profile_changed = true;
-						update_show_unsaved_warning();
-			    }
+	      prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
+	      last_inputs = $.extend({}, previous_inputs);
+	      store_input_data(prefix);
+	      if (last_inputs != previous_inputs) {
+		  profile_changed = true;
+		  update_show_unsaved_warning();
+	      }
 
-			    profile_preview = $("#" + prefix)[0];
-			    new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
-			    profile_preview.style.backgroundImage="url(" + new_image_url + ")";
-			    resizeIframe();
-		    }
-		});
+	      profile_preview = $("#" + prefix);
+	      new_profile_container = profile_preview.closest(".new-profile-form");
+	      if (new_profile_container !== undefined && new_profile_container !== null) {
+		  profile_html = new_profile_container.html();
+		  $(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
+		  profile_preview = $("#" + prefix);
+		  profile_preview[0].className="ui-widget inline-related complete";
+	      }
+
+	      new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
+	      profile_preview[0].style.backgroundImage="url(" + new_image_url + ")";
+	      resizeIframe();
+	  }
+      });
 
 		$("#add_new_profile").click(function(e) {
 		    var self = this;
