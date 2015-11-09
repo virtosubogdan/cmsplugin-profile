@@ -23,13 +23,13 @@ class Profile(models.Model):
     additional_links_label = models.CharField(null=True, blank=True, max_length=30, default="")
     thumbnail_image = FilerImageField(
         on_delete=models.PROTECT,
-        default=None, help_text=_('Image must be 1:1 aspect ratio'),
+        default=None, help_text=_('Image must be 1:1 aspect ratio. We recommend 440px min size.'),
         verbose_name=_("Thumbnail Image"),
         related_name="profile_thumbnail"
     )
     detail_image = FilerImageField(
         on_delete=models.PROTECT,
-        default=None, help_text=_('Image must be 1:1 aspect ratio'),
+        default=None, help_text=_('Image must be 1:1 aspect ratio. We recommend 600px min size.'),
         verbose_name=_("Detail Image"),
         related_name="profile_detail"
     )
