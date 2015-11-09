@@ -37,9 +37,28 @@ def view_profiles(request, profilegrid_id):
         print paginator.page(page).object_list
         for profile in paginator.page(page).object_list:
             response['profiles'].append(
-                [profile.id, profile.title, profile.description, profile.thumbnail_image.url]
+                _serialize_profile(profile)
             )
     return JsonResponse(response)
+
+
+def _serialize_profile(profile):
+    return {
+        "id": profile.id,
+        "detail_image": profile.detail_image.url,
+        "thumbnail_image": profile.thumbnail_image.url,
+        "image_credit": profile.image_credit,
+        "title": profile.title,
+        "description": profile.description,
+        "call_to_action_text": profile.call_to_action_text,
+        "call_to_action_url": profile.call_to_action_url,
+        "additional_links_label": profile.additional_links_label,
+        "links": [
+            {
+                "text": link.text, "url": link.url, "target": link.target
+            } for link in profile.profilelink_set.all()
+        ]
+    }
 
 
 @require_GET
