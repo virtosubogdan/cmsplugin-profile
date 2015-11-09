@@ -21,7 +21,7 @@ $grid: ".og-grid";
             -o-transition: all 0.3s ease-in-out;
             -ms-transition: all 0.3s ease-in-out;
             transition: all 0.3s ease-in-out;
-            &:nth-child(4n) {
+            &:nth-child(4n), &:last-child {
                 margin-right: 0;
             }
             & > a,
@@ -294,6 +294,11 @@ $grid: ".og-grid";
             -webkit-animation: loader 0.5s infinite ease-in-out both;
             -moz-animation: loader 0.5s infinite ease-in-out both;
             animation: loader 0.5s infinite ease-in-out both;
+        }
+        .image-loading {
+            -webkit-animation: fadeIn 0.65s ease forwards;
+            -moz-animation: fadeIn 0.65s ease forwards;
+            animation: fadeIn 0.65s ease forwards;
         }
 
         @-webkit-keyframes loader {
