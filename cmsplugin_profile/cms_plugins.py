@@ -11,6 +11,7 @@ from .forms import (
     ProfileGridPromoForm, ProfileGridForm
 )
 from .models import Profile, ProfileGrid, SelectedProfile, ProfilePromoGrid
+from .settings import INITIAL_DISPLAYED_PROFILES
 
 
 class ProfileInline(admin.options.InlineModelAdmin):
@@ -33,6 +34,7 @@ class ProfileGridPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['profilegrid'] = instance
         context['profiles'] = instance.profile_set.all()
+        context['initial_displayed_profile'] = INITIAL_DISPLAYED_PROFILES
         return context
 
     @property
