@@ -418,11 +418,10 @@ var Grid = (function() {
                     addLinkUrlD: $itemEl.data('addlinkurl4'),
                     addLinkTargetD: $itemEl.data('addlinktarget4')
                 };
-
             this.$title.html(eldata.title);
             this.$description.html(eldata.description);
 
-            if (this.$href.text().length) {
+            if (eldata.href.length) {
                 this.$href.attr('href', eldata.href);
                 this.$href.text(eldata.callToActionText);
             } else {

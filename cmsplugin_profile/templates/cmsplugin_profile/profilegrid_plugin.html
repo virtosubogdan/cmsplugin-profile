@@ -7,6 +7,27 @@
 	<script type="text/javascript">
 			$(document).ready(function(){
 				Grid.init();
+				
+				//Load more profiles
+				$('#og-additems').on( 'click', function() {
+					var self = $(this),
+						hash = self.data('loadedpages') + 1;
+						url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
+					jQuery.ajax({
+		                url: url,
+		                success: function(response) {
+		                	if (!response.has_more) {
+		                   		self.hide();
+		                   	}
+		                },
+		                error: function(response) {},
+		            });
+					//var $items = $().appendTo( $( '#og-grid' );
+						
+					// Grid.addItems( $items );
+					self.data().loadedpages++;
+					return false;
+				});
 			});
 	</script>
 {% endaddtoblock %}
@@ -20,7 +41,7 @@
 	<div class="row-fluid">
 	    <div class="span12">
 			<ul id="og-grid" class="og-grid">
-	    	{% for profile in profiles %}
+	    	{% for profile in profiles|slice:":12" %}
 					<li>
 						<a href="{{profile.call_to_action_url}}" 
 							data-largesrc="{{profile.detail_image|filerfile}}" 
@@ -38,6 +59,7 @@
 					</li>
 			{% endfor %}
 			</ul>
+			<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
 		</div>
 	</div>
 </section>

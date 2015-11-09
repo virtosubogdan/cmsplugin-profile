@@ -295,6 +295,7 @@ $grid: ".og-grid";
             -moz-animation: loader 0.5s infinite ease-in-out both;
             animation: loader 0.5s infinite ease-in-out both;
         }
+
         @-webkit-keyframes loader {
             0% {
                 background: #efefef;
@@ -627,6 +628,19 @@ $grid: ".og-grid";
             margin: auto;
             line-height: 220px;
         }
+    }
+    #og-additems {
+        margin: 0 auto 30px;
+        width: 150px;
+        text-align: center;
+        color: #747474;
+        font-size: 16px;
+        line-height: 22px;
+        padding: 15px 25px;
+        border: 2px solid #747474;
+        display: block;
+        position: relative;
+        text-decoration: none;
     }
 }
 
