@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from django.forms.widgets import Media as WidgetsMedia
 from django.contrib.admin.templatetags.admin_static import static
 
 from cms.plugin_base import CMSPluginBase
@@ -40,16 +39,16 @@ class ProfileGridPlugin(CMSPluginBase):
     def media(self):
 
         media_obj = super(ProfileGridPlugin, self).media
-        
+
         media_obj.add_css({
             'all': (
                 static('admin/css/profile_admin.css'), )
         })
         media_obj.add_js((
-            static('admin/js/lib/jquery-ui.min.js'), 
-            static('admin/js/profile_admin.js'), )
-        )
-       
+            static('admin/js/lib/jquery-ui.min.js'),
+            static('admin/js/profile_admin.js'),
+        ))
+
         return media_obj
 
 plugin_pool.register_plugin(ProfileGridPlugin)
