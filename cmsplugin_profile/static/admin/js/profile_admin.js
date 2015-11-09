@@ -177,7 +177,8 @@
             $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
             profile = $(this).closest('.ui-widget.inline-related');
-            if (profile.attr('id') === "-") {
+	    is_new = profile.closest('div.new-profile-form').length > 0;
+            if (is_new) {
                 profile.remove();
             } else {
                 restore_input_data();
