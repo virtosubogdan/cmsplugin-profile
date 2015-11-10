@@ -235,16 +235,20 @@
   height: 200px;
 }
 /* line 218, ../sass/profile_admin.scss */
-.profile-image-panel .no-image-preview img {
+.profile-image-panel .no-image-preview img.no-filer-image {
   visibility: hidden;
 }
+/* line 221, ../sass/profile_admin.scss */
+.profile-image-panel .no-image-preview span {
+  display: none;
+}
 
-/* line 223, ../sass/profile_admin.scss */
+/* line 226, ../sass/profile_admin.scss */
 .grid-list .plugin-submit-row {
   padding-right: 20px;
 }
 
-/* line 229, ../sass/profile_admin.scss */
+/* line 232, ../sass/profile_admin.scss */
 .form-group.has-error .error, .form-row.has-error .error {
   border: solid 1px #a94442 !important;
   color: #a94442 !important;
@@ -254,7 +258,7 @@
   appearance: none;
   float: left;
 }
-/* line 238, ../sass/profile_admin.scss */
+/* line 241, ../sass/profile_admin.scss */
 .form-group.has-error .help-block.col-sm-reset, .form-row.has-error .help-block.col-sm-reset {
   color: #a94442 !important;
   float: left !important;
@@ -263,7 +267,7 @@
   display: block !important;
   visibility: visible !important;
 }
-/* line 246, ../sass/profile_admin.scss */
+/* line 249, ../sass/profile_admin.scss */
 .form-group.has-error .col-sm-9:before, .form-row.has-error .col-sm-9:before {
   content: "\f06a";
   display: inline-block;
@@ -277,20 +281,20 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-/* line 259, ../sass/profile_admin.scss */
+/* line 262, ../sass/profile_admin.scss */
 .form-group.has-error .col-sm-9, .form-row.has-error .col-sm-9 {
   position: relative;
 }
-/* line 262, ../sass/profile_admin.scss */
+/* line 265, ../sass/profile_admin.scss */
 .form-group.has-error .control-label, .form-row.has-error .control-label {
   color: #a94442;
 }
 
-/* line 266, ../sass/profile_admin.scss */
+/* line 269, ../sass/profile_admin.scss */
 .profile-image-panel.has-error {
   border: solid 1px #a94442 !important;
 }
-/* line 269, ../sass/profile_admin.scss */
+/* line 272, ../sass/profile_admin.scss */
 .profile-image-panel.has-error .help-block.col-sm-reset {
   position: absolute;
   right: -140px;

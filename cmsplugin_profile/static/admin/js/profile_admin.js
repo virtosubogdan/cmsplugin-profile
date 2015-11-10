@@ -189,6 +189,7 @@
         });
 
         $(document).on('click', '.grid-list .done-profile', function(e) {
+            // e.preventDefault();
             checkValidLinks();
 
             if (validateProfile($(this).closest('.visible'))) {

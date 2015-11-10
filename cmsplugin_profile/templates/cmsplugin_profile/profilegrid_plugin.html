@@ -7,6 +7,61 @@
 	<script type="text/javascript">
 			$(document).ready(function(){
 				Grid.init();
+				
+				//Load more profiles
+				$('#og-additems').on( 'click', function(e) {
+					e.preventDefault();
+
+					var self = $(this),
+						hash = self.data('loadedpages') + 1;
+						url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
+					items = '';
+
+					jQuery.ajax({
+		                url: url,
+		                success: function(response) {
+		                	if (!response.has_more) {
+		                   		self.hide();
+		                   	}
+
+		                   	var profiles = response.profiles;
+		                   	
+		                   	$.each(profiles, function(){
+		                   		var profile = $(this).get(0);
+		                   		var links = profile.links;
+
+		                   		items += '<li><a href="' + profile.call_to_action_url +'" '+
+												'data-largesrc="' + profile.detail_image+ '" ' +
+												'data-largeimg-credit="' + profile.image_credit + '" ' +
+												'data-title="' + profile.title + '" ' +
+												'data-description="' + profile.description +'" ' +
+												'data-callToActionText="' + profile.call_to_action_text+ '" ' +
+												'data-additionallinkslabel="' + profile.additional_links_label + '" ';
+
+								$.each(links, function(idx, link){
+									items +=	'data-addlinktext' + (idx+1) + '="' + link.text + '" ' + 
+											  	'data-addlinkurl' + (idx+1) + '="' + link.url + '" ' +
+											  	'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
+								});
+								items += '>';
+								items += '<img src="' + profile.thumbnail_image + '" alt="' + profile.title + '"/>';
+							
+								{% if profilegrid.show_title_on_thumbnails %}
+								items += '<h2>' + profile.title + '</h2>';
+								{% endif %}
+
+								items += '</a></li>';
+		                   	});
+							items = $(items);
+
+							items.appendTo( $( '#og-grid' )).addClass('image-loading');
+								
+							Grid.addItems( items );
+							self.data().loadedpages++;
+			            },
+			            error: function(response) {},
+			        });
+				});
 			});
 	</script>
 {% endaddtoblock %}
@@ -20,7 +75,7 @@
 	<div class="row-fluid">
 	    <div class="span12">
 			<ul id="og-grid" class="og-grid">
-	    	{% for profile in profiles %}
+	    	{% for profile in profiles|slice:":12" %}
 					<li>
 						<a href="{{profile.call_to_action_url}}" 
 							data-largesrc="{{profile.detail_image|filerfile}}" 
@@ -30,7 +85,7 @@
 							data-callToActionText="{{profile.call_to_action_text}}" 
 							data-additionallinkslabel="{{profile.additional_links_label}}" 
 							{% for link in profile.links %}
-							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" 
+							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" data-addlinktarget{{forloop.counter}}="{{link.target}}"
 							{% endfor %}>
 							<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
 							{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
@@ -38,6 +93,7 @@
 					</li>
 			{% endfor %}
 			</ul>
+			<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
 		</div>
 	</div>
 </section>
