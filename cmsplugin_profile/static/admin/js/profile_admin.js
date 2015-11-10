@@ -85,8 +85,8 @@
             }
 
             var margin = 20;
-            var _jQuery = window.parent.jQuery || window.parent.$ || (window.parent.django && window.parent.django.jQuery);
-            _jQuery(window.frameElement).css('height', (documentHeight + margin) + 'px');
+            $(window.frameElement).css('height', (documentHeight + margin) + 'px');
+            window.parent.$("body").animate({scrollTop: $(window.frameElement).offset().top}, 'fast');
         };
 
         function store_input_data(prefix) {
@@ -109,9 +109,8 @@
             // Save the whole html, must be saved over the normal input values for images
             $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
                 element = $("#id_" + prefix + "-" + image_name);
-		input_value = element[0].value;
                 html = element.closest("div.profile-image-panel").html();
-                previous_inputs[element.attr("id")] = ["image_html", [html, input_value]];
+                previous_inputs[element.attr("id")] = ["image_html", html];
             });
         }
 
@@ -123,11 +122,7 @@
                 if (type === "checkbox") {
                     element[0].checked = value;
                 } else if (type === "image_html") {
-		    html = value[0];
-		    input_value = value[1]
-                    element.closest("div.profile-image-panel").html(html);
-		    element = $("#" + key);
-		    element[0].value = input_value;
+                    element.closest("div.profile-image-panel").html(value);
                 } else {
                     element[0].value = value;
                 }
@@ -178,12 +173,13 @@
         });
 
         $(document).on('click', '.grid-list .close-profile', function(e) {
+            e.preventDefault();
+
             $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
             $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
             profile = $(this).closest('.ui-widget.inline-related');
-	    is_new = profile.closest('div.new-profile-form').length > 0;
-            if (is_new) {
+            if (profile.attr('id') === "-") {
                 profile.remove();
             } else {
                 restore_input_data();
@@ -194,7 +190,7 @@
         });
 
         $(document).on('click', '.grid-list .done-profile', function(e) {
-            // e.preventDefault();
+            e.preventDefault();
             checkValidLinks();
 
             if (validateProfile($(this).closest('.visible'))) {
@@ -212,21 +208,18 @@
                 profile_preview = $("#" + prefix);
                 new_profile_container = profile_preview.closest(".new-profile-form");
                 if (new_profile_container !== undefined && new_profile_container !== null) {
-		    // Since we move the input fields, they value will be lost so save
-		    // and restore it after
-		    store_input_data(prefix);
                     profile_html = new_profile_container.html();
                     $(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
                     profile_preview = $("#" + prefix);
                     profile_preview[0].className = "ui-widget inline-related complete";
-		    new_profile_container.html("");
-		    restore_input_data();
                 }
 
                 new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
                 profile_preview[0].style.backgroundImage = "url(" + new_image_url + ")";
                 resizeIframe();
+
             }
+
         });
 
         $("#add_new_profile").click(function(e) {
