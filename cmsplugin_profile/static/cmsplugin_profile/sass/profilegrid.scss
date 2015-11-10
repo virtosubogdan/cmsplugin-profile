@@ -32,6 +32,8 @@ $grid: ".og-grid";
                 position: relative;
                 text-align: center;
                 margin: auto;
+                max-width: 100%;
+                max-height: 100%;
             }
             & > a {
                 background: #efefef;

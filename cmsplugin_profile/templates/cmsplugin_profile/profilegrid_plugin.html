@@ -93,7 +93,9 @@
 					</li>
 			{% endfor %}
 			</ul>
-			<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+			{% if profiles|length > 12 %}
+				<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+			{% endif %}
 		</div>
 	</div>
 </section>
