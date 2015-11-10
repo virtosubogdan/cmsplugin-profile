@@ -218,7 +218,8 @@
                 }
 
                 new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
-                profile_preview[0].style.backgroundImage = "url(" + new_image_url + ")";
+                profile_preview.css('background-image', "url(" + new_image_url + ")");
+                profile_preview.css('background-size', "cover");
                 resizeIframe();
 
             }

@@ -403,7 +403,7 @@ var Grid = (function() {
                     largeimageCredit: $itemEl.data('largeimg-credit'),
                     title: $itemEl.data('title'),
                     description: $itemEl.data('description'),
-                    callToActionText: $itemEl.data('calltoactiontext'),
+                    callToActionText: ($itemEl.data('calltoactiontext') ? $itemEl.data('calltoactiontext') : $itemEl.attr('href')),
                     additionalLinksLabel: $itemEl.data('additionallinkslabel'),
                     addLinkTextA: $itemEl.data('addlinktext1'),
                     addLinkUrlA: $itemEl.data('addlinkurl1'),
