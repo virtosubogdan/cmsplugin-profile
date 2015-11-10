@@ -68,7 +68,9 @@ def new_profile(request, profile_nr):
         prefix=u'profile_set-{}'.format(profile_nr),
         empty_permitted=True
     )
-    form.fields['profile_plugin'].widget = HiddenInput()
+    grid_field = form.fields['profile_plugin']
+    grid_field.widget = HiddenInput()
+    grid_field.initial = request.GET.get("profilegrid_id", None)
     return render_to_response(
         'admin/profile/profile_form.html',
         {'form': form},
