@@ -86,6 +86,9 @@
 
             var margin = 20;
             $(window.frameElement).css('height', (documentHeight + margin) + 'px');
+
+            // anchoring on the top of the iframe
+            // the classic version (with <a id="anchor">) does not work here due to iframe
             window.parent.$("body").animate({scrollTop: $(window.frameElement).offset().top}, 'fast');
         };
 
