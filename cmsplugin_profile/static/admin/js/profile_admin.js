@@ -100,7 +100,7 @@
                     value = input[0].checked;
                 } else {
                     type = "value";
-                    value = input.attr("value");
+                    value = input[0].value;
                 }
                 previous_inputs[input.attr("id")] = [type, value];
             });
