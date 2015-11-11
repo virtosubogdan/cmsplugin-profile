@@ -1,27 +1,74 @@
 {% extends "admin/cms/page/plugin_change_form.html" %}
 
 {% block fieldsets %}
-Multiselect will be hidden.
+
 {{ block.super }}
-Selected Profiles:<br>
-{% for selected_profile in adminform.form.selected_profiles %}
-Id: {{ selected_profile.id }}
-<img src="{{ selected_profile.thumbnail_image.url }}"><br>
+<div style="display:none" id="warning_maximum_selection" class="alert alert-warning">You have already selected {{ adminform.form.maximum_selection }} profiles. To select different ones please unselect one first</div>
+
+<div class="inline-group" id="profile_set-group">
+<div class="grid-list ui-sortable" id="profile_set-group-grid">
+	{% for profile, selected in adminform.form.all_profiles %}
+	<div class="ui-widget inline-related ui-sortable-handle {% if profile.thumbnail_image.url %} complete {%endif%}"
+		id="id_profile-{{ profile.id }}"
+		{% if profile.thumbnail_image.url %}style="background: #efefef url('{{ profile.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
+		<div class="profile-item-actions">
+			<a class="edit-profile-item" data-profile-id="{{profile.id}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
+			<div id="change_me-{{profile.id}}">{% if selected %}selected{% else %}unselected{% endif%}</div>
+		</div>
+	</div>
 {% endfor %}
-Available profiles:<br>
-{% for profile in adminform.form.all_profiles %}
-Id: {{ profile.id }}
-<img src="{{ profile.thumbnail_image.url }}"><br>
-{% endfor %}
+</div>
+</div>
 
 
 <script type="text/javascript">
 (function($) {
+	var maximum_selection = {{adminform.form.maximum_selection}};
 	$(document).ready(function() {
 		$("#id_profile_plugin").change(function(e) {
 			$('#profilepromogrid_form').submit()
 		})
-	})
+	});
+
+	function show_maximum_profiles_warning(show) {
+		if(show) {
+			$("#warning_maximum_selection")[0].style.display="block";
+		} else {
+			$("#warning_maximum_selection")[0].style.display="none";
+		}
+	}
+
+	$(document).on('click', '.edit-profile-item', function(e) {
+		e.preventDefault();
+		profile_id = $(this).attr("data-profile-id") + "";
+		change_me_div = $("#change_me-" + $(this).attr("data-profile-id"));
+		input = $("#id_profiles_field");
+		input_value = input[0].value;
+		if (input_value == "") {
+			selected_ids = [];
+		} else {
+			selected_ids = input_value.split(",");
+		}
+		index_of_id = selected_ids.indexOf(profile_id);
+		if (index_of_id === -1) {
+			if (selected_ids.length >= maximum_selection) {
+				show_maximum_profiles_warning(true);
+			} else {
+				selected_ids.push(profile_id);
+				input[0].value = selected_ids.join(",");
+				change_me_div.html("selected");
+				if (selected_ids.length == maximum_selection) {
+					show_maximum_profiles_warning(true);
+				}
+			}
+		} else {
+			selected_ids.splice(index_of_id, 1);
+			input[0].value = selected_ids.join(",");
+			change_me_div.html("unselected");
+			show_maximum_profiles_warning(false);
+		}
+        });
+
 })(jQuery || django.jQuery);
 </script>
 

@@ -61,6 +61,7 @@ class ProfileForm(forms.ModelForm):
             cleaned_data["links"].append((link_index, text, url, open_action))
         if not self.instance.id:
             cleaned_data['not_saved_profile'] = self.instance
+
         return cleaned_data
 
 
@@ -130,8 +131,19 @@ class ProfileGridForm(forms.ModelForm):
         exclude = ()
 
 
+class SelectedProfilesField(forms.Field):
+
+    def to_python(self, value):
+        if not value:
+            return []
+        try:
+            return [int(id_val) for id_val in value.split(",")]
+        except ValueError:
+            raise forms.ValidationError("Invalid list of selected profiles!")
+
+
 class ProfileGridPromoForm(forms.ModelForm):
-    selectable_profiles = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=[])
+    profiles_field = SelectedProfilesField(widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = ProfilePromoGrid
@@ -140,34 +152,44 @@ class ProfileGridPromoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(ProfileGridPromoForm, self).__init__(*args, **kwargs)
-
         if self.instance.id:
             self.selected_profiles = [
                 selected_profile for selected_profile in self.instance.selected_profiles.all()
             ]
-            self.all_profiles = self.instance.profile_plugin.profile_set.all()
+            self.all_profiles = [
+                (profile, profile in self.selected_profiles)
+                for profile in self.instance.profile_plugin.profile_set.all()
+            ]
         else:
             self.selected_profiles = []
             self.all_profiles = []
-            self.fields['selectable_profiles'].required = False
 
-        selectable_profiles = self.fields['selectable_profiles']
-        selectable_profiles.choices = [
-            (profile.id, profile.id)
-            for profile in self.all_profiles
-        ]
-        selectable_profiles.initial = [
-            selected_profile.id
+        profiles_field = self.fields['profiles_field']
+        profiles_field.initial = ','.join([
+            str(selected_profile.id)
             for selected_profile in self.selected_profiles
-        ]
+        ])
         self.fields['profile_plugin'].queryset = ProfileGrid.objects.filter(
             placeholder__page__site_id=self.request.current_page.site_id
         )
+        self.maximum_selection = 3
+
+    def clean(self):
+        cleaned_data = super(ProfileGridPromoForm, self).clean()
+        try:
+            self.old_grid_id = (self.instance.profile_plugin.id
+                                if self.instance.id and self.instance.profile_plugin
+                                else None)
+        except ProfileGrid.DoesNotExist:
+            self.old_grid_id = None
+        return cleaned_data
 
     def save(self, commit=True):
         ret_value = super(ProfileGridPromoForm, self).save(commit=commit)
         self.instance.selectedprofile_set.all().delete()
-        for profile_id in self.cleaned_data['selectable_profiles']:
-            profile = Profile.objects.get(id=int(profile_id))
-            SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
+
+        if self.old_grid_id == self.cleaned_data['profile_plugin'].id:
+            for profile_id in self.cleaned_data['profiles_field']:
+                profile = Profile.objects.get(id=int(profile_id))
+                SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
         return ret_value

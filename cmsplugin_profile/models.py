@@ -13,6 +13,9 @@ class ProfileGrid(CMSPlugin):
     class Meta:
         db_table = 'cmsplugin_profilegrid'
 
+    def __unicode__(self):
+        return 'Profile Grid {}'.format(self.title)
+
 
 class Profile(models.Model):
     profile_plugin = models.ForeignKey(ProfileGrid, null=False, blank=False)
@@ -38,9 +41,13 @@ class Profile(models.Model):
     class Meta:
         order_with_respect_to = 'profile_plugin'
 
+    def __unicode__(self):
+        return 'Profile {}'.format(self.title)
+
     @property
     def links(self):
         return self.profilelink_set.all()
+
 
 class ProfileLink(models.Model):
     profile = models.ForeignKey(Profile, null=False, blank=False)
@@ -59,6 +66,9 @@ class ProfilePromoGrid(CMSPlugin):
 
     class Meta:
         db_table = 'cmsplugin_profilepromogrid'
+
+    def __unicode__(self):
+        return 'Profile Promo {}'.format(self.title)
 
 
 class SelectedProfile(models.Model):

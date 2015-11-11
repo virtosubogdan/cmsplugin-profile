@@ -39,7 +39,6 @@ class ProfileGridPlugin(CMSPluginBase):
 
     @property
     def media(self):
-
         media_obj = super(ProfileGridPlugin, self).media
 
         media_obj.add_css({
@@ -76,10 +75,24 @@ class ProfileGridPromoPlugin(CMSPluginBase):
             'fields': ('profile_plugin', 'title', 'call_to_action_text'),
         }),
         ("Featured Profiles", {
-            'fields': ('selectable_profiles', ),
+            'fields': ('profiles_field', ),
             'description': _(u'Three profiles will...'),
         })
     )
+
+    @property
+    def media(self):
+        media_obj = super(ProfileGridPromoPlugin, self).media
+
+        media_obj.add_css({
+            'all': (
+                static('admin/css/profile_admin.css'), )
+        })
+        media_obj.add_js((
+            static('admin/js/lib/jquery-ui.min.js'),
+        ))
+
+        return media_obj
 
     def get_form(self, request, obj=None, **kwargs):
         form_class = super(ProfileGridPromoPlugin, self).get_form(
