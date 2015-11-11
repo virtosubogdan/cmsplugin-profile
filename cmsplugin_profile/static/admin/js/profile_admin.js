@@ -112,8 +112,9 @@
             // Save the whole html, must be saved over the normal input values for images
             $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
                 element = $("#id_" + prefix + "-" + image_name);
+		input_value = element[0].value;
                 html = element.closest("div.profile-image-panel").html();
-                previous_inputs[element.attr("id")] = ["image_html", html];
+                previous_inputs[element.attr("id")] = ["image_html", [html, input_value]];
             });
         }
 
@@ -125,7 +126,12 @@
                 if (type === "checkbox") {
                     element[0].checked = value;
                 } else if (type === "image_html") {
+                    html = value[0];
                     element.closest("div.profile-image-panel").html(value);
+		    input_value = value[1]
+                    element.closest("div.profile-image-panel").html(html);
+		    element = $("#" + key);
+		    element[0].value = input_value;
                 } else {
                     element[0].value = value;
                 }
@@ -182,8 +188,8 @@
             $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
             profile = $(this).closest('.ui-widget.inline-related');
-            new_profile_container = profile.closest(".new-profile-form");
-            if (new_profile_container != undefined) {
+	    is_new = profile.closest('div.new-profile-form').length > 0;
+            if (is_new) {
                 profile.remove();
             } else {
                 restore_input_data();
@@ -211,11 +217,16 @@
 
                 profile_preview = $("#" + prefix);
                 new_profile_container = profile_preview.closest(".new-profile-form");
-                if (new_profile_container !== undefined && new_profile_container !== null) {
+                if (new_profile_container[0] !== undefined) {
+		    // Since we move the input fields, they value will be lost so save
+		    // and restore it after
+		    store_input_data(prefix);
                     profile_html = new_profile_container.html();
                     $(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
                     profile_preview = $("#" + prefix);
                     profile_preview[0].className = "ui-widget inline-related complete";
+		    new_profile_container.html("");
+		    restore_input_data();
                 }
 
                 new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
