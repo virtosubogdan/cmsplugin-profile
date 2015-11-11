@@ -152,7 +152,20 @@ class ProfileGridPromoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(ProfileGridPromoForm, self).__init__(*args, **kwargs)
-        if self.instance.id:
+
+        self._load_custom_data()
+        self._set_values_for_fields()
+
+    def _load_custom_data(self):
+        self.changed_grid = self._get_changed_grid()
+        if self.changed_grid and not (
+                self.instance.id and self.instance.profile_plugin.id == self.changed_grid.id):
+            self.selected_profiles = []
+            self.all_profiles = [
+                (profile, False)
+                for profile in self.changed_grid.profile_set.all()
+            ]
+        elif self.instance.id:
             self.selected_profiles = [
                 selected_profile for selected_profile in self.instance.selected_profiles.all()
             ]
@@ -163,7 +176,23 @@ class ProfileGridPromoForm(forms.ModelForm):
         else:
             self.selected_profiles = []
             self.all_profiles = []
+        self.maximum_selection = 3
 
+    def _get_changed_grid(self):
+        if not self.request or self.request.method != "GET":
+            return None
+        grid_param = self.request.GET.get("profile_grid", None)
+        if not grid_param:
+            return None
+        try:
+            return ProfileGrid.objects.get(
+                id=grid_param,
+                placeholder__page__site_id=self.request.current_page.site_id
+            )
+        except ProfileGrid.DoesNotExist:
+            return None
+
+    def _set_values_for_fields(self):
         profiles_field = self.fields['profiles_field']
         profiles_field.initial = ','.join([
             str(selected_profile.id)
@@ -172,24 +201,21 @@ class ProfileGridPromoForm(forms.ModelForm):
         self.fields['profile_plugin'].queryset = ProfileGrid.objects.filter(
             placeholder__page__site_id=self.request.current_page.site_id
         )
-        self.maximum_selection = 3
+        if self.changed_grid:
+            # Since form.initial dict takes priority over field.initial value and we
+            # can have initial data on the form because we can have an instance, we
+            # must do things this way.
+            self.initial['profile_plugin'] = self.changed_grid.id
 
     def clean(self):
         cleaned_data = super(ProfileGridPromoForm, self).clean()
-        try:
-            self.old_grid_id = (self.instance.profile_plugin.id
-                                if self.instance.id and self.instance.profile_plugin
-                                else None)
-        except ProfileGrid.DoesNotExist:
-            self.old_grid_id = None
         return cleaned_data
 
     def save(self, commit=True):
         ret_value = super(ProfileGridPromoForm, self).save(commit=commit)
         self.instance.selectedprofile_set.all().delete()
 
-        if self.old_grid_id == self.cleaned_data['profile_plugin'].id:
-            for profile_id in self.cleaned_data['profiles_field']:
-                profile = Profile.objects.get(id=int(profile_id))
-                SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
+        for profile_id in self.cleaned_data['profiles_field']:
+            profile = Profile.objects.get(id=int(profile_id))
+            SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
         return ret_value

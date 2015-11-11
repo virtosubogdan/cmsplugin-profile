@@ -26,7 +26,8 @@
 	var maximum_selection = {{adminform.form.maximum_selection}};
 	$(document).ready(function() {
 		$("#id_profile_plugin").change(function(e) {
-			$('#profilepromogrid_form').submit()
+			grid_id = $("#id_profile_plugin")[0].value;
+			window.location = window.location.pathname + "?profile_grid=" + grid_id;
 		})
 	});
 
