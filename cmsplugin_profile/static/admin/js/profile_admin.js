@@ -182,7 +182,8 @@
             $(this).closest('.grid-list').siblings('.overlay').removeClass('visible');
 
             profile = $(this).closest('.ui-widget.inline-related');
-            if (profile.attr('id') === "-") {
+            new_profile_container = profile.closest(".new-profile-form");
+            if (new_profile_container != undefined) {
                 profile.remove();
             } else {
                 restore_input_data();
