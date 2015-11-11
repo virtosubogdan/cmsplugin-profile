@@ -438,38 +438,42 @@ var Grid = (function() {
 
             var emptyLinks = 0;
             if (eldata.addLinkTextA) {
+                this.$addLinkA.show();
                 this.$addLinkA.text(eldata.addLinkTextA);
                 this.$addLinkA.attr('href', eldata.addLinkUrlA);
                 this.$addLinkA.attr('target', eldata.addLinkTargetA);
             } else {
-                this.$addLinkA.empty();
+                this.$addLinkA.hide();
                 emptyLinks++;
             }
 
             if (eldata.addLinkTextB) {
+                this.$addLinkB.show();
                 this.$addLinkB.text(eldata.addLinkTextB);
                 this.$addLinkB.attr('href', eldata.addLinkUrlB);
-                this.$addLinkA.attr('target', eldata.addLinkTargetB);
+                this.$addLinkB.attr('target', eldata.addLinkTargetB);
             } else {
-                this.$addLinkB.empty();
+                this.$addLinkB.hide();
                 emptyLinks++;
             }
 
             if (eldata.addLinkTextC) {
+                this.$addLinkC.show();
                 this.$addLinkC.text(eldata.addLinkTextC);
                 this.$addLinkC.attr('href', eldata.addLinkUrlC);
-                this.$addLinkA.attr('target', eldata.addLinkTargetC);
+                this.$addLinkC.attr('target', eldata.addLinkTargetC);
             } else {
-                this.$addLinkC.empty();
+                this.$addLinkC.hide();
                 emptyLinks++;
             }
 
             if (eldata.addLinkTextD) {
+                this.$addLinkD.show();
                 this.$addLinkD.text(eldata.addLinkTextD);
                 this.$addLinkD.attr('href', eldata.addLinkUrlD);
-                this.$addLinkA.attr('target', eldata.addLinkTargetD);
+                this.$addLinkD.attr('target', eldata.addLinkTargetD);
             } else {
-                this.$addLinkD.empty();
+                this.$addLinkD.hide();
                 emptyLinks++;
             }
             if (emptyLinks == 4 && !eldata.additionalLinksLabel) {

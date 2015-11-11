@@ -234,8 +234,8 @@
                 }
 
                 new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
-                profile_preview.css('background-image', "url(" + new_image_url + ")");
-                profile_preview.css('background-size', "cover");
+                profile_preview.css({'background-color': "##efefef", 'background-image': "url(" + new_image_url + ")", "background-repeat": "no-repeat", "background-position": "center"});
+                profile_preview.css('background-size', "contain");
                 resizeIframe();
 
             }
