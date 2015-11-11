@@ -5,10 +5,25 @@ from cms.models import CMSPlugin
 from filer.fields.image import FilerImageField
 
 
+LOAD_MORE_BUTTON = "load_mode_button"
+LOAD_MORE_SCROLL = "load_mode_scroll"
+GRID_LOADING_TYPE_CHOICES = (
+    (LOAD_MORE_BUTTON, _("BUTTON")),
+    (LOAD_MORE_SCROLL, _("SCROLL")),
+)
+
+
 class ProfileGrid(CMSPlugin):
     title = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True, max_length=400, default="")
     show_title_on_thumbnails = models.BooleanField(default=False)
+    load_mode_type = models.CharField(
+        _("Loading type"), max_length=20,
+        choices=GRID_LOADING_TYPE_CHOICES,
+        help_text=_("Button loading will load more profiles when the user clicks the button."
+                    "Use this when the grid will be in a page with other elements. "
+                    "Scroll loaging will load more profiles when the user scrolls the page."
+                    "Use this when the grid will be alone on the page."))
 
     class Meta:
         db_table = 'cmsplugin_profilegrid'
