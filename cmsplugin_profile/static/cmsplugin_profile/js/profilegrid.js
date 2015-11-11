@@ -424,8 +424,10 @@ var Grid = (function() {
             if (eldata.href.length) {
                 this.$href.attr('href', eldata.href);
                 this.$href.text(eldata.callToActionText);
+                this.$href.show();
             } else {
-                this.$href.remove();
+                this.$href.empty();
+                this.$href.hide();
             }
             if (eldata.largeimageCredit) {
                 this.$fullimageCredit.show().text(eldata.largeimageCredit);
@@ -440,7 +442,7 @@ var Grid = (function() {
                 this.$addLinkA.attr('href', eldata.addLinkUrlA);
                 this.$addLinkA.attr('target', eldata.addLinkTargetA);
             } else {
-                this.$addLinkA.remove();
+                this.$addLinkA.empty();
                 emptyLinks++;
             }
 
@@ -449,7 +451,7 @@ var Grid = (function() {
                 this.$addLinkB.attr('href', eldata.addLinkUrlB);
                 this.$addLinkA.attr('target', eldata.addLinkTargetB);
             } else {
-                this.$addLinkB.remove();
+                this.$addLinkB.empty();
                 emptyLinks++;
             }
 
@@ -458,7 +460,7 @@ var Grid = (function() {
                 this.$addLinkC.attr('href', eldata.addLinkUrlC);
                 this.$addLinkA.attr('target', eldata.addLinkTargetC);
             } else {
-                this.$addLinkC.remove();
+                this.$addLinkC.empty();
                 emptyLinks++;
             }
 
@@ -467,11 +469,15 @@ var Grid = (function() {
                 this.$addLinkD.attr('href', eldata.addLinkUrlD);
                 this.$addLinkA.attr('target', eldata.addLinkTargetD);
             } else {
-                this.$addLinkD.remove();
+                this.$addLinkD.empty();
                 emptyLinks++;
             }
             if (emptyLinks == 4 && !eldata.additionalLinksLabel) {
-                this.$bottomDetails.remove();
+                this.$bottomDetails.hide();
+            }
+            else {
+                this.$bottomDetails.show();
+
             }
 
             var self = this;
