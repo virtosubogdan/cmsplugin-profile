@@ -54,7 +54,7 @@ class ProfileForm(forms.ModelForm):
                 raise ValidationError("Link text is mandatory!")
             if not url:
                 raise ValidationError("Link URL is mandatory!")
-            if not open_action or open_action not in ("blank", "parent"):
+            if not open_action or open_action not in ("blank", "same window"):
                 raise ValidationError("Please select a target for the link!")
             if "links" not in cleaned_data:
                 cleaned_data["links"] = []

@@ -71,8 +71,10 @@
             return valid;
         }
 
-        function resizeIframe(toResizeTo) {
+        function resizeIframe(toResizeTo, scrollToTop) {
             var insideIframe = (window.location != window.parent.location) ? true : false;
+            scrollToTop = (scrollToTop == false) ? false : true;
+
             if (!insideIframe) {
                 return;
             }
@@ -89,7 +91,9 @@
 
             // anchoring on the top of the iframe
             // the classic version (with <a id="anchor">) does not work here due to iframe
-            window.parent.$("body").animate({scrollTop: $(window.frameElement).offset().top}, 'fast');
+            if (scrollToTop) {
+                window.parent.$("body").animate({scrollTop: $(window.frameElement).offset().top}, 'fast');
+            }
         };
 
         function store_input_data(prefix) {
@@ -262,7 +266,7 @@
                     $(this).closest('p')[0].style.display = "none";
                 }
             }
-            resizeIframe($(this).closest('.visible'));
+            resizeIframe($(this).closest('.visible'), false);
         });
     });
 })(jQuery);
