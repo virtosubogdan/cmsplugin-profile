@@ -35,7 +35,7 @@ class ProfileGrid(CMSPlugin):
 
 class Profile(models.Model):
     profile_plugin = models.ForeignKey(ProfileGrid, null=False, blank=False)
-    title = models.CharField(null=True, blank=True, max_length=200)
+    title = models.CharField(null=True, blank=True, max_length=60)
     description = models.TextField(max_length=395)
     call_to_action_text = models.CharField(null=True, blank=True, max_length=30)
     call_to_action_url = models.CharField(null=True, blank=True, max_length=200)
