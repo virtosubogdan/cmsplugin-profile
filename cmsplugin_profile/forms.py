@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from cms_blogger.widgets import ToggleWidget
 
 from .models import Profile, ProfileLink, ProfileGrid, SelectedProfile, ProfilePromoGrid
-from .settings import MAX_PROFILE_LINKS
+from .settings import MAX_PROFILE_LINKS, MAX_PROMO_PROFILES
 
 
 class ProfileForm(forms.ModelForm):
@@ -16,7 +16,10 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self._customize_image_widgets()
+        self._make_link_data()
 
+    def _customize_image_widgets(self):
         img_widgets = [self.fields['thumbnail_image'].widget, self.fields['detail_image'].widget]
         for img_widget in img_widgets:
             img_widget.can_delete_related = False
@@ -26,6 +29,7 @@ class ProfileForm(forms.ModelForm):
             img_widget.search_label = "Upload from Filer"
             img_widget.remove_label = "Remove"
 
+    def _make_link_data(self):
         if self.instance:
             self.links = [(index+1, link)
                           for index, link in enumerate(self.instance.profilelink_set.all())]
@@ -97,28 +101,6 @@ class ProfileFormSet(forms.models.BaseInlineFormSet):
         return result
 
 
-class SelectedProfileForm(forms.ModelForm):
-
-    class Meta:
-        model = SelectedProfile
-        exclude = ()
-
-
-class SelectedProfileFormSet(forms.models.BaseInlineFormSet):
-
-    def __init__(self, *args, **kwargs):
-        super(SelectedProfileFormSet, self).__init__(*args, **kwargs)
-        if self.instance:
-            self.selected_profiles = [sel.profile for sel in self.instance.selected_profiles.all()]
-            self.available_profiles = [profile
-                                       for profile
-                                       in self.instance.profile_plugin.profile_set.all()
-                                       if profile not in self.selected_profiles]
-        else:
-            self.available_profiles = []
-            self.selected_profiles = []
-
-
 class ProfileGridForm(forms.ModelForm):
     show_title_on_thumbnails = forms.BooleanField(
         label="Show title on thumbnails",
@@ -176,7 +158,7 @@ class ProfileGridPromoForm(forms.ModelForm):
         else:
             self.selected_profiles = []
             self.all_profiles = []
-        self.maximum_selection = 3
+        self.maximum_selection = MAX_PROMO_PROFILES
 
     def _get_changed_grid(self):
         if not self.request or self.request.method != "GET":
