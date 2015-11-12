@@ -5,6 +5,7 @@
         initial_show_title = $("#id_show_title_on_thumbnails")[0].checked;
         profile_changed = false;
 	profile_deleted = false;
+        var form_id = $('#profilegrid_form');
 
         function update_show_unsaved_warning() {
             current_title = $("#id_title")[0].value;
@@ -73,6 +74,17 @@
             return valid;
         }
 
+        function setLimiter() {
+            form_id.find('input[type="text"], textarea').each(function () {    
+                $(this).inputlimiter({
+                    remText: '%n character%s left. ',
+                    limitText: '%n character%s limit.',
+                    limitTextShow: false,
+                    remTextHideOnBlur: false,
+                });
+            });
+        }
+
         function resizeIframe(toResizeTo, scrollToTop) {
             var insideIframe = (window.location != window.parent.location) ? true : false;
             scrollToTop = (scrollToTop == false) ? false : true;
@@ -118,7 +130,7 @@
             // Save the whole html, must be saved over the normal input values for images
             $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
                 element = $("#id_" + prefix + "-" + image_name);
-		input_value = element[0].value;
+		        input_value = element[0].value;
                 html = element.closest("div.profile-image-panel").html();
                 previous_inputs[element.attr("id")] = ["image_html", [html, input_value]];
             });
@@ -143,7 +155,9 @@
                 }
             });
         }
-
+        function init() {
+            setLimiter();
+        }
         previous_inputs = {};
 
         $(document).on("change", "#id_title", function(e) {
@@ -288,5 +302,8 @@
             }
             resizeIframe($(this).closest('.visible'), false);
         });
+
+        // init all functions
+        init();
     });
 })(jQuery);

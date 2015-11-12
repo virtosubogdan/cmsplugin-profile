@@ -94,7 +94,19 @@
 			{% endfor %}
 			</ul>
 			{% if profiles|length > 12 %}
-				<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+				{% if profilegrid.load_mode_type == 'load_mode_button' %}
+					<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+				{% else %}
+					<a id="og-additems" href="#" data-loadedpages="1" style="display: none;"></a>
+					{% addtoblock "js" %}
+						<script type="text/javascript">
+						$(document).ready(function(){
+							// console.log($('#og-additems').offset().top);
+							// console.log(window.scrollY);
+						});
+						</script>
+					{% endaddtoblock %}
+				{% endif %}
 			{% endif %}
 		</div>
 	</div>
