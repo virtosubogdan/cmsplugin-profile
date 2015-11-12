@@ -68,7 +68,11 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         }),
         ("Featured Profiles", {
             'fields': ('profiles_field', ),
-            'description': _(u'You can select at most {} profiles'.format(MAX_PROMO_PROFILES)),
+            'description': 
+                _(u"{} profiles will be featured in this promo, marked by the" 
+                " border around the thumbnails. Click on a thumbnail to add"
+                " or remove it from the group of featured profiles."
+                .format(MAX_PROMO_PROFILES)),
         })
     )
 
@@ -82,6 +86,7 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         })
         media_obj.add_js((
             static('admin/js/lib/jquery-ui.min.js'),
+            static('admin/js/lib/jquery.inputlimiter.1.3.1.min.js'),
         ))
 
         return media_obj
