@@ -4,13 +4,15 @@
         initial_description = $("#id_description")[0].value;
         initial_show_title = $("#id_show_title_on_thumbnails")[0].checked;
         profile_changed = false;
+	profile_deleted = false;
 
         function update_show_unsaved_warning() {
             current_title = $("#id_title")[0].value;
             current_description = $("#id_description")[0].value;
             current_show_title = $("#id_show_title_on_thumbnails")[0].checked;
 
-            has_unsaved_changes = profile_changed || current_title != initial_title ||
+            has_unsaved_changes = profile_changed || profile_deleted ||
+		current_title != initial_title ||
                 current_description != initial_description ||
                 current_show_title != initial_show_title;
 
@@ -182,7 +184,14 @@
             profile_id_prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
             profile_div = $('#' + profile_id_prefix)[0];
             profile_div.style['display'] = "none";
-            $('#id_' + profile_id_prefix + '-DELETE')[0].checked = true;
+            delete_input = $('#id_' + profile_id_prefix + '-DELETE')[0];
+	    if (delete_input === undefined) {
+		profile_div.remove();
+	    } else {
+		delete_input.checked = true;
+	    }
+	    profile_deleted = true;
+	    update_show_unsaved_warning();
         });
 
         $(document).on('click', '.grid-list .close-profile', function(e) {
