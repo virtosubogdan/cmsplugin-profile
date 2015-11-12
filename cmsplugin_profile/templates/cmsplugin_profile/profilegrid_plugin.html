@@ -21,7 +21,7 @@
 		                url: url,
 		                success: function(response) {
 		                	if (!response.has_more) {
-		                   		self.hide();
+		                   		self.remove();
 		                   	}
 
 		                   	var profiles = response.profiles;
@@ -58,6 +58,8 @@
 								
 							Grid.addItems( items );
 							self.data().loadedpages++;
+							$(window).data('ajaxready', true);
+
 			            },
 			            error: function(response) {},
 			        });
@@ -97,12 +99,43 @@
 				{% if profilegrid.load_mode_type == 'load_mode_button' %}
 					<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
 				{% else %}
-					<a id="og-additems" href="#" data-loadedpages="1" style="display: none;"></a>
+					<a id="og-additems" href="#" data-loadedpages="1" style="visibility:hidden;"></a>
 					{% addtoblock "js" %}
 						<script type="text/javascript">
+							$.fn.isOnScreen = function(bufferHeight){
+
+							    var win = $(window);
+
+							    var viewport = {
+							        top : win.scrollTop(),
+							    };
+							    viewport.bottom = viewport.top + win.height() + bufferHeight;
+
+							    var bounds = this.offset();
+							    bounds.bottom = bounds.top + this.outerHeight();
+
+							    return (!(viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+							};
 						$(document).ready(function(){
-							// console.log($('#og-additems').offset().top);
-							// console.log(window.scrollY);
+							$(window).scroll(function () {
+								if ($(window).data('ajaxready') === false) {
+        							return;
+        						}
+
+								var button = $('#og-additems');
+								// we set a buffer so that the user does not see the loading effect
+								var bufferHeight = 300;
+								
+								if ( button.length ) {
+
+									if (button.isOnScreen(bufferHeight)) {
+										$(window).data('ajaxready', false);
+										button.trigger("click");
+
+									}
+								}
+							})
 						});
 						</script>
 					{% endaddtoblock %}
