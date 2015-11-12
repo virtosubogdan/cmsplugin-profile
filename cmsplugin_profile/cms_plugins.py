@@ -1,17 +1,15 @@
 from django.contrib import admin
-from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.admin.templatetags.admin_static import static
+from django.utils.translation import ugettext_lazy as _
 
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
 from .forms import (
-    ProfileForm, ProfileFormSet, SelectedProfileForm, SelectedProfileFormSet,
-    ProfileGridPromoForm, ProfileGridForm
+    ProfileForm, ProfileFormSet, ProfileGridPromoForm, ProfileGridForm
 )
-from .models import Profile, ProfileGrid, SelectedProfile, ProfilePromoGrid
-from .settings import INITIAL_DISPLAYED_PROFILES
+from .models import Profile, ProfileGrid, ProfilePromoGrid
+from .settings import INITIAL_DISPLAYED_PROFILES, MAX_PROMO_PROFILES
 
 
 class ProfileInline(admin.options.InlineModelAdmin):
@@ -56,13 +54,6 @@ class ProfileGridPlugin(CMSPluginBase):
 plugin_pool.register_plugin(ProfileGridPlugin)
 
 
-class SelectedProfileInline(admin.options.InlineModelAdmin):
-    model = SelectedProfile
-    template = "admin/profile/selectedprofiles_inline.html"
-    form = SelectedProfileForm
-    formset = SelectedProfileFormSet
-
-
 class ProfileGridPromoPlugin(CMSPluginBase):
     model = ProfilePromoGrid
     name = "Profile Grid Promo"
@@ -77,7 +68,7 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         }),
         ("Featured Profiles", {
             'fields': ('profiles_field', ),
-            'description': _(u'Three profiles will...'),
+            'description': _(u'You can select at most %s profiles'.format(MAX_PROMO_PROFILES)),
         })
     )
 
