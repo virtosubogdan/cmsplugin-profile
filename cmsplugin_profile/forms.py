@@ -30,6 +30,8 @@ class ProfileForm(forms.ModelForm):
             img_widget.remove_label = "Remove"
 
     def _make_link_data(self):
+        self.links_text_max_length = ProfileLink._meta.get_field("text").max_length
+        self.links_url_max_length = ProfileLink._meta.get_field("url").max_length
         if self.instance:
             self.links = [(index+1, link)
                           for index, link in enumerate(self.instance.profilelink_set.all())]
