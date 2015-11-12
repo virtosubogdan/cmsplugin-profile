@@ -18,7 +18,7 @@ class ProfileGrid(CMSPlugin):
     description = models.TextField(null=True, blank=True, max_length=400, default="")
     show_title_on_thumbnails = models.BooleanField(default=False)
     load_mode_type = models.CharField(
-        _("Loading type"), max_length=20,
+        _("Pagination type"), max_length=20,
         choices=GRID_LOADING_TYPE_CHOICES,
         help_text=_("Button loading will load more profiles when the user clicks the button."
                     "Use this when the grid will be in a page with other elements. "
