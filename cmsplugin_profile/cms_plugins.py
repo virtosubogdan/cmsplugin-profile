@@ -68,7 +68,7 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         }),
         ("Featured Profiles", {
             'fields': ('profiles_field', ),
-            'description': _(u'You can select at most %s profiles'.format(MAX_PROMO_PROFILES)),
+            'description': _(u'You can select at most {} profiles'.format(MAX_PROMO_PROFILES)),
         })
     )
 

@@ -167,7 +167,6 @@
                     element[0].checked = value;
                 } else if (type === "image_html") {
                     html = value[0];
-                    element.closest("div.profile-image-panel").html(value);
 		    input_value = value[1]
                     element.closest("div.profile-image-panel").html(html);
 		    element = $("#" + key);
