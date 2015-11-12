@@ -1,0 +1,89 @@
+{% load sekizai_tags filertags %}
+{% addtoblock "css" %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_profile/css/profilegrid.css" />
+{% endaddtoblock %}
+{% addtoblock "js" %}
+	<script src="{{ STATIC_URL }}cmsplugin_profile/js/profilegrid.js"></script>
+	<script type="text/javascript">
+			$(document).ready(function(){
+				Grid.init();
+			});
+	</script>
+{% endaddtoblock %}
+<section class="pbs-profile-grid">
+	<div class="row-fluid">
+	    <div class="span8">
+	  		<h1>{{ profilegrid.title|escapejs }}</h1>
+	  		<p class="profile-grid-descr">{{ profilegrid.description }}</p>
+	    </div>
+  	</div>
+	<div class="row-fluid">
+	    <div class="span12">
+			<ul id="og-grid" class="og-grid">
+	    	{% for profile in profiles|slice:":12" %}
+					<li>
+						<a href="{{profile.call_to_action_url}}" 
+							data-largesrc="{{profile.detail_image|filerfile}}" 
+							data-largeimg-credit="{{profile.image_credit}}"
+							data-title="{{profile.title}}" 
+							data-description="{{profile.description}}" 
+							data-callToActionText="{{profile.call_to_action_text}}" 
+							data-additionallinkslabel="{{profile.additional_links_label}}" 
+							{% for link in profile.links %}
+							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" data-addlinktarget{{forloop.counter}}="{{link.target}}"
+							{% endfor %}>
+							<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
+							{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
+						</a>
+					</li>
+			{% endfor %}
+			</ul>
+			{% if profiles|length > 12 %}
+				{% if profilegrid.load_mode_type == 'load_mode_button' %}
+					<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+				{% else %}
+					<a id="og-additems" href="#" data-loadedpages="1" style="visibility:hidden;"></a>
+					{% addtoblock "js" %}
+						<script type="text/javascript">
+							$.fn.isOnScreen = function(bufferHeight){
+
+							    var win = $(window);
+
+							    var viewport = {
+							        top : win.scrollTop(),
+							    };
+							    viewport.bottom = viewport.top + win.height() + bufferHeight;
+
+							    var bounds = this.offset();
+							    bounds.bottom = bounds.top + this.outerHeight();
+
+							    return (!(viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+
+							};
+						$(document).ready(function(){
+							$(window).scroll(function () {
+								if ($(window).data('ajaxready') === false) {
+        							return;
+        						}
+
+								var button = $('#og-additems');
+								// we set a buffer so that the user does not see the loading effect
+								var bufferHeight = 300;
+								
+								if ( button.length ) {
+
+									if (button.isOnScreen(bufferHeight)) {
+										$(window).data('ajaxready', false);
+										button.trigger("click");
+
+									}
+								}
+							})
+						});
+						</script>
+					{% endaddtoblock %}
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</section>

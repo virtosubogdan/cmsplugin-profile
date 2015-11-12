@@ -140,8 +140,6 @@ class ProfileGridPromoForm(forms.ModelForm):
         self._load_custom_data()
         self._set_values_for_fields()
 
-        self.fields['profiles_field'].widget.style = "hidden"
-
     def _load_custom_data(self):
         self.changed_grid = self._get_changed_grid()
         if self.changed_grid and not (

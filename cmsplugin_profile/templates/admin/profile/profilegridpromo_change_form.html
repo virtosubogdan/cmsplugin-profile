@@ -3,7 +3,7 @@
 {% block fieldsets %}
 
 {{ block.super }}
-<div id="warning_maximum_selection" class="alert alert-warning">Only {{ adminform.form.maximum_selection }} profiles can be included in the promo, so deselect a profile if you are having trouble selecting one.</div>
+<div id="warning_maximum_selection" class="alert alert-success"> {{ adminform.form.maximum_selection }} featured profiles left.</div>
 
 <div class="inline-group" id="profile_set-group">
 <div class="grid-list ui-sortable" id="profile_set-group-grid">
@@ -12,10 +12,10 @@
 		id="id_profile-{{ profile.id }}"
 		{% if profile.thumbnail_image.url %}style="background: #efefef url('{{ profile.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
 		<div class="profile-item-actions">
-			<a class="select-profile-item" data-profile-id="{{profile.id}}" href="#"><span class="inline-edit ace-icon fa fa-check" unselectable="on"></span></a>
+			<a class="select-profile-item {% if selected %}selected{% endif %}" data-profile-id="{{profile.id}}" href="#"><span class="inline-edit ace-icon fa fa-check" unselectable="on"></span></a>
 		</div>
 	</div>
-{% endfor %}
+	{% endfor %}
 </div>
 </div>
 
@@ -27,17 +27,47 @@
 		$("#id_profile_plugin").change(function(e) {
 			grid_id = $("#id_profile_plugin")[0].value;
 			window.location = window.location.pathname + "?profile_grid=" + grid_id;
-		})
+		});
+		togglePromoProfile();
 	});
 
-	function show_maximum_profiles_warning(show) {
+	function show_maximum_profiles_warning(show, number) {
 		if(show) {
-			$("#warning_maximum_selection").html('You have already selected {{ adminform.form.maximum_selection }} profiles. Deselect a profile if you want to select a different one.');
+			$("#warning_maximum_selection").html('<strong>Promo grid complete!</strong> Deselect a profile if you want to select a different one.');
 		} else {
-			$("#warning_maximum_selection").html('Only {{ adminform.form.maximum_selection }} profiles can be included in the promo, so deselect a profile if you are having trouble selecting one.');
+			var canSelect = {{ adminform.form.maximum_selection }} - number;
+			$("#warning_maximum_selection").html(canSelect +' featured profiles left.');
 		}
 	}
+	function togglePromoProfile() {
 
+		profile_id = $(this).attr("data-profile-id") + "";
+		input = $("#id_profiles_field");
+		input_value = input[0].value;
+		if (input_value == "") {
+			selected_ids = [];
+		} else {
+			selected_ids = input_value.split(",");
+		}
+		index_of_id = selected_ids.indexOf(profile_id);
+		if (index_of_id === -1) {
+			if (selected_ids.length >= maximum_selection) {
+				show_maximum_profiles_warning(true);
+				$('.select-profile-item:not(.selected)').addClass('disabled');
+			} else {
+				selected_ids.push(profile_id);
+				$(this).addClass("selected");
+				if (selected_ids.length == maximum_selection) {
+					show_maximum_profiles_warning(true);
+					$('.select-profile-item:not(.selected)').addClass('disabled');
+				}
+			}
+		} else {
+			$('.select-profile-item:not(.selected)').removeClass('disabled');
+			$(this).removeClass("selected");
+			show_maximum_profiles_warning(false, selected_ids.length);
+		}
+	}
 	$(document).on('click', '.select-profile-item', function(e) {
 		e.preventDefault();
 		profile_id = $(this).attr("data-profile-id") + "";
@@ -61,14 +91,17 @@
 					show_maximum_profiles_warning(true);
 					$('.select-profile-item:not(.selected)').addClass('disabled');
 				}
+				else {
+					show_maximum_profiles_warning(false, selected_ids.length );
+				}
 			}
 		} else {
 			selected_ids.splice(index_of_id, 1);
 			input[0].value = selected_ids.join(",");
 			$('.select-profile-item:not(.selected)').removeClass('disabled');
 			$(this).removeClass("selected");
-			show_maximum_profiles_warning(false);
-		}
+			show_maximum_profiles_warning(false, selected_ids.length );
+		}		
     });
 	$('#profilepromogrid_form').find('input[type="text"]').each(function () {
         $(this).inputlimiter({
