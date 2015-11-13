@@ -4,23 +4,23 @@
         initial_description = $("#id_description")[0].value;
         initial_show_title = $("#id_show_title_on_thumbnails")[0].checked;
         profile_added = false;
-	profile_deleted = false;
+        profile_deleted = false;
         var form_id = $('#profilegrid_form');
-	all_profiles_initial_data = {}; // profile-prefix -> custom-profile-data
-	all_profiles_changes_flag = {}; // profile-prefix -> flag if profile has changes
-	current_profile_value_before_edit = {}; // input-id -> [input_type, saved_custom_data]
+        all_profiles_initial_data = {}; // profile-prefix -> custom-profile-data
+        all_profiles_changes_flag = {}; // profile-prefix -> flag if profile has changes
+        current_profile_value_before_edit = {}; // input-id -> [input_type, saved_custom_data]
 
-	function clear_data_for_profile(profile_prefix) {
-	    delete all_profiles_changes_flag[profile_prefix];
-	    delete all_profiles_initial_data[profile_prefix];
-	}
+        function clear_data_for_profile(profile_prefix) {
+            delete all_profiles_changes_flag[profile_prefix];
+            delete all_profiles_initial_data[profile_prefix];
+        }
 
-	function update_changed_status_for_profile(profile_prefix) {
-	    initial_data = all_profiles_initial_data[profile_prefix];
-	    current_data = store_input_data(profile_prefix);
-	    has_changed = profile_has_changes(initial_data, current_data);
-	    all_profiles_changes_flag[profile_prefix] = has_changed;
-	}
+        function update_changed_status_for_profile(profile_prefix) {
+            initial_data = all_profiles_initial_data[profile_prefix];
+            current_data = store_input_data(profile_prefix);
+            has_changed = profile_has_changes(initial_data, current_data);
+            all_profiles_changes_flag[profile_prefix] = has_changed;
+        }
 
         function update_show_unsaved_warning() {
             current_title = $("#id_title")[0].value;
@@ -28,10 +28,10 @@
             current_show_title = $("#id_show_title_on_thumbnails")[0].checked;
 
             has_unsaved_changes = profile_added || profile_deleted ||
-		current_title != initial_title ||
+                current_title != initial_title ||
                 current_description != initial_description ||
                 current_show_title != initial_show_title ||
-		profiles_have_changes();
+                profiles_have_changes();
 
             $("#warning_unsaved")[0].style.display = has_unsaved_changes ? "block" : "none";
         }
@@ -91,7 +91,7 @@
         }
 
         function setLimiter() {
-            form_id.find('input[type="text"], textarea').each(function () {
+            form_id.find('input[type="text"], textarea').each(function() {
                 $(this).inputlimiter({
                     remText: '%n character%s left. ',
                     limitText: '%n character%s limit.',
@@ -122,13 +122,15 @@
             // anchoring on the top of the iframe
             // the classic version (with <a id="anchor">) does not work here due to iframe
             if (scrollToTop) {
-                window.parent.$("body").animate({scrollTop: $(window.frameElement).offset().top}, 'fast');
+                window.parent.$("body").animate({
+                    scrollTop: $(window.frameElement).offset().top
+                }, 'fast');
             }
         };
 
         function store_input_data(prefix) {
-	    // Stores all the input data for a profile in a custom format.
-	    data = {};
+            // Stores all the input data for a profile in a custom format.
+            data = {};
 
             $('input[name^="' + prefix + '"]').each(function(index, e) {
                 input = $(this);
@@ -149,16 +151,16 @@
             // Save the whole html, must be saved over the normal input values for images
             $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
                 element = $("#id_" + prefix + "-" + image_name);
-		        input_value = element[0].value;
+                input_value = element[0].value;
                 html = element.closest("div.profile-image-panel").html();
                 data[element.attr("id")] = ["image_html", [html, input_value]];
             });
 
-	    return data;
+            return data;
         }
 
         function restore_input_data(inputs_data) {
-	    // Restore the input data from a custom format.
+            // Restore the input data from a custom format.
             $.each(inputs_data, function(key, data) {
                 type = data[0];
                 value = data[1];
@@ -167,49 +169,49 @@
                     element[0].checked = value;
                 } else if (type === "image_html") {
                     html = value[0];
-		    input_value = value[1]
+                    input_value = value[1]
                     element.closest("div.profile-image-panel").html(html);
-		    element = $("#" + key);
-		    element[0].value = input_value;
+                    element = $("#" + key);
+                    element[0].value = input_value;
                 } else {
                     element[0].value = value;
                 }
             });
         }
 
-	function profile_has_changes(initial_data, current_data) {
-	    profile_changed = false;
-	    $.each(initial_data, function(input_id, initial_full_val) {
-		current_full_val = current_data[input_id];
+        function profile_has_changes(initial_data, current_data) {
+            profile_changed = false;
+            $.each(initial_data, function(input_id, initial_full_val) {
+                current_full_val = current_data[input_id];
 
-		input_type = initial_full_val[0];
-		initial_val = initial_full_val[1];
-		current_val = current_full_val[1];
+                input_type = initial_full_val[0];
+                initial_val = initial_full_val[1];
+                current_val = current_full_val[1];
 
-		if (input_type === "image_html") {
-		    initial_id = initial_val[1];
-		    current_id = current_val[1];
-		    if (initial_id != current_id) {
-			profile_changed = true;
-		    }
-		} else {
-		    if (initial_val != current_val) {
-			profile_changed = true;
-		    }
-		}
-	    });
-	    return profile_changed;
-	}
+                if (input_type === "image_html") {
+                    initial_id = initial_val[1];
+                    current_id = current_val[1];
+                    if (initial_id != current_id) {
+                        profile_changed = true;
+                    }
+                } else {
+                    if (initial_val != current_val) {
+                        profile_changed = true;
+                    }
+                }
+            });
+            return profile_changed;
+        }
 
-	function profiles_have_changes() {
-	    changes_exist = false;
-	    $.each(all_profiles_changes_flag, function(profile_prefix, changed_flag) {
-		if (changed_flag) {
-		    changes_exist = true;
-		}
-	    });
-	    return changes_exist;
-	}
+        function profiles_have_changes() {
+            changes_exist = false;
+            $.each(all_profiles_changes_flag, function(profile_prefix, changed_flag) {
+                if (changed_flag) {
+                    changes_exist = true;
+                }
+            });
+            return changes_exist;
+        }
 
         function init() {
             setLimiter();
@@ -243,10 +245,10 @@
             $(this).closest('.grid-list').siblings('.overlay').addClass('visible');
 
             prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
-            current_profile_value_before_edit = store_input_data(prefix);
-	    if (all_profiles_initial_data[prefix] === undefined) {
-		all_profiles_initial_data[prefix] = current_profile_value_before_edit;
-	    }
+            current_profile_value_before_edit = p(prefix);
+            if (all_profiles_initial_data[prefix] === undefined) {
+                all_profiles_initial_data[prefix] = current_profile_value_before_edit;
+            }
 
             resizeIframe($('.visible'));
         });
@@ -259,15 +261,15 @@
             profile_div.style['display'] = "none";
 
             delete_input = $('#id_' + profile_prefix + '-DELETE')[0];
-	    if (delete_input === undefined) {
-		profile_div.remove();
-	    } else {
-		delete_input.checked = true;
-	    }
-	    clear_data_for_profile(profile_prefix);
-	    profile_deleted = true;
+            if (delete_input === undefined) {
+                profile_div.remove();
+            } else {
+                delete_input.checked = true;
+            }
+            clear_data_for_profile(profile_prefix);
+            profile_deleted = true;
 
-	    update_show_unsaved_warning();
+            update_show_unsaved_warning();
         });
 
         $(document).on('click', '.grid-list .close-profile', function(e) {
@@ -278,7 +280,7 @@
 
             profile_prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
             profile = $(this).closest('.ui-widget.inline-related');
-	    is_new = profile.closest('div.new-profile-form').length > 0;
+            is_new = profile.closest('div.new-profile-form').length > 0;
             if (is_new) {
                 profile.remove();
             } else {
@@ -301,25 +303,30 @@
                 profile_preview = $("#" + prefix);
                 new_profile_container = profile_preview.closest(".new-profile-form");
                 if (new_profile_container[0] !== undefined) {
-		    // Since we move the input fields, they value will be lost so save
-		    // and restore it after
-		    new_profile_data = store_input_data(prefix);
+                    // Since we move the input fields, they value will be lost so save
+                    // and restore it after
+                    new_profile_data = store_input_data(prefix);
                     profile_html = new_profile_container.html();
                     $(profile_html).insertBefore($(".ui-widget.inline-related.empty-form"));
                     profile_preview = $("#" + prefix);
                     profile_preview[0].className = "ui-widget inline-related complete";
-		    new_profile_container.html("");
-		    restore_input_data(new_profile_data);
-		    profile_added = true;
+                    new_profile_container.html("");
+                    restore_input_data(new_profile_data);
+                    profile_added = true;
                 } else {
-		    update_changed_status_for_profile(prefix);
-		}
+                    update_changed_status_for_profile(prefix);
+                }
 
                 new_image_url = $("#id_" + prefix + "-thumbnail_image_link_to_file")[0].href;
-                profile_preview.css({'background-color': "##efefef", 'background-image': "url(" + new_image_url + ")", "background-repeat": "no-repeat", "background-position": "center"});
+                profile_preview.css({
+                    'background-color': "##efefef",
+                    'background-image': "url(" + new_image_url + ")",
+                    "background-repeat": "no-repeat",
+                    "background-position": "center"
+                });
                 profile_preview.css('background-size', "contain");
 
-		update_show_unsaved_warning();
+                update_show_unsaved_warning();
                 resizeIframe();
             }
 
