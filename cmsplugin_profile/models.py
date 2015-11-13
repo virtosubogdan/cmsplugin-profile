@@ -77,14 +77,23 @@ class ProfilePromoGrid(CMSPlugin):
     selected_profiles = models.ManyToManyField(
         Profile, through="SelectedProfile", through_fields=('promo_grid', 'profile')
     )
+
     title = models.CharField(null=True, blank=True, max_length=60)
-    call_to_action_text = models.CharField(null=True, blank=True, max_length=100)
+    call_to_action_text = models.CharField(max_length=100)
+
 
     class Meta:
         db_table = 'cmsplugin_profilepromogrid'
 
     def __unicode__(self):
         return 'Profile Promo {}'.format(self.title)
+
+    def save(self, *args, **kwargs):
+        ret_value = super(ProfilePromoGrid, self).save(*args, **kwargs)
+        for unsaved_selected_profile in self.unsaved_selected_profiles:
+            unsaved_selected_profile.promo_grid = self
+            unsaved_selected_profile.save()
+        return ret_value
 
 
 class SelectedProfile(models.Model):
