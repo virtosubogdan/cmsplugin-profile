@@ -6,13 +6,14 @@ from django.views.decorators.http import require_GET
 from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 
+from cms.utils.permissions import has_plugin_permission
+
 from .forms import ProfileForm
 from .models import ProfileGrid
 
 
 @require_GET
 def view_profiles(request, profilegrid_id):
-    # TODO: check rights
     try:
         page = int(request.GET.get('page', 1))
     except:
@@ -59,7 +60,9 @@ def _serialize_profile(profile):
 
 @require_GET
 def new_profile(request, profile_nr):
-    # TODO: check rights
+    if not has_plugin_permission(request.user, "ProfileGridPlugin", "change"):
+        raise PermissionDenied
+    grid_id = request.GET.get("profilegrid_id", None)
     form = ProfileForm(
         auto_id='id_%s',
         prefix=u'profile_set-{}'.format(profile_nr),
@@ -67,7 +70,7 @@ def new_profile(request, profile_nr):
     )
     grid_field = form.fields['profile_plugin']
     grid_field.widget = HiddenInput()
-    grid_field.initial = request.GET.get("profilegrid_id", None)
+    grid_field.initial = grid_id
     return render_to_response(
         'admin/profile/profile_form.html',
         {'form': form},
