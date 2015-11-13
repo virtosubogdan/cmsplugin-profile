@@ -127,7 +127,7 @@ class SelectedProfilesField(forms.Field):
 
 
 class ProfileGridPromoForm(forms.ModelForm):
-    profiles_field = SelectedProfilesField(widget=forms.HiddenInput(), required=False)
+    profiles_field = SelectedProfilesField(widget=forms.HiddenInput(), required=False, label='')
 
     class Meta:
         model = ProfilePromoGrid
