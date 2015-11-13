@@ -245,7 +245,7 @@
             $(this).closest('.grid-list').siblings('.overlay').addClass('visible');
 
             prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
-            current_profile_value_before_edit = p(prefix);
+            current_profile_value_before_edit = store_input_data(prefix);
             if (all_profiles_initial_data[prefix] === undefined) {
                 all_profiles_initial_data[prefix] = current_profile_value_before_edit;
             }
