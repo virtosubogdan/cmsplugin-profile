@@ -395,3 +395,11 @@ fieldset.form-horizontal textarea {
   margin-bottom: 0;
   margin-top: 15px;
 }
+/* line 349, ../sass/profile_admin.scss */
+#profilepromogrid_form .form-horizontal + .form-horizontal {
+  display: none;
+}
+/* line 352, ../sass/profile_admin.scss */
+#profilepromogrid_form #warning_maximum_selection {
+  display: none;
+}
