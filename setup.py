@@ -26,5 +26,6 @@ setup(
         "django-cms >= 2.3, <2.3.6",
         "django-filer >= 0.9pbs, <0.9.1",
         "django-cms-blogger >= 0.7.0.pbs, <0.8.0",
+        "django-cms-roles < 0.7.1",
     ],
 )
