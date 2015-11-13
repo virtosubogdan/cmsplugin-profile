@@ -23,13 +23,13 @@
 			<ul id="og-grid" class="og-grid">
 	    	{% for profile in profiles %}
 					<li>
-						<a href="{{profile.call_to_action_url}}" 
-							data-largesrc="{{profile.detail_image|filerfile}}" 
+						<a href="{{profile.call_to_action_url}}"
+							data-largesrc="{{profile.detail_image|filerfile}}"
 							data-largeimg-credit="{{profile.image_credit}}"
-							data-title="{{profile.title}}" 
-							data-description="{{profile.description}}" 
-							data-callToActionText="{{profile.call_to_action_text}}" 
-							data-additionallinkslabel="{{profile.additional_links_label}}" 
+							data-title="{{profile.title}}"
+							data-description="{{profile.description}}"
+							data-callToActionText="{{profile.call_to_action_text}}"
+							data-additionallinkslabel="{{profile.additional_links_label}}"
 							{% for link in profile.links %}
 							data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" data-addlinktarget{{forloop.counter}}="{{link.target}}"
 							{% endfor %}>
@@ -39,7 +39,7 @@
 					</li>
 			{% endfor %}
 			</ul>
-			<a href="#" class="profile-promo-all">{{promo_grid.call_to_action_text}}</a>
+			<a href="{{ profile_grid_link }}" class="profile-promo-all">{{promo_grid.call_to_action_text}}</a>
 		</div>
 	</div>
 </section>

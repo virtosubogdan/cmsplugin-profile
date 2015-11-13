@@ -163,7 +163,7 @@ class ProfileGridPromoForm(forms.ModelForm):
         self.maximum_selection = MAX_PROMO_PROFILES
 
     def _get_changed_grid(self):
-        if not self.request or self.request.method != "GET":
+        if not self.request:
             return None
         grid_param = self.request.GET.get("profile_grid", None)
         if not grid_param:
