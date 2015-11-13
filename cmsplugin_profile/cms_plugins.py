@@ -105,7 +105,7 @@ class ProfileGridPromoPlugin(CMSPluginBase):
     def render(self, context, instance, placeholder):
         context['promo_grid'] = instance
         context['profiles'] = instance.selected_profiles.all()
-
+        context['profile_grid_link'] = instance.profile_plugin.page.get_absolute_url()
         return context
 
 plugin_pool.register_plugin(ProfileGridPromoPlugin)
