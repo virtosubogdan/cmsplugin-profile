@@ -196,10 +196,9 @@ class ProfileGridPromoForm(forms.ModelForm):
         return cleaned_data
 
     def save(self, commit=True):
-        ret_value = super(ProfileGridPromoForm, self).save(commit=commit)
-        self.instance.selectedprofile_set.all().delete()
-
+        self.instance.unsaved_selected_profiles = []
         for profile_id in self.cleaned_data['profiles_field']:
             profile = Profile.objects.get(id=int(profile_id))
-            SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
-        return ret_value
+            selected_profile = SelectedProfile(profile=profile, promo_grid=self.instance)
+            self.instance.unsaved_selected_profiles.append(selected_profile)
+        return super(ProfileGridPromoForm, self).save(commit=commit)

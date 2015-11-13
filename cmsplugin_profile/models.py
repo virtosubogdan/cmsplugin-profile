@@ -86,6 +86,13 @@ class ProfilePromoGrid(CMSPlugin):
     def __unicode__(self):
         return 'Profile Promo {}'.format(self.title)
 
+    def save(self, *args, **kwargs):
+        ret_value = super(ProfilePromoGrid, self).save(*args, **kwargs)
+        for unsaved_selected_profile in self.unsaved_selected_profiles:
+            unsaved_selected_profile.promo_grid = self
+            unsaved_selected_profile.save()
+        return ret_value
+
 
 class SelectedProfile(models.Model):
     profile = models.ForeignKey(Profile, null=False, blank=False)
