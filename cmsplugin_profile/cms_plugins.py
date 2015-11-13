@@ -68,11 +68,11 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         }),
         ("Featured Profiles", {
             'fields': ('profiles_field', ),
-            'description': 
-                _(u"{} profiles will be featured in this promo, marked by the" 
-                " border around the thumbnails. Click on a thumbnail to add"
-                " or remove it from the group of featured profiles."
-                .format(MAX_PROMO_PROFILES)),
+            'description':
+                _(u"{} profiles will be featured in this promo, marked by the"
+                  " border around the thumbnails. Click on a thumbnail to add"
+                  " or remove it from the group of featured profiles."
+                  .format(MAX_PROMO_PROFILES)),
         })
     )
 
@@ -103,6 +103,9 @@ class ProfileGridPromoPlugin(CMSPluginBase):
         return MetaFormClass
 
     def render(self, context, instance, placeholder):
+        context['promo_grid'] = instance
+        context['profiles'] = instance.selected_profiles.all()
+
         return context
 
 plugin_pool.register_plugin(ProfileGridPromoPlugin)
