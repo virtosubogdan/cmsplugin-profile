@@ -14,7 +14,7 @@ GRID_LOADING_TYPE_CHOICES = (
 
 
 class ProfileGrid(CMSPlugin):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=60)
     description = models.TextField(null=True, blank=True, max_length=400, default="")
     show_title_on_thumbnails = models.BooleanField(default=False)
     load_mode_type = models.CharField(
@@ -77,8 +77,8 @@ class ProfilePromoGrid(CMSPlugin):
     selected_profiles = models.ManyToManyField(
         Profile, through="SelectedProfile", through_fields=('promo_grid', 'profile')
     )
-    title = models.CharField(null=True, blank=True, max_length=200)
-    call_to_action_text = models.CharField(null=True, blank=True, max_length=200)
+    title = models.CharField(null=True, blank=True, max_length=60)
+    call_to_action_text = models.CharField(null=True, blank=True, max_length=100)
 
     class Meta:
         db_table = 'cmsplugin_profilepromogrid'
