@@ -344,7 +344,6 @@ $grid: ".og-grid";
         }
     }
 }
-
 @mixin overides() {
     body:not(.studio) {
         margin-top: 0 !important;
@@ -650,7 +649,266 @@ $grid: ".og-grid";
         text-decoration: none;
     }
 }
+@mixin promo() {
+    .pbs-profile-promo {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-bottom: 20px;
 
+        h1 {
+            background: #F4F4F4;
+            padding: 30px 45px;
+            color: #5A585A;
+            text-transform: capitalize;
+        }
+        .row-fluid + .row-fluid {
+            .span12, .span8 {
+                border-bottom: 1px solid #D1D1D1;
+                overflow: hidden;
+            }
+        }
+        .og-grid {
+            padding: 0;
+        }
+        .profile-promo-all {
+            margin-top: 10px;
+            color: #747474;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 22px;
+            display: inline-block;
+            text-decoration: none;
+            float: right;
+            margin-bottom: 15px;
+
+            &:after {
+                content: "\f105";
+                font-family: FontAwesome;
+                font-weight: normal;
+                font-style: normal;
+                text-decoration: inherit;
+                -webkit-font-smoothing: antialiased;
+                display: inline;
+                width: auto;
+                height: auto;
+                line-height: normal;
+                vertical-align: baseline;
+                background-image: none;
+                background-position: 0 0;
+                background-repeat: repeat;
+                margin-top: 0;
+                font-size: 22px;
+                float: right;
+                margin-left: 10px;
+            }
+        }
+    }
+    @media (min-width: 768px) and (max-width: 959px) {
+        body {
+            &.studio, &:not(.studio) {
+                .span8.page-content, .span12.page-content {
+                    .pbs-profile-promo {
+                        padding-left: 0px;
+                        padding-right: 0px;
+                        .og-grid {
+                            li, li > a {
+                                width: 232px;
+                                height: 232px;
+                            }
+                            li {
+                                &:nth-child(2n) {
+                                    margin-right: 13px;
+                                }
+                                &:nth-child(3n) {
+                                    margin-right: 0;
+                                }
+                            }    
+                        }
+                    } 
+                }
+            }
+            &:not(.studio) {
+                .span12.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 235px;
+                            height: 235px;
+                        } 
+                        li {
+                            &:nth-child(2n+1) {
+                                margin-right: 13px;
+                            }
+                            &:nth-child(3n) {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+                .span8.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 152px;
+                            height: 152px;
+                        }
+                        li {
+                            &:nth-child(2n+1) {
+                                margin-right: 9px;
+                            }
+                            &:nth-child(3n) {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (min-width: 960px) and (max-width: 1023px) {
+        body {
+            &.studio {
+                .span8.page-content, .span12.page-content {
+                    .pbs-profile-promo {
+                        padding-left: 0px;
+                        padding-right: 0px;
+                        .og-grid {
+                            li, li > a {
+                                width: 298px;
+                                height: 298px;
+                            } 
+                        }
+                    } 
+                }
+            }
+            &:not(.studio) {
+                .span12.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 299px;
+                            height: 299px;
+                        } 
+                    }
+                }
+                .span8.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 194px;
+                            height: 194px;
+                        }
+                         li {
+                            &:nth-child(2n+1) {
+                                margin-right: 9px;
+                            }
+                            &:nth-child(3n) {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @media (max-width: 960px) {
+        body.studio {
+            .span8.page-content, .span12.page-content {
+                .pbs-profile-promo {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }   
+        }
+    }
+    @media (min-width: 1024px) {
+        body {
+            &.studio {
+                .span8.page-content, .span12.page-content {
+                    .pbs-profile-promo {
+                        .og-grid {
+                            li, li > a {
+                                width: 315px;
+                                height: 315px;
+                            } 
+                        }
+                    } 
+                }
+            }
+            &:not(.studio) {
+                .span12.page-content .pbs-profile-promo {
+                    
+                    .og-grid {
+                        li, li > a {
+                            width: 310px;
+                            height: 310px;
+                        } 
+                    }
+                }
+            }
+        }
+    }
+    @media (min-width: 1280px) {
+        body {
+            &.studio {
+                .span8.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 293px;
+                            height: 293px;
+                        } 
+                    }
+                }
+           
+                .span12.page-content .pbs-profile-promo {
+                    padding-right: 20px;
+                    padding-left: 20px;
+                    .og-grid {
+                        li, li > a {
+                            width: 405px;
+                            height: 405px;
+                        } 
+                    }    
+                }
+            }
+            &:not(.studio) {
+                .span12.page-content .pbs-profile-promo {
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    
+                    .og-grid {
+                        li, li > a {
+                            width: 305px;
+                            height: 305px;
+                        } 
+                    }
+                }
+            }
+        }
+    }
+    @media (width: 1280px) {
+        body {
+            &.studio {
+                .span8.page-content .pbs-profile-promo {
+                    .og-grid {
+                        li, li > a {
+                            width: 290px;
+                            height: 290px;
+                        } 
+                    }
+                }
+           
+                .span12.page-content .pbs-profile-promo {
+                    padding-right: 20px;
+                    padding-left: 20px;
+                    .og-grid {
+                        li, li > a {
+                            width: 390px;
+                            height: 390px;
+                        } 
+                    }    
+                }
+            }
+        }
+    }
+
+}
 @mixin profilegrid($ns) {
     #{$ns} {
         padding: 40px 20px 0;
@@ -675,6 +933,7 @@ $grid: ".og-grid";
     }
     @include grid($grid);
     @include overides();
+    @include promo();
 }
 
 @include profilegrid($namespace)
