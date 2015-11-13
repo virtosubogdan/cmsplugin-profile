@@ -56,12 +56,7 @@ class ProfileForm(forms.ModelForm):
                 continue
             if not text and not url:
                 continue
-            if not text:
-                raise ValidationError("Link text is mandatory!")
-            if not url:
-                raise ValidationError("Link URL is mandatory!")
-            if not open_action or open_action not in ("blank", "same window"):
-                raise ValidationError("Please select a target for the link!")
+            self._validate_link(text, url, open_action)
             if "links" not in cleaned_data:
                 cleaned_data["links"] = []
             cleaned_data["links"].append((link_index, text, url, open_action))
@@ -69,6 +64,18 @@ class ProfileForm(forms.ModelForm):
             cleaned_data['not_saved_profile'] = self.instance
 
         return cleaned_data
+
+    def _validate_link(self, text, url, open_action):
+        if not text:
+            raise ValidationError("Link text is mandatory!")
+        if not url:
+            raise ValidationError("Link URL is mandatory!")
+        if " " in url:
+            raise ValidationError("Link URL must not contain spaces!")
+        if not any(url.startswith(start) for start in ["/", "http://", "https://"]):
+            raise ValidationError("Link URL must start with http(s):// or / !")
+        if not open_action or open_action not in ("blank", "same window"):
+            raise ValidationError("Please select a target for the link!")
 
 
 def _add_links_to_profile(profile, links_data, commit=True):
