@@ -23,6 +23,7 @@
 <script type="text/javascript">
 (function($) {
 	var maximum_selection = {{adminform.form.maximum_selection}};
+
 	$(document).ready(function() {
 		var profileSelect = $("#id_profile_plugin");
 		profileSelect.change(function(e) {
@@ -36,6 +37,15 @@
 			$('#warning_maximum_selection').show();
 		}
 		togglePromoProfile();
+
+		$('#profilepromogrid_form').find('input[type="text"]').each(function () {
+	        $(this).inputlimiter({
+	            remText: '%n character%s left. ',
+	            limitText: '%n character%s limit.',
+	            limitTextShow: false,
+	            remTextHideOnBlur: false,
+	        });
+	    });
 	});
 
 	function show_maximum_profiles_warning(show, number) {
@@ -109,14 +119,6 @@
 			$(this).removeClass("selected");
 			show_maximum_profiles_warning(false, selected_ids.length );
 		}		
-    });
-	$('#profilepromogrid_form').find('input[type="text"]').each(function () {
-        $(this).inputlimiter({
-            remText: '%n character%s left. ',
-            limitText: '%n character%s limit.',
-            limitTextShow: false,
-            remTextHideOnBlur: false,
-        });
     });
 
 })(jQuery || django.jQuery);
