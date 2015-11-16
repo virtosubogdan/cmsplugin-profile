@@ -54,8 +54,17 @@
             });
         }
 
+	function is_url_valid(value) {
+	    has_spaces = value.indexOf(" ") != -1;
+	    if (has_spaces) {
+		return false;
+	    }
+	    correct_prefix = value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/");
+	    return correct_prefix;
+	}
+
         function checkValidLinks() {
-            $('.profile-add-links .form-row').removeClass('mandatory has-error');
+            $('.profile-add-links .form-row').removeClass('mandatory has-error has-url-error');
             $('.profile-add-links .form-row input[type="text"]').removeClass('error');
 
             $('.profile-add-links').each(function() {
@@ -64,6 +73,16 @@
                     if ($(this).val().length) {
                         self.find('.form-row').addClass('mandatory');
                     }
+                });
+            });
+
+	    $('.profile-add-links').each(function() {
+                var self = $(this);
+                $(this).find('input[id$="url"]').each(function() {
+		    value = $(this).val();
+                    if (value.length && !is_url_valid(value)) {
+			self.find('.form-row.profile-add-link-url').addClass('has-url-error');
+		    }
                 });
             });
         }
@@ -87,6 +106,21 @@
                     $(elem).parent('.profile-image-panel').removeClass('has-error');
                 }
             });
+
+	    form.find(".has-url-error").each(function(idx, elem) {
+		valid = false;
+		console.log(element, "css should be set to highlight error");
+	    });
+
+	    form.find('[id$="call_to_action_url"]').each(function(idx, elem) {
+		value = $(this).val();
+		if (value.length &&  !is_url_valid(value)) {
+		    // set error class
+		    valid = false;
+		} else {
+		    // remove error class
+		}
+	    });
             return valid;
         }
 
@@ -245,7 +279,7 @@
             $(this).closest('.grid-list').siblings('.overlay').addClass('visible');
 
             prefix = $(this)[0].attributes["data-profile-id-prefix"].value;
-            current_profile_value_before_edit = p(prefix);
+            current_profile_value_before_edit = store_input_data(prefix);
             if (all_profiles_initial_data[prefix] === undefined) {
                 all_profiles_initial_data[prefix] = current_profile_value_before_edit;
             }
