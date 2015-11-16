@@ -251,7 +251,8 @@ fieldset.form-horizontal textarea {
 
 //errors 
 .form-group.has-error,
-.form-row.has-error {
+.form-row.has-error, 
+.form-row.has-url-error {
     .error {
         border: solid 1px #a94442 !important;
         color: #a94442 !important;
@@ -261,7 +262,7 @@ fieldset.form-horizontal textarea {
         appearance: none;
         float: left;
     }
-    .help-block.col-sm-reset {
+    .help-block.col-sm-reset:not(.help-block-url) {
         color: #a94442 !important;
         float: left !important;
         margin-left: 10px;
@@ -288,6 +289,44 @@ fieldset.form-horizontal textarea {
     .control-label {
         color: #a94442;
     }
+}
+.form-row.has-url-error {
+	.help-block.col-sm-reset:not(.help-block-url) {
+		display: none !important;
+		visibility: hidden !important;
+	}
+	.help-block-url {
+		color: #a94442 !important;
+        float: left !important;
+        margin-left: 10px;
+        line-height: 34px;
+        display: block !important;
+        visibility: visible !important;
+	}
+}
+.profile-add-link-url.has-url-error {
+	.col-sm-9:before {
+	  content: "\f06a";
+	  display: inline-block;
+	  position: absolute;
+	  top: 9px;
+	  left: 6px;
+	  z-index: 100;
+	  font: normal normal normal 16px/1 FontAwesome;
+	  text-rendering: auto;
+	  color: #dd5a43;
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	}
+	input[id$="url"] {
+		border: solid 1px #a94442 !important;
+		color: #a94442 !important;
+		padding-left: 25px;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		float: left;
+	}
 }
 
 .profile-image-panel.has-error {

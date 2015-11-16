@@ -27,6 +27,7 @@
 					<div class="col-sm-9 no-padding">
 						<input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="{{ form.links_text_max_length }}" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}">
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
 					</div>
 				</div>
 				<div class="form-row profile-add-link-url">
@@ -38,6 +39,7 @@
 							<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
 						</select>
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
 					</div>
 				</div>
 
@@ -53,6 +55,7 @@
 					<div class="col-sm-9 no-padding">
 						<input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-text" maxlength="{{ form.links_text_max_length }}" name="{{ form.links_prefix }}{{ empty_link_id}}-text" type="text">
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
 					</div>
 				</div>
 				<div class="form-row profile-add-link-url">
@@ -64,6 +67,7 @@
 							<option value="parent">same window</option>
 						</select>
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
 					</div>
 				</div>
 				<div class="form-row">

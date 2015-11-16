@@ -54,42 +54,56 @@
             });
         }
 
-	function is_url_valid(value) {
-	    has_spaces = value.indexOf(" ") != -1;
-	    if (has_spaces) {
-		return false;
-	    }
-	    correct_prefix = value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/");
-	    return correct_prefix;
-	}
+        function is_url_valid(value) {
+            has_spaces = value.indexOf(" ") != -1;
+            if (has_spaces) {
+                return false;
+            }
+            correct_prefix = value.startsWith("http://") || value.startsWith("https://") || value.startsWith("/");
+            return correct_prefix;
+        }
 
-        function checkValidLinks() {
-            $('.profile-add-links .form-row').removeClass('mandatory has-error has-url-error');
-            $('.profile-add-links .form-row input[type="text"]').removeClass('error');
+        function checkValidLinks(form) {
+            var valid = true;
 
-            $('.profile-add-links').each(function() {
+            form.find('.profile-add-links').each(function(){
                 var self = $(this);
-                $(this).find('input[type="text"]').each(function() {
+
+                // remove all error classes from all links
+                self.find('.form-row').each(function(){
+                    $(this).removeClass('mandatory has-error has-url-error')
+                        .find('input[type="text"]').removeClass('error');;
+                });
+
+                self.find('input[type="text"]').each(function() {
                     if ($(this).val().length) {
                         self.find('.form-row').addClass('mandatory');
                     }
                 });
+
+                self.find('input[id$="url"]').each(function() {
+                    value = $(this).val();
+                    if (value.length && !is_url_valid(value)) {
+                        self.find('.form-row.profile-add-link-url').addClass('has-url-error');
+                        self.find('.help-block-url').show();
+                        $(this).addClass('error');
+                        valid = false;
+                    }
+                    else {
+                        self.find('.form-row.profile-add-link-url').removeClass('has-url-error');
+                        self.find('.help-block-url').hide();
+                        $(this).removeClass('error');
+                    }
+                });
+
             });
 
-	    $('.profile-add-links').each(function() {
-                var self = $(this);
-                $(this).find('input[id$="url"]').each(function() {
-		    value = $(this).val();
-                    if (value.length && !is_url_valid(value)) {
-			self.find('.form-row.profile-add-link-url').addClass('has-url-error');
-		    }
-                });
-            });
+            return valid;
         }
 
         function validateProfile(form) {
+            var valid = checkValidLinks(form);
             var mandatoryFields = form.find('.mandatory');
-            var valid = true;
 
             mandatoryFields.each(function(idx, elem) {
                 if (isEmpty($(elem))) {
@@ -107,20 +121,17 @@
                 }
             });
 
-	    form.find(".has-url-error").each(function(idx, elem) {
-		valid = false;
-		console.log(element, "css should be set to highlight error");
-	    });
+            var call_to_action = form.find('[id*="call_to_action_url"]');
+            var value = call_to_action.val();
 
-	    form.find('[id$="call_to_action_url"]').each(function(idx, elem) {
-		value = $(this).val();
-		if (value.length &&  !is_url_valid(value)) {
-		    // set error class
-		    valid = false;
-		} else {
-		    // remove error class
-		}
-	    });
+            if (value.length && !is_url_valid(value)) {
+                call_to_action.siblings('.help-block').html('Invalid URL!');
+                call_to_action.addClass('error').closest('.form-row').addClass('has-error');
+                valid = false;
+            } else {
+                call_to_action.siblings('.help-block').html('This field is mandatory!');
+                call_to_action.removeClass('error').closest('.form-row').removeClass('has-error');
+            }
             return valid;
         }
 
@@ -327,7 +338,6 @@
 
         $(document).on('click', '.grid-list .done-profile', function(e) {
             e.preventDefault();
-            checkValidLinks();
 
             if (validateProfile($(this).closest('.visible'))) {
                 $(this).closest('.visible').removeClass('visible').closest('.inline-related').removeClass('edit-mode');
