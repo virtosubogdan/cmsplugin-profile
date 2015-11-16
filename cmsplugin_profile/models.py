@@ -77,7 +77,6 @@ class ProfilePromoGrid(CMSPlugin):
     selected_profiles = models.ManyToManyField(
         Profile, through="SelectedProfile", through_fields=('promo_grid', 'profile')
     )
-
     title = models.CharField(null=True, blank=True, max_length=60)
     call_to_action_text = models.CharField(max_length=100)
 
