@@ -22,8 +22,6 @@ def view_profiles(request, profilegrid_id):
         max_results = int(request.GET.get('max_results', 4))
     except:
         max_results = 4
-    if not request.user.is_authenticated():
-        raise PermissionDenied
     profile_grid = get_object_or_404(ProfileGrid, id=profilegrid_id)
     paginator = Paginator(profile_grid.profile_set.all(), max_results)
     response = {
