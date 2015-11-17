@@ -660,6 +660,7 @@ $grid: ".og-grid";
             padding: 30px 45px;
             color: #5A585A;
             text-transform: capitalize;
+            word-wrap: break-word;
         }
         .row-fluid + .row-fluid {
             .span12, .span8 {
@@ -923,6 +924,7 @@ $grid: ".og-grid";
             line-height: 36px;
             font-weight: normal;
             margin-bottom: 15px;
+            word-wrap: break-word;
         }
         .profile-grid-descr {
             color: #222;
