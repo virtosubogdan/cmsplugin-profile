@@ -30,7 +30,7 @@ class ProfileGrid(CMSPlugin):
         db_table = 'cmsplugin_profilegrid'
 
     def __unicode__(self):
-        return '{}'.format(self.title)
+        return u'{}'.format(self.title)
 
 
 class Profile(models.Model):
@@ -58,7 +58,7 @@ class Profile(models.Model):
         order_with_respect_to = 'profile_plugin'
 
     def __unicode__(self):
-        return '{}'.format(self.title)
+        return u'{}'.format(self.title)
 
     @property
     def links(self):
@@ -84,7 +84,7 @@ class ProfilePromoGrid(CMSPlugin):
         db_table = 'cmsplugin_profilepromogrid'
 
     def __unicode__(self):
-        return '{}'.format(self.title)
+        return u'{}'.format(self.title)
 
     def save(self, *args, **kwargs):
         ret_value = super(ProfilePromoGrid, self).save(*args, **kwargs)
