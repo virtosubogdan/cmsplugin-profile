@@ -1,0 +1,13 @@
+<div class="form-row{% if field.field.required %} mandatory{% endif %}">
+	{{ field.errors }}
+	<div class="control-label text-left">
+		{{ field.label_tag }}
+		{% if field.help_text %}
+			<div class="help-block no-margin-top">{{ field.help_text|safe }}</div>
+		{% endif %}
+	</div>
+	<div class="no-padding">
+		{{ field }}
+	</div>
+	<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+</div>

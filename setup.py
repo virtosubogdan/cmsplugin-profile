@@ -12,7 +12,7 @@ __README__ = open(__README_PATH__).read()
 
 setup(
     name='cmsplugin-profile',
-    version='0.0.1',
+    version='0.1.0.pbs.1',
     description='CMS Plugin for profiles',
     long_description=__README__,
     author=__AUTHOR__,
@@ -24,6 +24,8 @@ setup(
     platforms=['any'],
     install_requires=[
         "django-cms >= 2.3, <2.3.6",
-        "django-filer >= 0.9pbs, <0.9.1"
+        "django-filer >= 0.9pbs, <0.9.1",
+        "django-cms-blogger >= 0.7.0.pbs, <0.8.0",
+        "django-cms-roles < 0.7.1",
     ],
 )

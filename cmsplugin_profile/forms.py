@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from cms_blogger.widgets import ToggleWidget
 
 from .models import Profile, ProfileLink, ProfileGrid, SelectedProfile, ProfilePromoGrid
-from .settings import MAX_PROFILE_LINKS
+from .settings import MAX_PROFILE_LINKS, MAX_PROMO_PROFILES
 
 
 class ProfileForm(forms.ModelForm):
@@ -16,7 +16,22 @@ class ProfileForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileForm, self).__init__(*args, **kwargs)
+        self._customize_image_widgets()
+        self._make_link_data()
 
+    def _customize_image_widgets(self):
+        img_widgets = [self.fields['thumbnail_image'].widget, self.fields['detail_image'].widget]
+        for img_widget in img_widgets:
+            img_widget.can_delete_related = False
+            if hasattr(img_widget, 'widget'):
+                img_widget = img_widget.widget
+            img_widget.custom_preview_width = 200
+            img_widget.search_label = "Upload from Filer"
+            img_widget.remove_label = "Remove"
+
+    def _make_link_data(self):
+        self.links_text_max_length = ProfileLink._meta.get_field("text").max_length
+        self.links_url_max_length = ProfileLink._meta.get_field("url").max_length
         if self.instance:
             self.links = [(index+1, link)
                           for index, link in enumerate(self.instance.profilelink_set.all())]
@@ -41,18 +56,26 @@ class ProfileForm(forms.ModelForm):
                 continue
             if not text and not url:
                 continue
-            if not text:
-                raise ValidationError("Link text is mandatory!")
-            if not url:
-                raise ValidationError("Link URL is mandatory!")
-            if not open_action or open_action not in ("blank", "parent"):
-                raise ValidationError("Please select a target for the link!")
+            self._validate_link(text, url, open_action)
             if "links" not in cleaned_data:
                 cleaned_data["links"] = []
             cleaned_data["links"].append((link_index, text, url, open_action))
         if not self.instance.id:
             cleaned_data['not_saved_profile'] = self.instance
+
         return cleaned_data
+
+    def _validate_link(self, text, url, open_action):
+        if not text:
+            raise ValidationError("Link text is mandatory!")
+        if not url:
+            raise ValidationError("Link URL is mandatory!")
+        if " " in url:
+            raise ValidationError("Link URL must not contain spaces!")
+        if not any(url.startswith(start) for start in ["/", "http://", "https://"]):
+            raise ValidationError("Link URL must start with http(s):// or / !")
+        if not open_action or open_action not in ("blank", "same window"):
+            raise ValidationError("Please select a target for the link!")
 
 
 def _add_links_to_profile(profile, links_data, commit=True):
@@ -87,28 +110,6 @@ class ProfileFormSet(forms.models.BaseInlineFormSet):
         return result
 
 
-class SelectedProfileForm(forms.ModelForm):
-
-    class Meta:
-        model = SelectedProfile
-        exclude = ()
-
-
-class SelectedProfileFormSet(forms.models.BaseInlineFormSet):
-
-    def __init__(self, *args, **kwargs):
-        super(SelectedProfileFormSet, self).__init__(*args, **kwargs)
-        if self.instance:
-            self.selected_profiles = [sel.profile for sel in self.instance.selected_profiles.all()]
-            self.available_profiles = [profile
-                                       for profile
-                                       in self.instance.profile_plugin.profile_set.all()
-                                       if profile not in self.selected_profiles]
-        else:
-            self.available_profiles = []
-            self.selected_profiles = []
-
-
 class ProfileGridForm(forms.ModelForm):
     show_title_on_thumbnails = forms.BooleanField(
         label="Show title on thumbnails",
@@ -121,8 +122,19 @@ class ProfileGridForm(forms.ModelForm):
         exclude = ()
 
 
+class SelectedProfilesField(forms.Field):
+
+    def to_python(self, value):
+        if not value:
+            return []
+        try:
+            return [int(id_val) for id_val in value.split(",")]
+        except ValueError:
+            raise forms.ValidationError("Invalid list of selected profiles!")
+
+
 class ProfileGridPromoForm(forms.ModelForm):
-    selectable_profiles = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple, choices=[])
+    profiles_field = SelectedProfilesField(widget=forms.HiddenInput(), required=False, label='')
 
     class Meta:
         model = ProfilePromoGrid
@@ -132,33 +144,68 @@ class ProfileGridPromoForm(forms.ModelForm):
         self.request = kwargs.pop('request', None)
         super(ProfileGridPromoForm, self).__init__(*args, **kwargs)
 
-        if self.instance.id:
+        self._load_custom_data()
+        self._set_values_for_fields()
+
+    def _load_custom_data(self):
+        self.changed_grid = self._get_changed_grid()
+        if self.changed_grid and not (
+                self.instance.id and self.instance.profile_plugin.id == self.changed_grid.id):
+            self.selected_profiles = []
+            self.all_profiles = [
+                (profile, False)
+                for profile in self.changed_grid.profile_set.all()
+            ]
+        elif self.instance.id:
             self.selected_profiles = [
                 selected_profile for selected_profile in self.instance.selected_profiles.all()
             ]
-            self.all_profiles = self.instance.profile_plugin.profile_set.all()
+            self.all_profiles = [
+                (profile, profile in self.selected_profiles)
+                for profile in self.instance.profile_plugin.profile_set.all()
+            ]
         else:
             self.selected_profiles = []
             self.all_profiles = []
-            self.fields['selectable_profiles'].required = False
+        self.maximum_selection = MAX_PROMO_PROFILES
 
-        selectable_profiles = self.fields['selectable_profiles']
-        selectable_profiles.choices = [
-            (profile.id, profile.id)
-            for profile in self.all_profiles
-        ]
-        selectable_profiles.initial = [
-            selected_profile.id
+    def _get_changed_grid(self):
+        if not self.request:
+            return None
+        grid_param = self.request.GET.get("profile_grid", None)
+        if not grid_param:
+            return None
+        try:
+            return ProfileGrid.objects.get(
+                id=grid_param,
+                placeholder__page__site_id=self.request.current_page.site_id
+            )
+        except ProfileGrid.DoesNotExist:
+            return None
+
+    def _set_values_for_fields(self):
+        profiles_field = self.fields['profiles_field']
+        profiles_field.initial = ','.join([
+            str(selected_profile.id)
             for selected_profile in self.selected_profiles
-        ]
+        ])
         self.fields['profile_plugin'].queryset = ProfileGrid.objects.filter(
             placeholder__page__site_id=self.request.current_page.site_id
         )
+        if self.changed_grid:
+            # Since form.initial dict takes priority over field.initial value and we
+            # can have initial data on the form because we can have an instance, we
+            # must do things this way.
+            self.initial['profile_plugin'] = self.changed_grid.id
+
+    def clean(self):
+        cleaned_data = super(ProfileGridPromoForm, self).clean()
+        return cleaned_data
 
     def save(self, commit=True):
-        ret_value = super(ProfileGridPromoForm, self).save(commit=commit)
-        self.instance.selectedprofile_set.all().delete()
-        for profile_id in self.cleaned_data['selectable_profiles']:
+        self.instance.unsaved_selected_profiles = []
+        for profile_id in self.cleaned_data['profiles_field']:
             profile = Profile.objects.get(id=int(profile_id))
-            SelectedProfile.objects.create(profile=profile, promo_grid=self.instance)
-        return ret_value
+            selected_profile = SelectedProfile(profile=profile, promo_grid=self.instance)
+            self.instance.unsaved_selected_profiles.append(selected_profile)
+        return super(ProfileGridPromoForm, self).save(commit=commit)

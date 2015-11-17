@@ -6,6 +6,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'cms',
+    'cmsroles',
     'mptt',
     'filer',
     'menus',
@@ -19,7 +20,7 @@ CMS_MODERATOR = True
 CMS_PERMISSION = True
 STATIC_ROOT = '/static/'
 STATIC_URL = '/static/'
-ROOT_URLCONF = 'cmsplugin_profile.tests.urls'
+ROOT_URLCONF = 'cmsplugin_profile.urls'
 
 TEMPLATES = [
     {

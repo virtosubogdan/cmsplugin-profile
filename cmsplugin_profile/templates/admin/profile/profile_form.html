@@ -1,42 +1,46 @@
 {% with instance=form.instance %}
-<div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ inline_admin_formset.formset.prefix }}-{% if not forloop.last %}{{ forloop.counter0 }}{% else %}empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
-  <div>
-  	<h4 class="header smaller lighter blue block">Profile Entry</h4>
-	{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
-
-	{% for field in form %}
-	{% if field == form.ORDER %}
-	<div style="display:none" class="order_field">
-		{{ form.ORDER }}
+<div class="ui-widget inline-related{% if forloop.last %} empty-form last-related{% endif %}{% if instance.thumbnail_image.url %} complete {%endif%}" id="{{ form.prefix }}{% if forloop.last %}-empty{% endif %}" {% if instance.thumbnail_image.url %}style="background: #efefef url('{{ instance.thumbnail_image.url }}') no-repeat center;background-size: contain;"{% endif %}>
+	<div class="profile-item-actions">
+		<a class="edit-profile-item" data-profile-id-prefix="{{form.prefix}}" href="#"><span class="inline-edit ace-icon fa fa-pencil" unselectable="on"></span></a>
+		<a class="delete-profile-item" data-profile-id="{{instance.id}}"
+		data-profile-id-prefix="{{form.prefix}}" href="#">
+		<span class="inline-edit ace-icon fa fa-times" unselectable="on"></span>
+	</a>
 	</div>
-	{% elif field != form.profile_plugin %}
-	<p>
-		{{ field.errors }}
-		{{ field.label_tag }} {{ field }}
-		{% if field.help_text %}
-		<p class="help">{{ field.help_text|safe }}</p>
-		{% endif %}
-	</p>
-	{% endif %}
-	{% endfor %}
-	<a class="save-profile" data-profile-id="{{form.prefix}}" href="javascript:void(0)">Save</a>
-	<a class="close-profile" href="javascript:void(0)">Close</a>
+	<div>
+  	<h4 class="header smaller lighter blue block">Profile Entry</h4>
+		{% if form.non_field_errors %}{{ form.non_field_errors }}{% endif %}
 
-	  {% for index, link in form.links %}
+		{{ form.id }}
+		{% include "admin/profile/profile_form_field.html" with field=form.title %}
+		{% include "admin/profile/profile_form_field.html" with field=form.description %}
+		{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_text %}
+		{% include "admin/profile/profile_form_field.html" with field=form.call_to_action_url %}
+		{% include "admin/profile/profile_form_field.html" with field=form.additional_links_label %}
+
+	<div style="display:none">{{ form.DELETE }}</div>
+		{% for index, link in form.links %}
 			<div id="{{ form.links_prefix }}{{ empty_link_id}}container" class="profile-add-links">
   			<h4 class="header smaller lighter blue block">Link {{ index }}</h4>
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
-				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="200" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}"></div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
-				<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="200" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}"></div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-open_action">Link {{ index }} target:</label></div>
-				<div class="col-sm-9 no-padding">
-					<select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
-						<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
-						<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
-					</select>
+  			<div class="form-row">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-text">Link {{ index }} text:</label></div>
+					<div class="col-sm-9 no-padding">
+						<input class="vTextField" id="{{ form.index }}{{ index }}-text" maxlength="{{ form.links_text_max_length }}" name="{{ form.links_prefix }}{{ index }}-text" type="text" value="{{ link.text }}">
+						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
+					</div>
+				</div>
+				<div class="form-row profile-add-link-url">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-url">Link {{ index }} URL:</label></div>
+					<div class="col-sm-9 no-padding">
+						<input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="{{ form.links_url_max_length }}" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}">
+						<select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
+							<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
+							<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
+						</select>
+						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
+					</div>
 				</div>
 
 				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ index }}-delete">Delete link {{ index }} :</label></div>
@@ -48,25 +52,32 @@
 				<h4 class="blue block no-margin-bottom lighter">Link {{ empty_link_id }}</h4><hr>
 				<div class="form-row">
 					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-text">Link {{ empty_link_id }} Text:</label></div>
-					<div class="col-sm-9 no-padding"><input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-text" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-text" type="text"></div>
+					<div class="col-sm-9 no-padding">
+						<input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-text" maxlength="{{ form.links_text_max_length }}" name="{{ form.links_prefix }}{{ empty_link_id}}-text" type="text">
+						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
+					</div>
 				</div>
 				<div class="form-row profile-add-link-url">
 					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id}}-url">Link {{ empty_link_id }} URL:</label></div>
 					<div class="col-sm-9 no-padding">
-						<input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-url" maxlength="200" name="{{ form.links_prefix }}{{ empty_link_id}}-url" type="text">
+						<input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-url" maxlength="{{ form.links_url_max_length }}" name="{{ form.links_prefix }}{{ empty_link_id}}-url" type="text">
 						<select id="{{ form.links_prefix }}{{ empty_link_id }}-open_action" name="{{ form.links_prefix }}{{ empty_link_id}}-open_action">
 							<option value="blank">blank</option>
-							<option value="parent">parent</option>
+							<option value="parent">same window</option>
 						</select>
+						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
+						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
 					</div>
 				</div>
-
-				<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
-				<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
+				<div class="form-row">
+					<div class="col-sm-2 control-label text-left"><label for="{{ form.links_prefix }}{{ empty_link_id }}-delete">Delete Link {{ index }} :</label></div>
+					<div class="col-sm-9 no-padding"><input id="{{ form.links_prefix }}{{ empty_link_id }}-delete" name="{{ form.links_prefix }}{{ empty_link_id }}-delete" type="checkbox"></div>
+				</div>
 			</div>
 		{% endfor %}
 		{% if form.empty_links %}
-			<p class="col-sm-9 col-sm-offset-2 no-padding">
+			<p class="col-sm-9 col-sm-offset-2 no-padding form-row">
 				<a class="add-row add-profile-link btn btn-primary" href="javascript:void(0)"
 					data-prefix="{{ form.links_prefix }}" data-current="{{ form.links_len }}">
 					<span class="add-btn ace-icon fa fa-plus" unselectable="on"></span>
@@ -74,6 +85,27 @@
 				</a>
 			</p>
 		{% endif %}
+
+		<div class="profile-image-panel">
+			{% include "admin/profile/profile_form_imagefield.html" with field=form.thumbnail_image %}
+		</div>
+		<div class="profile-image-panel">
+			{% include "admin/profile/profile_form_imagefield.html" with field=form.detail_image %}
+			{% include "admin/profile/profile_form_field.html" with field=form.image_credit %}
+		</div>
+
+		{{ form.profile_plugin }}
+		<div style="display:none" class="order_field">
+			{{ form.ORDER }}
+		</div>
+		<div class="plugin-submit-row form-actions text-right no-margin-bottom no-background">
+			<a class="close-profile default btn btn-default" href="#"
+				data-profile-id-prefix="{{form.prefix}}">Close</a>
+			<a class="done-profile default btn btn-primary"
+				data-profile-id-prefix="{{form.prefix}}"
+				href="#">Done</a>
+		</div>
+
     {{ fk_field.field }}
 	</div>
 </div>
