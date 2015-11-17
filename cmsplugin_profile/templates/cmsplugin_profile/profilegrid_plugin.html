@@ -5,74 +5,69 @@
 {% addtoblock "js" %}
 <script src="{{ STATIC_URL }}cmsplugin_profile/js/profilegrid.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    Grid.init();
+$(document).ready(function(){
+	Grid.init();
 
-    function htmlEntities(str) {
-        return String(str).replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&apos;');
-    }
+	function htmlEntities(str) {
+		return String(str).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+	}
 
-    //Load more profiles
-    $('#og-additems').on('click', function(e) {
-        e.preventDefault();
+	//Load more profiles
+	$('#og-additems').on( 'click', function(e) {
+		e.preventDefault();
 
-        var self = $(this),
-            hash = self.data('loadedpages') + 1;
-        url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page=' + hash + '&max_results=12';
-        items = '';
+		var self = $(this),
+			hash = self.data('loadedpages') + 1;
+			url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
+		items = '';
 
-        jQuery.ajax({
-            url: url,
-            success: function(response) {
-                if (!response.has_more) {
-                    self.remove();
-                }
+		jQuery.ajax({
+	        url: url,
+			success: function(response) {
+				if (!response.has_more) {
+					self.remove();
+				}
 
-                var profiles = response.profiles;
+				var profiles = response.profiles;
 
-                $.each(profiles, function() {
-                    var profile = $(this).get(0);
-                    var links = profile.links;
+				$.each(profiles, function(){
+					var profile = $(this).get(0);
+					var links = profile.links;
 
-                    items += '<li><a href="' + htmlEntities(profile.call_to_action_url) + '" ' +
-                        'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
-                        'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
-                        'data-title="' + htmlEntities(profile.title) + '" ' +
-                        'data-description="' + htmlEntities(profile.description) + '" ' +
-                        'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
-                        'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
+					items += '<li><a href="' + htmlEntities(profile.call_to_action_url) +'" '+
+									'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
+									'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
+									'data-title="' + htmlEntities(profile.title) + '" ' +
+									'data-description="' + htmlEntities(profile.description) +'" ' +
+									'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
+									'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
 
-                    $.each(links, function(idx, link) {
-                        items += 'data-addlinktext' + (idx + 1) + '="' + htmlEntities(link.text) + '" ' +
-                            'data-addlinkurl' + (idx + 1) + '="' + htmlEntities(link.url) + '" ' +
-                            'data-addlinktarget' + (idx + 1) + '="' + link.target + '"';
-                    });
-                    items += '>';
-                    items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
+					$.each(links, function(idx, link){
+						items +=	'data-addlinktext' + (idx+1) + '="' + htmlEntities(link.text) + '" ' +
+									'data-addlinkurl' + (idx+1) + '="' + htmlEntities(link.url) + '" ' +
+									'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
+					});
+					items += '>';
+					items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
 
-                    { %
-                        if profilegrid.show_title_on_thumbnails %
-                    }
-                    items += '<h2>' + htmlEntities(profile.title) + '</h2>'; { % endif %
-                    }
+					{% if profilegrid.show_title_on_thumbnails %}
+					items += '<h2>' + htmlEntities(profile.title) + '</h2>';
+					{% endif %}
 
-                    items += '</a></li>';
-                });
-                items = $(items);
+					items += '</a></li>';
+				});
+				items = $(items);
 
-                items.appendTo($('#og-grid')).addClass('image-loading');
+				items.appendTo( $( '#og-grid' )).addClass('image-loading');
 
-                Grid.addItems(items);
-                self.data().loadedpages++;
-                $(window).data('ajaxready', true);
+				Grid.addItems( items );
+				self.data().loadedpages++;
+				$(window).data('ajaxready', true);
 
-            },
-            error: function(response) {},
-        });
-    });
+			},
+			error: function(response) {},
+	    });
+	});
 });
 </script>
 {% endaddtoblock %}
