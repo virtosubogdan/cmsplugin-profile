@@ -258,14 +258,11 @@ var Grid = (function() {
 
         // on window resize get the window´s size again
         // reset some values..
-
-        $(window).unbind('resize').bind('resize', function(e) {
-            //$window.on( 'debouncedresize', function() {
-
+        $window.on( 'debouncedresize', function() {
             scrollExtra = 0;
             previewPos = -1;
             // save item´s offset
-            saveItemInfo();
+            saveItemInfo(true);
             //Preview
             getWinSize();
             var preview = $.data(this, 'preview');
@@ -303,6 +300,7 @@ var Grid = (function() {
         var preview = $.data(this, 'preview'),
             // item´s offset top
             position = $item.data('offsetTop');
+
 
         scrollExtra = 0;
 
@@ -591,11 +589,21 @@ var Grid = (function() {
             // case 3 : preview height + item height does not fit in window´s height and preview height is bigger than window´s height
             var position = this.$item.data('offsetTop'),
                 previewOffsetT = this.$previewEl.offset().top - scrollExtra,
-                scrollVal = this.height + this.$item.data('height') + marginExpanded <= winsize.height ? position : this.height < winsize.height ? previewOffsetT - (winsize.height - this.height) : previewOffsetT;
+                scrollVal;
+
+                if (this.height + this.$item.data('height') + marginExpanded <= winsize.height) {
+                    scrollVal = position;
+                }
+                else if (this.height < winsize.height) {
+                    scrollVal = previewOffsetT - (winsize.height - this.height);
+                }
+                else {
+                    scrollVal = previewOffsetT;
+                }
+
             $body.animate({
                 scrollTop: scrollVal
             }, settings.speed);
-
         },
         setTransition: function() {
             this.$previewEl.css('transition', 'height ' + settings.speed + 'ms ' + settings.easing);
