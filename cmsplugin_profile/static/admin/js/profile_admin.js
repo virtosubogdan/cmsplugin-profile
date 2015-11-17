@@ -388,7 +388,7 @@
             var self = this;
             new_form_index = $('.inline-related').length - 1;
             profile_grid_id = $("#id_profile_set-__prefix__-profile_plugin").attr('value');
-            url = '/cmsplugin_profile/new_profile/' + new_form_index + '/';
+            url = '/admin/cmsplugin_profile/new_profile/' + new_form_index + '/';
             if (profile_grid_id !== undefined)
                 url += "?profilegrid_id=" + profile_grid_id;
             jQuery.ajax({

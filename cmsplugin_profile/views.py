@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.forms import HiddenInput
 from django.shortcuts import get_object_or_404, render_to_response
 from django.views.decorators.http import require_GET
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 
@@ -57,6 +58,7 @@ def _serialize_profile(profile):
 
 
 @require_GET
+@staff_member_required
 def new_profile(request, profile_nr):
     if not has_plugin_permission(request.user, "ProfileGridPlugin", "change"):
         raise PermissionDenied
