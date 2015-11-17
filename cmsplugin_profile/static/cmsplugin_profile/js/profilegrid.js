@@ -416,7 +416,7 @@ var Grid = (function() {
                     addLinkUrlD: $itemEl.data('addlinkurl4'),
                     addLinkTargetD: $itemEl.data('addlinktarget4')
                 };
-            this.$title.html(eldata.title);
+            this.$title.text(eldata.title);
             this.$description.html(eldata.description);
 
             if (eldata.href.length) {
