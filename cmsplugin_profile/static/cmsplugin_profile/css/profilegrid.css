@@ -69,7 +69,7 @@
   background: #efefef;
   height: 300px;
   width: 300px;
-  display: table-cell;
+  display: inline-flex;
   vertical-align: middle;
 }
 /* line 45, ../sass/profilegrid.scss */
