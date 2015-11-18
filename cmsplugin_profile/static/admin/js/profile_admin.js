@@ -24,13 +24,13 @@
     function update_show_unsaved_warning() {
         var current_title = $("#id_title").val(),
             current_description = $("#id_description").val(),
-            current_show_title = $("#id_show_title_on_thumbnails").prop('checked')
+            current_show_title = $("#id_show_title_on_thumbnails").prop('checked'),
 
             has_unsaved_changes = profile_added || profile_deleted ||
-            current_title != initial_title ||
-            current_description != initial_description ||
-            current_show_title != initial_show_title ||
-            profiles_have_changes();
+                current_title != initial_title ||
+                current_description != initial_description ||
+                current_show_title != initial_show_title ||
+                profiles_have_changes();
 
         $("#warning_unsaved").css('display', (has_unsaved_changes ? "block" : "none"));
     }
