@@ -17,8 +17,9 @@
     function update_changed_status_for_profile(profile_prefix) {
         var initial_data = all_profiles_initial_data[profile_prefix],
             current_data = store_input_data(profile_prefix),
-            has_changed = profile_has_changes(initial_data, current_data),
-            all_profiles_changes_flag[profile_prefix] = has_changed;
+            has_changed = profile_has_changes(initial_data, current_data);
+
+        all_profiles_changes_flag[profile_prefix] = has_changed;
     }
 
     function update_show_unsaved_warning() {
