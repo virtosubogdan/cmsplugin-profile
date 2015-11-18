@@ -3,72 +3,85 @@
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_profile/css/profilegrid.css" />
 {% endaddtoblock %}
 {% addtoblock "js" %}
+<script src="{{ STATIC_URL }}cmsplugin_profile/js/debouncedresize.js"></script>
+<script src="{{ STATIC_URL }}cmsplugin_profile/js/imagesloaded.js"></script>
 <script src="{{ STATIC_URL }}cmsplugin_profile/js/profilegrid.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-    Grid.init();
+(function($, PBS){
+    PBS = PBS || {};
+    PBS.snippets = PBS.snippets || {};
 
-    function htmlEntities(str) {
-        return String(str).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-    }
+    $(document).ready(function(){
+        var id = 'profile_grid{{ rnd }}' ;
 
-    //Load more profiles
-    $('#og-additems').on( 'click', function(e) {
-        e.preventDefault();
+        PBS.snippets[id] = new PBS.ProfileGrid({
+            snippet: $('#' + id),
+        })
+        PBS.snippets[id].init();
 
-        var self = $(this),
-            hash = self.data('loadedpages') + 1;
-            url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
-        items = '';
+        function htmlEntities(str) {
+            return String(str).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+        }
 
-        jQuery.ajax({
-            url: url,
-            success: function(response) {
-                if (!response.has_more) {
-                    self.remove();
-                }
+        //Load more profiles
+        $('#og-additems').on( 'click', function(e) {
+            e.preventDefault();
 
-                var profiles = response.profiles;
+            var self = $(this),
+                hash = self.data('loadedpages') + 1;
+                url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
+            items = '';
 
-                $.each(profiles, function(){
-                    var profile = $(this).get(0);
-                    var links = profile.links;
+            jQuery.ajax({
+                url: url,
+                success: function(response) {
+                    if (!response.has_more) {
+                        self.remove();
+                    }
 
-                    items += '<li><a href="' + htmlEntities(profile.call_to_action_url) +'" '+
-                                    'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
-                                    'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
-                                    'data-title="' + htmlEntities(profile.title) + '" ' +
-                                    'data-description="' + htmlEntities(profile.description) +'" ' +
-                                    'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
-                                    'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
+                    var profiles = response.profiles;
 
-                    $.each(links, function(idx, link){
-                        items +=    'data-addlinktext' + (idx+1) + '="' + htmlEntities(link.text) + '" ' +
-                                    'data-addlinkurl' + (idx+1) + '="' + htmlEntities(link.url) + '" ' +
-                                    'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
+                    $.each(profiles, function(){
+                        var profile = $(this).get(0);
+                        var links = profile.links;
+
+                        items += '<li><a href="' + htmlEntities(profile.call_to_action_url) +'" '+
+                                        'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
+                                        'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
+                                        'data-title="' + htmlEntities(profile.title) + '" ' +
+                                        'data-description="' + htmlEntities(profile.description) +'" ' +
+                                        'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
+                                        'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
+
+                        $.each(links, function(idx, link){
+                            items +=    'data-addlinktext' + (idx+1) + '="' + htmlEntities(link.text) + '" ' +
+                                        'data-addlinkurl' + (idx+1) + '="' + htmlEntities(link.url) + '" ' +
+                                        'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
+                        });
+                        items += '>';
+                        items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
+
+                        {% if profilegrid.show_title_on_thumbnails %}
+                        items += '<h2>' + htmlEntities(profile.title) + '</h2>';
+                        {% endif %}
+
+                        items += '</a></li>';
                     });
-                    items += '>';
-                    items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
+                    items = $(items);
 
-                    {% if profilegrid.show_title_on_thumbnails %}
-                    items += '<h2>' + htmlEntities(profile.title) + '</h2>';
-                    {% endif %}
+                    items.appendTo($('#' + id)).addClass('image-loading');
 
-                    items += '</a></li>';
-                });
-                items = $(items);
+                    PBS.snippets[id].addItems( items );
+                    self.data().loadedpages++;
+                    $(window).data('ajaxready', true);
 
-                items.appendTo( $( '#og-grid' )).addClass('image-loading');
-
-                Grid.addItems( items );
-                self.data().loadedpages++;
-                $(window).data('ajaxready', true);
-
-            },
-            error: function(response) {},
+                },
+                error: function(response) {},
+            });
         });
     });
-});
+})(jQuery, PBS);
+
 </script>
 {% endaddtoblock %}
 <section class="pbs-profile-grid">
@@ -80,7 +93,7 @@ $(document).ready(function(){
     </div>
     <div class="row-fluid">
         <div class="span12">
-            <ul id="og-grid" class="og-grid">
+            <ul id="profile_grid{{ rnd }}" class="og-grid">
             {% for profile in profiles|slice:":12" %}
                     <li>
                         <a href="{{profile.call_to_action_url|escape}}"
