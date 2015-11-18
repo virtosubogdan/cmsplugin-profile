@@ -146,6 +146,20 @@ class ProfileGridPromoForm(forms.ModelForm):
 
         self._load_custom_data()
         self._set_values_for_fields()
+        if self.request.method == "POST":
+            self._load_post_data()
+
+    def _load_post_data(self):
+        """
+        For POST request transform the request into custom form data so if the validation
+        fails, the template rendered to the user will contain the changes that were made
+        to the custom fields.
+        """
+        selected_profile_ids = self.data.get('profiles_field', '').split(',')
+        self.all_profiles = [
+            (profile, str(profile.id) in selected_profile_ids)
+            for profile, _ in self.all_profiles
+        ]
 
     def _load_custom_data(self):
         self.changed_grid = self._get_changed_grid()
