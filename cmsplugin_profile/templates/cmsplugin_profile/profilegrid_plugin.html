@@ -1,150 +1,150 @@
 {% load sekizai_tags filertags %}
 {% addtoblock "css" %}
-	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_profile/css/profilegrid.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cmsplugin_profile/css/profilegrid.css" />
 {% endaddtoblock %}
 {% addtoblock "js" %}
 <script src="{{ STATIC_URL }}cmsplugin_profile/js/profilegrid.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	Grid.init();
+    Grid.init();
 
-	function htmlEntities(str) {
-		return String(str).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-	}
+    function htmlEntities(str) {
+        return String(str).replace(/</g, '&lt;').replace(/>/g,'&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+    }
 
-	//Load more profiles
-	$('#og-additems').on( 'click', function(e) {
-		e.preventDefault();
+    //Load more profiles
+    $('#og-additems').on( 'click', function(e) {
+        e.preventDefault();
 
-		var self = $(this),
-			hash = self.data('loadedpages') + 1;
-			url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
-		items = '';
+        var self = $(this),
+            hash = self.data('loadedpages') + 1;
+            url = '/cmsplugin_profile/{{profilegrid.id}}/view_profiles/?page='+ hash +'&max_results=12';
+        items = '';
 
-		jQuery.ajax({
-	        url: url,
-			success: function(response) {
-				if (!response.has_more) {
-					self.remove();
-				}
+        jQuery.ajax({
+            url: url,
+            success: function(response) {
+                if (!response.has_more) {
+                    self.remove();
+                }
 
-				var profiles = response.profiles;
+                var profiles = response.profiles;
 
-				$.each(profiles, function(){
-					var profile = $(this).get(0);
-					var links = profile.links;
+                $.each(profiles, function(){
+                    var profile = $(this).get(0);
+                    var links = profile.links;
 
-					items += '<li><a href="' + htmlEntities(profile.call_to_action_url) +'" '+
-									'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
-									'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
-									'data-title="' + htmlEntities(profile.title) + '" ' +
-									'data-description="' + htmlEntities(profile.description) +'" ' +
-									'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
-									'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
+                    items += '<li><a href="' + htmlEntities(profile.call_to_action_url) +'" '+
+                                    'data-largesrc="' + htmlEntities(profile.detail_image) + '" ' +
+                                    'data-largeimg-credit="' + htmlEntities(profile.image_credit) + '" ' +
+                                    'data-title="' + htmlEntities(profile.title) + '" ' +
+                                    'data-description="' + htmlEntities(profile.description) +'" ' +
+                                    'data-callToActionText="' + htmlEntities(profile.call_to_action_text) + '" ' +
+                                    'data-additionallinkslabel="' + htmlEntities(profile.additional_links_label) + '" ';
 
-					$.each(links, function(idx, link){
-						items +=	'data-addlinktext' + (idx+1) + '="' + htmlEntities(link.text) + '" ' +
-									'data-addlinkurl' + (idx+1) + '="' + htmlEntities(link.url) + '" ' +
-									'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
-					});
-					items += '>';
-					items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
+                    $.each(links, function(idx, link){
+                        items +=    'data-addlinktext' + (idx+1) + '="' + htmlEntities(link.text) + '" ' +
+                                    'data-addlinkurl' + (idx+1) + '="' + htmlEntities(link.url) + '" ' +
+                                    'data-addlinktarget' + (idx+1) + '="' + link.target + '"';
+                    });
+                    items += '>';
+                    items += '<img src="' + profile.thumbnail_image + '" alt="' + htmlEntities(profile.title) + '"/>';
 
-					{% if profilegrid.show_title_on_thumbnails %}
-					items += '<h2>' + htmlEntities(profile.title) + '</h2>';
-					{% endif %}
+                    {% if profilegrid.show_title_on_thumbnails %}
+                    items += '<h2>' + htmlEntities(profile.title) + '</h2>';
+                    {% endif %}
 
-					items += '</a></li>';
-				});
-				items = $(items);
+                    items += '</a></li>';
+                });
+                items = $(items);
 
-				items.appendTo( $( '#og-grid' )).addClass('image-loading');
+                items.appendTo( $( '#og-grid' )).addClass('image-loading');
 
-				Grid.addItems( items );
-				self.data().loadedpages++;
-				$(window).data('ajaxready', true);
+                Grid.addItems( items );
+                self.data().loadedpages++;
+                $(window).data('ajaxready', true);
 
-			},
-			error: function(response) {},
-	    });
-	});
+            },
+            error: function(response) {},
+        });
+    });
 });
 </script>
 {% endaddtoblock %}
 <section class="pbs-profile-grid">
-	<div class="row-fluid">
-	    <div class="span8">
-	  		<h1>{{ profilegrid.title|escapejs }}</h1>
-	  		<p class="profile-grid-descr">{{ profilegrid.description }}</p>
-	    </div>
-  	</div>
-	<div class="row-fluid">
-	    <div class="span12">
-			<ul id="og-grid" class="og-grid">
-	    	{% for profile in profiles|slice:":12" %}
-					<li>
-						<a href="{{profile.call_to_action_url|escape}}"
-							data-largesrc="{{profile.detail_image|filerfile}}"
-							data-largeimg-credit="{{profile.image_credit|escape}}"
-							data-title="{{profile.title|escape}}"
-							data-description="{{profile.description|escape}}"
-							data-callToActionText="{{profile.call_to_action_text|escape}}"
-							data-additionallinkslabel="{{profile.additional_links_label|escape}}"
-							{% for link in profile.links %}
-							data-addlinktext{{forloop.counter}}="{{link.text|escapejs}}" data-addlinkurl{{forloop.counter}}="{{link.url|escape}}" data-addlinktarget{{forloop.counter}}="{{link.target|escape}}"
-							{% endfor %}>
-							<img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
-							{% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
-						</a>
-					</li>
-			{% endfor %}
-			</ul>
-			{% if profiles|length > 12 %}
-				{% if profilegrid.load_mode_type == 'load_mode_button' %}
-					<a id="og-additems" href="#" data-loadedpages="1">Load more</a>
-				{% else %}
-					<a id="og-additems" href="#" data-loadedpages="1" style="visibility:hidden;"></a>
-					{% addtoblock "js" %}
-						<script type="text/javascript">
-							$.fn.isOnScreen = function(bufferHeight){
+    <div class="row-fluid">
+        <div class="span8">
+            <h1>{{ profilegrid.title|escapejs }}</h1>
+            <p class="profile-grid-descr">{{ profilegrid.description }}</p>
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <ul id="og-grid" class="og-grid">
+            {% for profile in profiles|slice:":12" %}
+                    <li>
+                        <a href="{{profile.call_to_action_url|escape}}"
+                            data-largesrc="{{profile.detail_image|filerfile}}"
+                            data-largeimg-credit="{{profile.image_credit|escape}}"
+                            data-title="{{profile.title|escape}}"
+                            data-description="{{profile.description|escape}}"
+                            data-callToActionText="{{profile.call_to_action_text|escape}}"
+                            data-additionallinkslabel="{{profile.additional_links_label|escape}}"
+                            {% for link in profile.links %}
+                            data-addlinktext{{forloop.counter}}="{{link.text|escapejs}}" data-addlinkurl{{forloop.counter}}="{{link.url|escape}}" data-addlinktarget{{forloop.counter}}="{{link.target|escape}}"
+                            {% endfor %}>
+                            <img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
+                            {% if profilegrid.show_title_on_thumbnails %}<h2>{{profile.title}}</h2> {% endif %}
+                        </a>
+                    </li>
+            {% endfor %}
+            </ul>
+            {% if profiles|length > 12 %}
+                {% if profilegrid.load_mode_type == 'load_mode_button' %}
+                    <a id="og-additems" href="#" data-loadedpages="1">Load more</a>
+                {% else %}
+                    <a id="og-additems" href="#" data-loadedpages="1" style="visibility:hidden;"></a>
+                    {% addtoblock "js" %}
+                        <script type="text/javascript">
+                            $.fn.isOnScreen = function(bufferHeight){
 
-							    var win = $(window);
+                                var win = $(window);
 
-							    var viewport = {
-							        top : win.scrollTop(),
-							    };
-							    viewport.bottom = viewport.top + win.height() + bufferHeight;
+                                var viewport = {
+                                    top : win.scrollTop(),
+                                };
+                                viewport.bottom = viewport.top + win.height() + bufferHeight;
 
-							    var bounds = this.offset();
-							    bounds.bottom = bounds.top + this.outerHeight();
+                                var bounds = this.offset();
+                                bounds.bottom = bounds.top + this.outerHeight();
 
-							    return (!(viewport.bottom < bounds.top || viewport.top > bounds.bottom));
+                                return (!(viewport.bottom < bounds.top || viewport.top > bounds.bottom));
 
-							};
-						$(document).ready(function(){
-							$(window).scroll(function () {
-								if ($(window).data('ajaxready') === false) {
-        							return;
-        						}
+                            };
+                        $(document).ready(function(){
+                            $(window).scroll(function () {
+                                if ($(window).data('ajaxready') === false) {
+                                    return;
+                                }
 
-								var button = $('#og-additems');
-								// we set a buffer so that the user does not see the loading effect
-								var bufferHeight = 300;
-								
-								if ( button.length ) {
+                                var button = $('#og-additems');
+                                // we set a buffer so that the user does not see the loading effect
+                                var bufferHeight = 300;
+                                
+                                if ( button.length ) {
 
-									if (button.isOnScreen(bufferHeight)) {
-										$(window).data('ajaxready', false);
-										button.trigger("click");
+                                    if (button.isOnScreen(bufferHeight)) {
+                                        $(window).data('ajaxready', false);
+                                        button.trigger("click");
 
-									}
-								}
-							})
-						});
-						</script>
-					{% endaddtoblock %}
-				{% endif %}
-			{% endif %}
-		</div>
-	</div>
+                                    }
+                                }
+                            })
+                        });
+                        </script>
+                    {% endaddtoblock %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
 </section>
