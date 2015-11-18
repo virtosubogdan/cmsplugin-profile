@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.forms import HiddenInput
 from django.shortcuts import get_object_or_404, render_to_response
 from django.views.decorators.http import require_GET
+from django.contrib.admin.views.decorators import staff_member_required
 from django.core.exceptions import PermissionDenied
 from django.template import RequestContext
 
@@ -22,8 +23,6 @@ def view_profiles(request, profilegrid_id):
         max_results = int(request.GET.get('max_results', 4))
     except:
         max_results = 4
-    if not request.user.is_authenticated():
-        raise PermissionDenied
     profile_grid = get_object_or_404(ProfileGrid, id=profilegrid_id)
     paginator = Paginator(profile_grid.profile_set.all(), max_results)
     response = {
@@ -59,6 +58,7 @@ def _serialize_profile(profile):
 
 
 @require_GET
+@staff_member_required
 def new_profile(request, profile_nr):
     if not has_plugin_permission(request.user, "ProfileGridPlugin", "change"):
         raise PermissionDenied

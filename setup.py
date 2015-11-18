@@ -12,7 +12,7 @@ __README__ = open(__README_PATH__).read()
 
 setup(
     name='cmsplugin-profile',
-    version='0.1.0',
+    version='0.1.0.pbs.1',
     description='CMS Plugin for profiles',
     long_description=__README__,
     author=__AUTHOR__,
