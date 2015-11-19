@@ -15,22 +15,23 @@
     }
 
     function update_changed_status_for_profile(profile_prefix) {
-        initial_data = all_profiles_initial_data[profile_prefix];
-        current_data = store_input_data(profile_prefix);
-        has_changed = profile_has_changes(initial_data, current_data);
+        var initial_data = all_profiles_initial_data[profile_prefix],
+            current_data = store_input_data(profile_prefix),
+            has_changed = profile_has_changes(initial_data, current_data);
+
         all_profiles_changes_flag[profile_prefix] = has_changed;
     }
 
     function update_show_unsaved_warning() {
-        current_title = $("#id_title").val();
-        current_description = $("#id_description").val();
-        current_show_title = $("#id_show_title_on_thumbnails").prop('checked');
+        var current_title = $("#id_title").val(),
+            current_description = $("#id_description").val(),
+            current_show_title = $("#id_show_title_on_thumbnails").prop('checked'),
 
-        has_unsaved_changes = profile_added || profile_deleted ||
-            current_title != initial_title ||
-            current_description != initial_description ||
-            current_show_title != initial_show_title ||
-            profiles_have_changes();
+            has_unsaved_changes = profile_added || profile_deleted ||
+                current_title != initial_title ||
+                current_description != initial_description ||
+                current_show_title != initial_show_title ||
+                profiles_have_changes();
 
         $("#warning_unsaved").css('display', (has_unsaved_changes ? "block" : "none"));
     }
@@ -48,9 +49,7 @@
     }
 
     function removeAllErrorClasses() {
-        $('.has-error, .error').each(function() {
-            $(this).removeClass('has-error').removeClass('error');
-        });
+        $('.has-error, .error').removeClass('has-error').removeClass('error');
     }
 
     function is_url_valid(value) {
@@ -87,8 +86,7 @@
                     self.find('.help-block-url').show();
                     $(this).addClass('error');
                     valid = false;
-                }
-                else {
+                } else {
                     self.find('.form-row.profile-add-link-url').removeClass('has-url-error');
                     self.find('.help-block-url').hide();
                     $(this).removeClass('error');
@@ -101,8 +99,10 @@
     }
 
     function validateProfile(form) {
-        var valid = checkValidLinks(form);
-        var mandatoryFields = form.find('.mandatory');
+        var valid = checkValidLinks(form),
+            mandatoryFields = form.find('.mandatory'),
+            call_to_action = form.find('[id*="call_to_action_url"]'),
+            value = call_to_action.val();
 
         mandatoryFields.each(function(idx, elem) {
             if (isEmpty($(elem))) {
@@ -120,9 +120,6 @@
             }
         });
 
-        var call_to_action = form.find('[id*="call_to_action_url"]');
-        var value = call_to_action.val();
-
         if (value.length && !is_url_valid(value)) {
             call_to_action.siblings('.help-block').html('Invalid URL!');
             call_to_action.addClass('error').closest('.form-row').addClass('has-error');
@@ -135,18 +132,16 @@
     }
 
     function setLimiter() {
-        form_id.find('input[type="text"], textarea').each(function() {
-            $(this).inputlimiter({
-                remText: '%n character%s left. ',
-                limitText: '%n character%s limit.',
-                limitTextShow: false,
-                remTextHideOnBlur: false,
-            });
+        form_id.find('input[type="text"], textarea').inputlimiter({
+            remText: '%n character%s left. ',
+            limitText: '%n character%s limit.',
+            limitTextShow: false,
+            remTextHideOnBlur: false,
         });
     }
 
     function resizeIframe(toResizeTo, scrollToTop) {
-        var insideIframe = (window.location != window.parent.location) ? true : false;
+        var insideIframe = (window.location != window.parent.location ? true : false);
         scrollToTop = (scrollToTop == false) ? false : true;
 
         if (!insideIframe) {
@@ -174,28 +169,28 @@
 
     function store_input_data(prefix) {
         // Stores all the input data for a profile in a custom format.
-        data = {};
+        var data = {};
 
         $('input[name^="' + prefix + '"]').each(function(index, e) {
             input = $(this);
             if (input.attr("type") === "checkbox") {
                 type = "checkbox";
-                value = input[0].checked;
+                value = input.prop('checked');
             } else {
                 type = "value";
-                value = input[0].value;
+                value = input.val();
             }
             data[input.attr("id")] = [type, value];
         });
 
         $('textarea[name^="' + prefix + '"]').each(function(index, e) {
-            data[$(this).attr("id")] = ["value", $(this)[0].value];
+            data[$(this).attr("id")] = ["value", $(this).val()];
         });
 
         // Save the whole html, must be saved over the normal input values for images
         $.each(['thumbnail_image', 'detail_image'], function(index, image_name) {
             element = $("#id_" + prefix + "-" + image_name);
-            input_value = element[0].value;
+            input_value = element.val();
             html = element.closest("div.profile-image-panel").html();
             data[element.attr("id")] = ["image_html", [html, input_value]];
         });
@@ -285,7 +280,7 @@
             $(this).parent('.profile-item-actions').siblings().addClass('visible').closest('.inline-related').addClass('edit-mode');
             $(this).closest('.grid-list').siblings('.overlay').addClass('visible');
 
-            prefix = $(this).attr("data-profile-id-prefix");
+            prefix = $(this).data("profile-id-prefix");
             current_profile_value_before_edit = store_input_data(prefix);
             if (all_profiles_initial_data[prefix] === undefined) {
                 all_profiles_initial_data[prefix] = current_profile_value_before_edit;
@@ -300,9 +295,8 @@
         $(document).on('click', '.profile-item-actions .delete-profile-item', function(e) {
             e.preventDefault();
 
-            profile_prefix = $(this).attr("data-profile-id-prefix");
-            profile_div = $('#' + profile_prefix)[0];
-            profile_div.style['display'] = "none";
+            profile_prefix = $(this).data("profile-id-prefix");
+            $('#' + profile_prefix).hide();
 
             delete_input = $('#id_' + profile_prefix + '-DELETE')[0];
             if (delete_input === undefined) {
@@ -396,8 +390,8 @@
                 success: function(response) {
                     $('#profile_set-group-grid .new-profile-form').addClass('visible').append(response);
                     $('.overlay').addClass('visible');
-                    total = $('#id_profile_set-TOTAL_FORMS')[0];
-                    total.value = parseInt(total.value) + 1;
+                    total = $('#id_profile_set-TOTAL_FORMS');
+                    total.val(parseInt(total.val() + 1, 10));
                 },
                 error: function(response) {},
                 complete: function(response) {
@@ -412,7 +406,7 @@
         $(document).on('click', '.add-profile-link', function(e) {
             link = $(e.currentTarget);
             prefix = link.attr("data-prefix");
-            current = parseInt(link.attr("data-current"));
+            current = parseInt(link.attr("data-current"), 10);
             next_link = $("#" + prefix + current + "container");
             if (next_link != undefined) {
                 next_link.show();
@@ -472,4 +466,4 @@
         // init all functions
         init();
     });
-})(jQuery);
+})(jQuery || django.jQuery);
