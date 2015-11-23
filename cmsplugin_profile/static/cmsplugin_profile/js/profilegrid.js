@@ -60,7 +60,6 @@
         // the new items need to appended to the grid.
         // after that call Grid.addItems(theItems);
         function addItems($newitems) {
-            console.log('additems');
             $items = $items.add($newitems);
 
             $newitems.each(function() {
@@ -81,7 +80,7 @@
                 var $item = $(this);
                 $item.data('offsetTop', $item.offset().top);
                 if (saveheight) {
-                    $item.data('height', $item.height());
+                    $item.data('height', $item.find('> a').height());
                 }
             });
         }
@@ -106,6 +105,7 @@
 
                 if (typeof preview != 'undefined') {
                     hidePreview();
+                    showPreview(preview.$item);
                 }
 
             });
