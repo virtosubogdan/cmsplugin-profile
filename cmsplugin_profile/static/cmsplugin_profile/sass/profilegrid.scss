@@ -358,6 +358,17 @@ $grid: ".og-grid";
     body:not(.studio) {
         margin-top: 0 !important;
     }
+    body.dark {
+        .pbs-profile-grid {
+            h1, .profile-grid-descr {
+                color: white;
+            }
+        }
+        #og-additems {
+            color: white;
+            border-color: white;
+        }
+    }
     .studio,
     .tpl-producer,
     .tpl-station {
