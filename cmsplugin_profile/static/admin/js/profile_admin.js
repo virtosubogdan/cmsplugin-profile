@@ -183,6 +183,11 @@
             data[input.attr("id")] = [type, value];
         });
 
+	$('select[name^="' + prefix + '"]').each(function(index, e) {
+            input = $(this);
+            data[input.attr("id")] = ["value", input.val()];
+        });
+
         $('textarea[name^="' + prefix + '"]').each(function(index, e) {
             data[$(this).attr("id")] = ["value", $(this).val()];
         });
