@@ -94,6 +94,8 @@
 
             // on window resize get the window´s size again
             // reset some values..
+            var old_width = winsize.width;
+            
             $window.on('debouncedresize', function() {
                 scrollExtra = 0;
                 previewPos = -1;
@@ -103,9 +105,10 @@
                 getWinSize();
                 var preview = $.data(this, 'preview');
 
-                if (typeof preview != 'undefined') {
+                if (typeof preview != 'undefined' && winsize.width != old_width) {
                     hidePreview();
                     showPreview(preview.$item);
+                    old_width = winsize.width;
                 }
 
             });
