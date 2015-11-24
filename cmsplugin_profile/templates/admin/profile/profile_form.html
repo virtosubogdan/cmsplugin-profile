@@ -36,7 +36,7 @@
 						<input class="vTextField" id="{{ form.links_prefix }}{{ index }}-url" maxlength="{{ form.links_url_max_length }}" name="{{ form.links_prefix }}{{ index }}-url" type="text" value="{{ link.url }}">
 						<select id="{{ form.links_prefix }}{{ index }}-open_action" name="{{ form.links_prefix }}{{ index }}-open_action">
 							<option value="blank" {% if link.target == "blank" %} selected="selected" {% endif %}>blank</option>
-							<option value="parent" {% if link.target == "parent" %} selected="selected" {% endif %}>parent</option>
+							<option value="same window" {% if link.target == "same window" %} selected="selected" {% endif %}>same window</option>
 						</select>
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
 						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
@@ -64,7 +64,7 @@
 						<input class="vTextField" id="{{ form.links_prefix }}{{ empty_link_id}}-url" maxlength="{{ form.links_url_max_length }}" name="{{ form.links_prefix }}{{ empty_link_id}}-url" type="text">
 						<select id="{{ form.links_prefix }}{{ empty_link_id }}-open_action" name="{{ form.links_prefix }}{{ empty_link_id}}-open_action">
 							<option value="blank">blank</option>
-							<option value="parent">same window</option>
+							<option value="same window">same window</option>
 						</select>
 						<div class="hidden help-block col-xs-12 col-sm-reset no-margin-bottom no-margin-top">This field is mandatory!</div>
 						<div class="hidden help-block help-block-url col-xs-12 col-sm-reset no-margin-bottom no-margin-top">Invalid URL!</div>
