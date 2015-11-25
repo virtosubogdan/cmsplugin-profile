@@ -1,14 +1,14 @@
-/* line 935, ../sass/profilegrid.scss */
+/* line 939, ../sass/profilegrid.scss */
 .pbs-profile-grid {
   padding: 40px 20px 0;
 }
-/* line 937, ../sass/profilegrid.scss */
+/* line 941, ../sass/profilegrid.scss */
 .pbs-profile-grid * {
   box-sizing: border-box;
   -webkit-box-sizing: border-box;
   moz-box-sizing: border-box;
 }
-/* line 942, ../sass/profilegrid.scss */
+/* line 946, ../sass/profilegrid.scss */
 .pbs-profile-grid h1 {
   color: #464646;
   font-size: 30px;
@@ -17,7 +17,7 @@
   margin-bottom: 15px;
   word-wrap: break-word;
 }
-/* line 950, ../sass/profilegrid.scss */
+/* line 954, ../sass/profilegrid.scss */
 .pbs-profile-grid .profile-grid-descr {
   color: #222;
   font-size: 16px;
@@ -1044,4 +1044,8 @@ body:not(.studio):not(.tpl-producer) .span12.page-content .pbs-profile-grid .spa
     width: 390px;
     height: 390px;
   }
+}
+/* line 933, ../sass/profilegrid.scss */
+_:-ms-fullscreen, :root .og-grid li > a {
+  display: inline-block;
 }
