@@ -1,6 +1,33 @@
 CHANGELOG
 =========
 
+Revision 0293589 (25.11.2015, 11:00 UTC)
+----------------------------------------
+
+* LUN-2808
+
+  * scrolling and resize on mobile/tablet fix
+
+* LUN-2814
+
+  * Also save the selection for the link target so it can be restored.
+  * Fix values for profile link target selection.
+
+* LUN-2816
+
+  * added off() also on delegated function
+  * multiple click triggers on link fixed with off()
+
+* LUN-2817
+
+  * Escape only html.
+
+* LUN-2818
+
+  * Fix: Input value with total form count was not increased correctly.
+
+No other commits.
+
 Revision 94d7f47 (23.11.2015, 10:31 UTC)
 ----------------------------------------
 
