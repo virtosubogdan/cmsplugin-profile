@@ -119,7 +119,7 @@
             $items.on('click', 'span.og-close', function() {
                 hidePreview();
                 return false;
-            }).children('a').on('click', function(e) {
+            }).children('a').off('click').on('click', function(e) {
 
                 var $item = $(this).parent();
                 // check if item already opened
