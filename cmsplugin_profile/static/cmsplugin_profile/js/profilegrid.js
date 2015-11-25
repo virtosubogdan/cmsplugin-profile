@@ -116,7 +116,7 @@
         }
 
         function initItemsEvents($items) {
-            $items.on('click', 'span.og-close', function() {
+            $items.off('click').on('click', 'span.og-close', function() {
                 hidePreview();
                 return false;
             }).children('a').off('click').on('click', function(e) {
