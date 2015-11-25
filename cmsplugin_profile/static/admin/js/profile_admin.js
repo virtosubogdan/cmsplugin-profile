@@ -272,7 +272,7 @@
             update_show_unsaved_warning();
         });
     }
-    
+
     //detect change on Show Title on Thumbnails field
     function onChangeShowTitleOnThumbnail () {
         $(document).on("change", "#id_show_title_on_thumbnails", function(e) {
@@ -399,7 +399,7 @@
                     $('#profile_set-group-grid .new-profile-form').addClass('visible').append(response);
                     $('.overlay').addClass('visible');
                     total = $('#id_profile_set-TOTAL_FORMS');
-                    total.val(parseInt(total.val() + 1, 10));
+                    total.val(parseInt(total.val(), 10) + 1);
                     setLimiter();
                 },
                 error: function(response) {},
