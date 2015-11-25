@@ -132,11 +132,13 @@
     }
 
     function setLimiter() {
-        form_id.find('input[type="text"], textarea').inputlimiter({
+        var inputs = form_id.find('input[type="text"], textarea');
+        inputs.inputlimiter({
             remText: '%n character%s left. ',
             limitText: '%n character%s limit.',
             limitTextShow: false,
             remTextHideOnBlur: false,
+            lineReturnCount: 2,
         });
     }
 
@@ -292,6 +294,7 @@
             }
 
             resizeIframe($('.visible'));
+            setLimiter();
         });
     }
 
@@ -397,6 +400,7 @@
                     $('.overlay').addClass('visible');
                     total = $('#id_profile_set-TOTAL_FORMS');
                     total.val(parseInt(total.val(), 10) + 1);
+                    setLimiter();
                 },
                 error: function(response) {},
                 complete: function(response) {
