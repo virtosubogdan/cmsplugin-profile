@@ -5,14 +5,14 @@ from os.path import join, dirname, abspath
 from setuptools import setup, find_packages
 
 
-__AUTHOR__ = 'Bogdan Virtosu'
+__AUTHOR__ = 'Adelina Diacu, Bogdan Virtosu'
 __AUTHOR_EMAIL__ = 'virtosu.bogdan@gmail.com'
 __README_PATH__ = join(abspath(dirname(__file__)), 'README.md')
 __README__ = open(__README_PATH__).read()
 
 setup(
     name='cmsplugin-profile',
-    version='0.1.0.pbs.1',
+    version='0.1.0',
     description='CMS Plugin for profiles',
     long_description=__README__,
     author=__AUTHOR__,
