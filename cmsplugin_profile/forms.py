@@ -1,8 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from cms_blogger.widgets import ToggleWidget
-
+from .compatibility import ToggleWidget
 from .models import Profile, ProfileLink, ProfileGrid, SelectedProfile, ProfilePromoGrid
 from .settings import MAX_PROFILE_LINKS, MAX_PROMO_PROFILES
 
