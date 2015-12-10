@@ -11,9 +11,11 @@ Demo application.
 For a quick startup, there is a demo application with django-cms 3.2.0.
 This demo application uses resources from https://github.com/divio/django-cms-demo
 
+```bash
 virtualenv demo_env
 . demo_env/bin/activate
 cd demo
 pip install -r requirements.txt
 pip install -e .. --no-deps
 ./manage.py runserver
+```
