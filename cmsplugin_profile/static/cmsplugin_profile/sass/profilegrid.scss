@@ -87,8 +87,10 @@ $grid: ".og-grid";
             overflow: hidden;
         }
         .og-expander-inner {
-            padding: 50px 30px;
-            height: 100%;
+            padding: 30px;
+            height: auto;
+            overflow: hidden;
+
             @media (max-width: 767px) {
                 padding: 30px;
             }
@@ -98,8 +100,8 @@ $grid: ".og-grid";
         }
         .og-close {
             position: absolute;
-            width: 40px;
-            height: 40px;
+            width: 20px;
+            height: 20px;
             top: 20px;
             right: 20px;
             cursor: pointer;
@@ -432,13 +434,29 @@ $grid: ".og-grid";
                 li {
                     &,
                     & > a {
-                        width: 285px;
-                        height: 285px;
-                        line-height: 283px;
+                        width: 309px;
+                        height: 309px;
+                        line-height: 307px;
+
                         @media (min-width: 1280px) {
-                            width: 275px;
-                            height: 275px;
-                            line-height: 273px;
+                            width: 287px;
+                            height: 287px;
+                            line-height: 285px;
+                        }
+                        @media (max-width: 1279px) and (min-width: 1024px) {
+                            width: 309px;
+                            height: 309px;
+                            line-height: 307px;
+                        }
+                        @media (min-width: 961px) and (max-width: 1023px) {
+                          width: 289px;
+                          height: 289px;
+                          line-height: 287px;
+                        }
+                        @media (width: 960px) {
+                          width: 298px;
+                          height: 298px;
+                          line-height: 296px;
                         }
                         @media (min-width: 768px) and (max-width: 959px) {
                             width: 355px;
@@ -451,12 +469,19 @@ $grid: ".og-grid";
                             line-height: 438px;
                             margin-right: 0 !important;
                         }
+                        @media (max-width: 479px) {
+                            width: 280px;
+                            height: 280px;
+                            line-height: 278px;
+                            margin-right: 0 !important;   
+                        }
+                    }
+                   
+                    &:nth-child(4n) {
+                        margin-right: 9px;
                     }
                     &:nth-child(3n) {
                         margin-right: 0;
-                    }
-                    &:nth-child(4n) {
-                        margin-right: 9px;
                     }
                     @media (min-width: 1025px) and (max-width: 1279px) {
                         margin-right: 0;
@@ -486,10 +511,10 @@ $grid: ".og-grid";
                 }
                 .og-details {
                     width: 52%;
+                    line-height: normal;
                 }
                 .og-bottom-details {
                     width: 100%;
-                    padding-bottom: 20px;
                     a {
                         width: 50%;
                         float: left;
@@ -644,29 +669,52 @@ $grid: ".og-grid";
     //preview image
     .og-expander .og-fullimg {
         background: #efefef;
+        height: 371px;
+        position: relative;
+        
+        @media (max-width: 1024px) and (min-width: 961px){
+            height: 402px;
+            width: 402px;
+            max-width: 100%;
+            margin: auto;
+            line-height: 402px;
+        }
+        @media (max-width: 960px) and (min-width: 769px){
+            height: 387px;
+            width: 387px;
+            max-width: 100%;
+            margin: auto;
+            line-height: 387px;
+        }
+        @media (max-width: 768px) {
+            height: 300px;
+            width: 300px;
+            max-width: 100%;
+            margin: auto;
+            line-height: 300px;
+        }
         @media (max-width: 767px) {
             height: 600px;
             width: 660px;
             max-width: 100%;
             margin: auto;
             line-height: 600px;
-            padding: 0 30px;
         }
         @media (max-width: 640px) {
             height: 480px;
-            width: 540px;
+            width: 480px;
             margin: auto;
             line-height: 480px;
         }
         @media (max-width: 480px) {
             height: 320px;
-            width: 380px;
+            width: 320px;
             margin: auto;
             line-height: 320px;
         }
         @media (max-width: 320px) {
             height: 220px;
-            width: 320px;
+            width: 220px;
             padding: 0;
             margin: auto;
             line-height: 220px;
@@ -684,6 +732,17 @@ $grid: ".og-grid";
         display: block;
         position: relative;
         text-decoration: none;
+
+        &:hover {
+            background: #747474;
+            color: white;
+            -webkit-transition: all 0.3s ease-in-out;
+            -moz-transition: all 0.3s ease-in-out;
+            -o-transition: all 0.3s ease-in-out;
+            -ms-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+
+        }
     }
 }
 @mixin promo() {
