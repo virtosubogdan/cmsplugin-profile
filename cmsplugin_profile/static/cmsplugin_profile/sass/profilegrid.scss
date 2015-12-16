@@ -676,14 +676,21 @@ $grid: ".og-grid";
                         margin-right: 8px;
                         &,
                         & > a {
-                            width: 195px;
-                            height: 195px;
-                            line-height: 193px;
+                            width: 194px;
+                            height: 194px;
+                            line-height: 192px;
                         }
                         &:nth-child(3n) {
                             margin-right: 0;
                         }
                     }
+                }
+            }
+            .og-expander .og-fullimg {
+                @media (min-width: 1024px){
+                    height: 247px;
+                    width: 247px;
+                    line-height: 247px;
                 }
             }
         }
@@ -822,9 +829,6 @@ $grid: ".og-grid";
             }
         }
         
-    }
-    body:not(.studio):not(.tpl-producer) .span12.page-content .pbs-profile-grid .span8 {
-        padding: 0 20px;
     }
    
     #og-additems {
