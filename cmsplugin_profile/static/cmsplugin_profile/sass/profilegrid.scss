@@ -390,11 +390,6 @@ $grid: ".og-grid";
                             height: 309px;
                             line-height: 307px;
                         }
-                        @media (min-width: 960px) and (max-width: 1023px) {
-                            width: 298px;
-                            height: 298px;
-                            line-height: 297px;
-                        }
                         @media (min-width: 961px) and (max-width: 1023px) {
                             width: 289px;
                             height: 289px;
@@ -447,13 +442,14 @@ $grid: ".og-grid";
             }
         }
         .og-expander .og-fullimg {
-            height: 566px;
-            width: 566px;
-            max-width: 100%;
-            margin: auto;
-            line-height: 566px;
-            position: relative;
-
+            @media (min-width: 1025px){
+                height: 566px;
+                width: 566px;
+                max-width: 100%;
+                margin: auto;
+                line-height: 566px;
+                position: relative;
+            }
             @media (max-width: 1024px) and (min-width: 961px){
                 height: 428px;
                 width: 428px;
@@ -525,14 +521,14 @@ $grid: ".og-grid";
                             line-height: 307px;
                         }
                         @media (min-width: 961px) and (max-width: 1023px) {
-                          width: 289px;
-                          height: 289px;
-                          line-height: 287px;
+                            width: 289px;
+                            height: 289px;
+                            line-height: 287px;
                         }
                         @media (width: 960px) {
-                          width: 298px;
-                          height: 298px;
-                          line-height: 296px;
+                            width: 298px;
+                            height: 298px;
+                            line-height: 296px;
                         }
                         @media (min-width: 768px) and (max-width: 959px) {
                             width: 355px;
@@ -609,6 +605,8 @@ $grid: ".og-grid";
             .og-expander .og-fullimg {
                 background: #efefef;
                 height: 371px;
+                width: 371px;
+                line-height: 371px;
                 position: relative;
                 
                 @media (max-width: 1024px) and (min-width: 961px){
@@ -694,25 +692,38 @@ $grid: ".og-grid";
         .span8.page-content {
             .pbs-profile-grid {
                 padding: 40px 0 0;
+
+                @media (max-width: 960px) {
+                    padding: 40px 20px 0;
+                }
+
                 .span8 {
                     width: 100%;
-                    @media (max-width: 767px) {
-                        padding: 0 20px;
-                    }
                 }
                 li {
                     &,
                     & > a {
-                        width: 195px;
-                        height: 195px;
-                        line-height: 193px;
-                        @media (min-width: 768px) and (max-width: 960px) {
-                            width: 230px;
-                            height: 230px;
-                            line-height: 228px;
-                            margin-right: 0;
+                        @media (min-width: 966px) {
+                            width: 195px;
+                            height: 195px;
+                            line-height: 193px;
                         }
-                        @media (min-width: 480px) and (max-width: 767px) {
+                        @media (min-width: 961px) and (max-width: 965px) {
+                            width: 193px;
+                            height: 193px;
+                            line-height: 191px;
+                        }
+                        @media (width: 960px) {
+                            width: 298px;
+                            height: 298px;
+                            line-height: 296px;
+                        }
+                        @media (min-width: 768px) and (max-width: 959px){
+                            width: 234px;
+                            height: 234px;
+                            line-height: 232px;   
+                        }
+                         @media (min-width: 480px) and (max-width: 767px) {
                             width: 440px;
                             height: 440px;
                             line-height: 438px;
@@ -725,18 +736,15 @@ $grid: ".og-grid";
                             margin-right: 0 !important;
                         }
                     }
-                    &:nth-child(3n) {
-                        margin-right: 0;
-                    }
                     &:nth-child(4n) {
                         margin-right: 9px;
                     }
+                    &:nth-child(3n) {
+                        margin-right: 0;
+                    }
                     @media (min-width: 768px) and (max-width: 960px) {
-                        &:nth-child(4n) {
+                        &:nth-child(3n) {
                             margin-right: 0;
-                        }
-                        &:nth-child(2n+1) {
-                            margin-right: 13px;
                         }
                     }
                     h2 {
@@ -757,21 +765,35 @@ $grid: ".og-grid";
                     float: left;
                 }
             }
+            .og-expander .og-fullimg {
+                @media (min-width: 1024px) {
+                    height: 264px;
+                    width: 264px;
+                    line-height: 264px;
+                }
+            }
         }
     }
     body:not(.studio) .span12.page-content {
         .pbs-profile-grid {
             padding: 40px 0 0;
+
+            @media (max-width: 960px) {
+                padding: 40px 20px 0;
+            }
             .span8 {
                 width: 100%;
-                @media (max-width: 767px) {
-                    padding: 0 20px;
-                }
             }
             li {
                 &,
                 & > a {
-                    @media (min-width: 970px) and (max-width: 1365px) {
+                    @media (min-width: 1024px) {
+                        width: 312px;
+                        height: 312px;
+                        line-height: 310px;
+                    }
+
+                    @media (min-width: 970px) and (max-width: 1023px) {
                         width: 300px;
                         height: 300px;
                         line-height: 298px;
@@ -783,15 +805,23 @@ $grid: ".og-grid";
                     }
                 }
                 @media (min-width: 1280px) {
-                    &:nth-child(3n) {
-                        margin-right: 0;
-                    }
                     &:nth-child(4n) {
                         margin-right: 9px;
+                    }
+                    &:nth-child(3n) {
+                        margin-right: 0;
                     }
                 }
             }
         }
+        .og-expander .og-fullimg {
+            @media (min-width: 1024px) {
+                height: 432px;
+                width: 432px;
+                line-height: 432px;
+            }
+        }
+        
     }
     body:not(.studio):not(.tpl-producer) .span12.page-content .pbs-profile-grid .span8 {
         padding: 0 20px;
