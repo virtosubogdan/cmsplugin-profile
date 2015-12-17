@@ -5,32 +5,11 @@
 
 {% current_timestamp as rnd %}
 
-{% addtoblock "js" %}
-    <script src="{{ STATIC_URL }}cmsplugin_profile/js/jquery.debouncedresize.js"></script>
-    <script src="{{ STATIC_URL }}cmsplugin_profile/js/jquery.imagesloaded.js"></script>
-    <script src="{{ STATIC_URL }}cmsplugin_profile/js/profilegrid.js"></script>
-    <script type="text/javascript">
-        (function($, PBS){
-            PBS = PBS || {};
-            PBS.snippets = PBS.snippets || {};
-
-            $(document).ready(function(){
-                var id = 'profile_grid_promo{{ rnd }}' ;
-
-                PBS.snippets[id] = new PBS.ProfileGrid({
-                    snippet: $('#' + id),
-                })
-                PBS.snippets[id].init();
-
-            });
-        })(jQuery, PBS);
-    </script>
-{% endaddtoblock %}
 <section class="pbs-profile-grid pbs-profile-promo">
     <div class="row-fluid">
         <div class="span12">
             {% if promo_grid.title %}
-                <h1>{{ promo_grid.title|escape }}</h1>
+                <h1><a href="{{ profile_grid_link }}">{{ promo_grid.title|escape }}</a></h1>
             {% endif %}
         </div>
     </div>
@@ -39,16 +18,7 @@
             <ul id="profile_grid_promo{{ rnd }}" class="og-grid">
             {% for profile in profiles %}
                     <li>
-                        <a href="{{profile.call_to_action_url}}"
-                            data-largesrc="{{profile.detail_image|filerfile}}"
-                            data-largeimg-credit="{{profile.image_credit}}"
-                            data-title="{{profile.title}}"
-                            data-description="{{profile.description}}"
-                            data-callToActionText="{{profile.call_to_action_text}}"
-                            data-additionallinkslabel="{{profile.additional_links_label}}"
-                            {% for link in profile.links %}
-                            data-addlinktext{{forloop.counter}}="{{link.text}}" data-addlinkurl{{forloop.counter}}="{{link.url}}" data-addlinktarget{{forloop.counter}}="{{link.target}}"
-                            {% endfor %}>
+                        <a href="{{ profile_grid_link }}">
                             <img src="{{profile.thumbnail_image|filerfile}}" alt="{{profile.title}}"/>
                             <h2>{{profile.title}}</h2>
                         </a>
