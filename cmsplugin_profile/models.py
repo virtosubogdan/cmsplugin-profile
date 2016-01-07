@@ -88,11 +88,16 @@ class ProfilePromoGrid(CMSPlugin):
 
     def save(self, *args, **kwargs):
         ret_value = super(ProfilePromoGrid, self).save(*args, **kwargs)
+        self._save_selected_profiles()
+        return ret_value
+
+    def _save_selected_profiles(self):
+        if not hasattr(self, 'unsaved_selected_profiles'):
+            return
         self.selectedprofile_set.all().delete()
         for unsaved_selected_profile in self.unsaved_selected_profiles:
             unsaved_selected_profile.promo_grid = self
             unsaved_selected_profile.save()
-        return ret_value
 
 
 class SelectedProfile(models.Model):
