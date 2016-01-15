@@ -1,6 +1,34 @@
 CHANGELOG
 =========
 
+Revision e3cd839 (14.01.2016, 14:48 UTC)
+----------------------------------------
+
+* LUN-2813
+
+  * new lines added manually werent calculated well
+
+* LUN-2819
+
+  * IE11 bug fixe
+  * missing timestamp on grid
+
+* LUN-2821
+
+  * remove flex and added line-height to vertical aling images
+
+* LUN-2823
+
+  * profile promo updated
+  * profile items alignments updated
+  * pages with Profile Grid/Promo couldnt be saved - fixed
+  * Profile fixed for station templates
+  * Profile fixed on producer templates
+  * Profile plugin fixed for Studio 2 cols
+  * profile grid updates on Studio 2 cols
+
+No other commits.
+
 Revision 0293589 (25.11.2015, 11:00 UTC)
 ----------------------------------------
 

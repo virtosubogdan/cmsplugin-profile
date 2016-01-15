@@ -14,7 +14,7 @@
             // used to know if the preview will expand in a different row
             previewPos = -1,
             // extra amount of pixels to scroll the window
-            scrollExtra = 0,
+            scrollExtra = 20,
             // extra margin when expanded (between preview overlay and the next items)
             marginExpanded = 30,
             $window = $(window),
@@ -33,7 +33,6 @@
             support = Modernizr.csstransitions,
             // default settings
             settings = {
-                minHeight: 650,
                 speed: 350,
                 easing: 'ease'
             };
@@ -66,7 +65,7 @@
                 var $item = $(this);
                 $item.data({
                     offsetTop: $item.offset().top,
-                    height: $item.height()
+                    height: $item.find('> a').height()
                 });
             });
 
@@ -146,21 +145,11 @@
 
             // if a preview exists and previewPos is different (different row) from item´s top then close it
             if (typeof preview != 'undefined') {
-
-                // not in the same row
-                if (previewPos !== position) {
-                    // if position > previewPos then we need to take te current preview´s height in consideration when scrolling the window
-                    if (position > previewPos) {
-                        scrollExtra = preview.height;
-                    }
-                    hidePreview();
-                }
-                // same row
-                else {
-                    preview.update($item);
-                    return false;
+                if (position > previewPos) {
+                    scrollExtra = preview.height;
                 }
 
+                hidePreview();
             }
 
             // update previewPos
@@ -384,19 +373,9 @@
 
             },
             calcHeight: function() {
-                if (window.matchMedia('(max-width: 767px)').matches) {
-                    var heightPreview = this.$fullimage.height() + this.$details.outerHeight(true) + this.$bottomDetails.outerHeight(true) + 60,
-                        itemHeight = heightPreview + this.$item.data('height') + marginExpanded;
-                } else {
-                    var heightPreview = winsize.height - this.$item.data('height') - marginExpanded,
-                        itemHeight = winsize.height;
-
-                    if (heightPreview < settings.minHeight) {
-                        heightPreview = settings.minHeight;
-                        itemHeight = settings.minHeight + this.$item.data('height') + marginExpanded;
-                    }
-                }
-
+                var heightPreview = this.$item.find('.og-expander-inner').outerHeight(true),
+                    itemHeight = heightPreview + this.$item.data('height') + marginExpanded;
+                
                 this.height = heightPreview;
                 this.itemHeight = itemHeight;
 
@@ -423,19 +402,16 @@
             positionPreview: function() {
 
                 // scroll page
-                // case 1 : preview height + item height fits in window´s height
-                // case 2 : preview height + item height does not fit in window´s height and preview height is smaller than window´s height
-                // case 3 : preview height + item height does not fit in window´s height and preview height is bigger than window´s height
+                // preview height + item height fits in window´s height
                 var position = this.$item.data('offsetTop'),
                     previewOffsetT = this.$previewEl.offset().top - scrollExtra,
                     scrollVal;
 
-                if (this.height + this.$item.data('height') + marginExpanded <= winsize.height) {
-                    scrollVal = position;
-                } else if (this.height < winsize.height) {
-                    scrollVal = previewOffsetT - (winsize.height - this.height);
-                } else {
+                if (window.matchMedia('(max-width: 767px)').matches) {
                     scrollVal = previewOffsetT;
+                }
+                else {
+                    scrollVal = position;
                 }
 
                 $body.animate({
